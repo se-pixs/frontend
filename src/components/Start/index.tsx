@@ -1,9 +1,16 @@
 import { Component } from 'react';
+import SideBar from '../SideBar';
+import Header from '../Header';
+import Footer from '../Footer';
 
 function Start() {
   return (
-    <div className='bg-gray-400 container h-screen w-full'>
-      <p className='text-7xl text-red-500 flex flex-column text-center lg:text-blue-500 hover:text-green-500'>Hello world</p>
+    <div className='bg-gray-200'>
+      <Header />
+      <div className=' bg-customwhite h-screen'>
+        <p className='text-center text-xl'>Hello world</p>
+      </div>
+      <Footer />
     </div>
   );
 }
