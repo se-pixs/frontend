@@ -23,6 +23,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "cucumber": "cucumber-js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^8.0.0-rc.1",
     "autoprefixer": "^9.8.8",
     "postcss": "7.0.39",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
