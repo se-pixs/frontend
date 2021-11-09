@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { motion } from 'framer-motion';
 import SideBarElement from '../SideBarElement';
 
 interface IState {
@@ -28,7 +29,7 @@ class SideBar extends Component<IProps, IState> {
     }
 
     this.state = {
-      isBig: false,
+      isBig: true,
       actionsList: newActionList,
     };
   }
@@ -75,9 +76,9 @@ class SideBar extends Component<IProps, IState> {
 
     return (
       <div className={'bg-customblue-500 h-full text-customwhite ' + (this.state.isBig ? big : small)}>
-        <button className='text-center px-4 py-8' onClick={() => this.handleClick()}>
+        <motion.button animate={{ rotate: this.state.isBig ? 90 : 0 }} className='text-center px-4 py-8' onClick={() => this.handleClick()}>
           {this.state.isBig ? cross : hamburger}
-        </button>
+        </motion.button>
         {this.state.actionsList.map((action: actionObject) => (
           <SideBarElement key={action.name} isBig={this.state.isBig} active={action.active} name={action.name} icon={action.icon} />
         ))}
