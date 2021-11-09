@@ -1,25 +1,87 @@
 import { Component } from 'react';
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-// import crop from '../../res/crop.svg';
+import SideBarElement from '../SideBarElement';
 
-class SideBar extends Component {
+interface IState {
+  isBig: boolean;
+  actionsList: actionObject[];
+}
+
+interface IProps {
+  actionsList: actionObject[];
+}
+
+interface actionObject {
+  name: string;
+  icon: React.ReactNode;
+  active: boolean;
+}
+
+class SideBar extends Component<IProps, IState> {
+  constructor(props: any) {
+    super(props);
+    this.checkActionList = this.checkActionList.bind(this);
+
+    let newActionList: actionObject[] = [];
+
+    if (this.props.actionsList.length > 0) {
+      newActionList = this.checkActionList();
+    }
+
+    this.state = {
+      isBig: false,
+      actionsList: newActionList,
+    };
+  }
+
+  checkActionList(): actionObject[] {
+    let newActionList: actionObject[] = this.props.actionsList;
+
+    let flag: boolean = false;
+    for (let p of newActionList) {
+      if (p.active) {
+        if (!flag) {
+          flag = true;
+        } else {
+          p.active = false;
+        }
+      }
+    }
+    if (!flag) {
+      newActionList[0].active = true;
+    }
+
+    return newActionList;
+  }
+
+  handleClick(): void {
+    this.setState((state) => ({
+      isBig: !state.isBig,
+    }));
+  }
+
   render() {
-    const crop = (
-      <svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='crop-alt' className='w-full h-full p-2' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
-        <path d='M488 352h-40V96c0-17.67-14.33-32-32-32H192v96h160v328c0 13.25 10.75 24 24 24h48c13.25 0 24-10.75 24-24v-40h40c13.25 0 24-10.75 24-24v-48c0-13.26-10.75-24-24-24zM160 24c0-13.26-10.75-24-24-24H88C74.75 0 64 10.74 64 24v40H24C10.75 64 0 74.74 0 88v48c0 13.25 10.75 24 24 24h40v256c0 17.67 14.33 32 32 32h224v-96H160V24z'></path>
+    const big: string = '';
+    const small: string = 'w-20';
+    const hamburger: React.ReactNode = (
+      <svg xmlns='http://www.w3.org/2000/svg' className='h-10 w-10' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
       </svg>
     );
+    const cross: React.ReactNode = (
+      <svg xmlns='http://www.w3.org/2000/svg' className='h-10 w-10' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+      </svg>
+    );
+
     return (
-      <SideNav>
-        <Toggle />
-        <Nav defaultSelected='crop'>
-          <NavItem eventKey='crop'>
-            <NavIcon>{crop}</NavIcon>
-            <NavText>Crop</NavText>
-          </NavItem>
-        </Nav>
-      </SideNav>
+      <div className={'bg-customblue-500 h-full text-customwhite ' + (this.state.isBig ? big : small)}>
+        <button className='text-center px-4 py-8' onClick={() => this.handleClick()}>
+          {this.state.isBig ? cross : hamburger}
+        </button>
+        {this.state.actionsList.map((action: actionObject) => (
+          <SideBarElement key={action.name} isBig={this.state.isBig} active={action.active} name={action.name} icon={action.icon} />
+        ))}
+      </div>
     );
   }
 }

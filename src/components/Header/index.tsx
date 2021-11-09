@@ -8,13 +8,17 @@ function Header() {
   );
 
   return (
-    <header className='bg-gray-800 py-8'>
+    <header className='bg-customblue-500 py-8'>
       <div className='px-5 flex justify-between w-full text-customwhite items-center'>
         <div className='flex-initial flex items-center'>
-          <p className='flex-initial pr-5'>{ghLogo} </p>
+          <p className='flex-initial pr-5'>{ghLogo}</p>
           <p className='flex-initial text-left text-2xl'>PiXS - Image Manipulation Extended</p>
         </div>
-        <div className='flex-initial float-right text-white'>{ghLogo}</div>
+        <div className='flex-initial float-right text-white'>
+          <a href='https://github.com/se-pixs' className='active:text-custompurple' target='_blank' rel='noreferrer'>
+            {ghLogo}
+          </a>
+        </div>
       </div>
     </header>
   );

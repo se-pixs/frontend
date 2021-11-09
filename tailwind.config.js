@@ -4,14 +4,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customblue: "#0D1C28",
+        customblue: {
+          100: "#336d9c",
+          200: "#234c6c",
+          300: "#142a3c",
+          400: "#0c1924",
+          500: "#0D1C28",
+        },
         custompurple: "#6B5CA5",
         customwhite: "#F4F4F6",
-      }
+      },
     },
   },
   variants: {
     extend: {
+      textColor: ['active'],
     },
   },
   plugins: [],
