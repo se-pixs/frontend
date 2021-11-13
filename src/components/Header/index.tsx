@@ -15,7 +15,7 @@ function Header() {
           <p className='flex-initial text-left text-2xl'>PiXS - Image Manipulation Extended</p>
         </div>
         <div className='flex-initial float-right text-white'>
-          <a href='https://github.com/se-pixs' className='active:text-custompurple' target='_blank' rel='noreferrer'>
+          <a href='https://github.com/se-pixs' className='hover:text-custompurple' target='_blank' rel='noreferrer'>
             {ghLogo}
           </a>
         </div>
