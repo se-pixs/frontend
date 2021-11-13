@@ -2,10 +2,24 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customblue: {
+          100: "#336d9c",
+          200: "#234c6c",
+          300: "#142a3c",
+          400: "#0c1924",
+          500: "#0D1C28",
+        },
+        custompurple: "#6B5CA5",
+        customwhite: "#F4F4F6",
+      },
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      textColor: ['active'],
+    },
   },
   plugins: [],
 }
