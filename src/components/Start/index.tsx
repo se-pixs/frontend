@@ -1,6 +1,8 @@
 import SideBar from '../SideBar';
 import Header from '../Header';
 import Footer from '../Footer';
+import UploadField from '../UploadField';
+import Title from '../Title';
 
 interface actionObject {
   name: string;
@@ -18,8 +20,9 @@ function Start() {
       </div>
       <div className='flex-grow'>
         <Header />
-        <div className=' bg-customwhite h-screen'>
-          <p className='text-center text-xl'>Hello world</p>
+        <div className=' bg-customwhite h-screen flex flex-col px-40 py-20'>
+          <Title className='' title='Action title' description='action description' />
+          <UploadField className='' />
         </div>
         <Footer />
       </div>
