@@ -14,6 +14,15 @@ module.exports = {
         custompurple: "#6B5CA5",
         customwhite: "#F4F4F6",
       },
+      keyframes: {
+        'spin-reverse': {
+          'from': { transform: 'rotate(0deg)' },
+          'to': { transform: 'rotate(-360deg)' }
+        }
+      },
+      animation: {
+        'spin-reverse': 'spin-reverse 1.2s linear infinite'
+      },
     },
   },
   variants: {
