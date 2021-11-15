@@ -71,7 +71,7 @@ function getConfigList(): any {
           {
             sliderInput: 
             {
-              name: "1",
+              name: "Slider 1",
               description: "A slider input",
               min: "0", 
               max: "100", 
@@ -81,7 +81,7 @@ function getConfigList(): any {
           {
             sliderInput: 
             {
-              name: "2",
+              name: "Second Slider",
               description: "A second slider input",
               min: "0", 
               max: "100", 
@@ -106,14 +106,14 @@ function getConfigList(): any {
           {
             valueFieldInput: 
             {
-              name: "1",
+              name: "Field Input",
               description: "A value field input"  
             }
           },
           {
             valueFieldInput: 
             {
-              name: "2",
+              name: "Input",
               description: "A second value field input"  
             }
           }
@@ -125,7 +125,7 @@ function getConfigList(): any {
           {
             colorPicker: 
             {
-              name: "1",
+              name: "Color picker1",
               description: "A color picker"  
             }
           },

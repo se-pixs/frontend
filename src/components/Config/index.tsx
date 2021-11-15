@@ -8,20 +8,27 @@ interface IProps {
 }
 
 function Config(props: IProps){
+    const className = 'mx-4 my-4 place-items-center w-full flow-root px-2';
     return (
         <div className='w-full'>
             <p className='text-2xl font-bold mb-4'>Configurations</p>
-            <div className='border-2  w-full px-20 py-20 border-customblue-500 rounded-lg'>
-                <div className='w-full grid grid-cols-2 grid-rows-3 place-items-start'>
-                {props.configList[0].sliderInputs.items.map((input: any) => (
-                <SliderInput key={input.sliderInput.name} className='flex-initial mx-4' description={input.sliderInput.description} min={input.sliderInput.min} max={input.sliderInput.max} value={input.sliderInput.value} />
-                ))}
-                {props.configList[0].valueFieldInputs.items.map((input: any) => (
-                <ValueFieldInput key={input.valueFieldInput.name} description={input.valueFieldInput.description} className='flex-initial mx-4' />
-                ))}
-                {props.configList[0].colorPickers.items.map((input: any) => (
-                <ColorPicker key={input.colorPicker.name} description={input.colorPicker.description} className='flex-initial mx-4'/>
-                ))}
+            <div className='border-2  w-full px-10 py-10 border-customblue-500 rounded-lg'>
+                <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + ((props.configList[0].sliderInputs.items.length > 0 ? 1 : 0) + (props.configList[0].valueFieldInputs.items.length > 0 ? 1 : 0) + (props.configList[0].colorPickers.items.length > 0 ? 1 : 0))}>
+                    { props.configList[0].sliderInputs.items.length > 0 ?<div>
+                    {props.configList[0].sliderInputs.items.map((input: any) => (
+                    <SliderInput key={input.sliderInput.name} className={className} name={input.sliderInput.name} min={input.sliderInput.min} max={input.sliderInput.max} value={input.sliderInput.value} />
+                    ))}
+                    </div> : null}
+                    {props.configList[0].valueFieldInputs.items.length > 0 ? <div>
+                    {props.configList[0].valueFieldInputs.items.map((input: any) => (
+                    <ValueFieldInput key={input.valueFieldInput.name} name={input.valueFieldInput.name} className={className} />
+                    ))}
+                    </div> : null}
+                    {props.configList[0].colorPickers.items.length > 0 ? <div>
+                    {props.configList[0].colorPickers.items.map((input: any) => (
+                    <ColorPicker key={input.colorPicker.name} name={input.colorPicker.name} className={className}/>
+                    ))}
+                    </div> : null}           
                 </div>
                 <div className='w-full grid place-items-center'>
                     <Button className='mt-8' onclick={() => runAction()} disabled={false}>Run action</Button>

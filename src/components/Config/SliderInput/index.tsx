@@ -1,22 +1,22 @@
+import { useState } from 'react';
+
 interface IProps {
     className?: string;    
-    description: string;
+    name: string;
     min: number, 
     max: number, 
     value: number
 }
   
 function SliderInput(props: IProps) {
+    const [value, setValue] = useState(props.value + '');
     return (
-        <div className={('flex ' + props.className)}>
-            <label className='flex-initial'>{props.description}</label>
-            <input className='flex-initial' type="range" min={props.min} max={props.max} defaultValue={props.value} step="1" onChange={(event) => handleChange(event.target.value)}/>
+        <div className={(' ' + props.className)}>
+            <label className='float-left mr-2'>{props.name + ':'}</label>
+            <p className='float-left font-bold'>{value}</p>
+            <input className='float-right' type="range" min={props.min} max={props.max} defaultValue={props.value} step="1" onChange={(event) => setValue(event.target.value)}/>
         </div>
     );
-}
-
-function handleChange(value: string) {
-
 }
   
 export default SliderInput;  

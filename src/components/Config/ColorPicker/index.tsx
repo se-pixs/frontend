@@ -2,7 +2,7 @@ import { SketchPicker } from 'react-color';
 import { useState } from 'react';
 interface IProps {
     className?: string;
-    description: string;
+    name: string;
 }
   
 function ColorPicker(props: IProps) {
@@ -10,8 +10,8 @@ function ColorPicker(props: IProps) {
     const [color, setColor] = useState("#0C7ECF");
     return (    
         <div className={props.className + ' '}>    
-            <label className='flex-initial pr-2'>{props.description}</label>
-            <button className='px-6 py-4' style={{background: color}}  onClick={() => setDisplayColorPicker(!displayColorPicker) }></button>
+            <label className='float-left pr-4'>{props.name + ':'}</label>
+            <button className='float-right px-8 py-3' style={{background: color}}  onClick={() => setDisplayColorPicker(!displayColorPicker) }></button>
 
             {displayColorPicker ? <div className='absolute'>
             <div className='fixed' onClick={() => setDisplayColorPicker(!displayColorPicker) }/>

@@ -1,13 +1,16 @@
+import { useState } from 'react';
+
 interface IProps {
     className?: string;
-    description: string;
+    name: string;
 }
   
 function ValueFieldInput(props: IProps) {
+    const [value, setValue] = useState('');
     return (
-        <div  className={props.className + 'flex'}>
-            <label className='pr-4 flex-initial'>{props.description}</label>
-            <input className='flex-initial'/>
+        <div  className={props.className + ' ' }>
+            <label className='pr-4 float-left'>{props.name + ':'}</label>
+            <input placeholder="..." className='float-right px-2 w-20' onChange={(event) => (setValue(event.target.value))}/>
         </div>
     );
 }
