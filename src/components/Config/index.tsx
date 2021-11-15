@@ -8,11 +8,11 @@ interface IProps {
 }
 
 function Config(props: IProps){
-    const className = 'mx-4 my-4 place-items-center w-full flow-root px-2';
+    const className = 'm-4 place-items-center flow-root';
     return (
         <div className='w-full'>
             <p className='text-2xl font-bold mb-4'>Configurations</p>
-            <div className='border-2  w-full px-10 py-10 border-customblue-500 rounded-lg'>
+            <div className='border-2  w-full px-24 py-10 border-customblue-500 rounded-lg'>
                 <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + ((props.configList[0].sliderInputs.items.length > 0 ? 1 : 0) + (props.configList[0].valueFieldInputs.items.length > 0 ? 1 : 0) + (props.configList[0].colorPickers.items.length > 0 ? 1 : 0))}>
                     { props.configList[0].sliderInputs.items.length > 0 ?<div>
                     {props.configList[0].sliderInputs.items.map((input: any) => (

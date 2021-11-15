@@ -13,7 +13,7 @@ function SliderInput(props: IProps) {
     return (
         <div className={(' ' + props.className)}>
             <label className='float-left mr-2'>{props.name + ':'}</label>
-            <p className='float-left font-bold'>{value}</p>
+            <p className='float-none font-bold mr-4'>{value}</p>
             <input className='float-right' type="range" min={props.min} max={props.max} defaultValue={props.value} step="1" onChange={(event) => setValue(event.target.value)}/>
         </div>
     );
