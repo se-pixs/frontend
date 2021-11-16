@@ -81,7 +81,7 @@ function getConfigList(): any {
           {
             sliderInput: 
             {
-              name: "Second Slider",
+              name: "Slider 2",
               description: "A second slider input",
               min: "0", 
               max: "100", 
