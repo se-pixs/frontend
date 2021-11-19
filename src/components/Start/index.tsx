@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useStore } from '../../util/globalStore';
 
 import SideBar from '../SideBar';
 import Header from '../Header';
@@ -16,11 +17,21 @@ interface actionObject {
 }
 
 function Start() {
+  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const actionsList: actionObject[] = getActionList();
   const configList: any = getConfigList();
-  let imgsrc = '/preview-placeholder.jpeg';
 
-  const UPLOADED = false;
+  const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
+
+  // set the image src to the uploaded image
+  let reader = new FileReader();
+  reader.onload = (e) => {
+    setImgSrc((e.target === null ? '/preview-placeholder.jpeg' : e.target.result) as string);
+  };
+
+  if (uploadedImage !== null) {
+    reader.readAsDataURL(uploadedImage);
+  }
 
   return (
     <div className='bg-gray-200 flex'>
@@ -30,22 +41,17 @@ function Start() {
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          <Title className='' title='Action title' description='action description' />
-          <UploadField className='' handleUpload={handleUpload} />
+          <Title title='Action title' description='action description' />
+          <UploadField />
           <Spacer />
           <Config configList={configList} />
-          {UPLOADED && <Spacer />}
-          {UPLOADED && <Preview className='' imgSrc={imgsrc} />}
+          {uploadedImage !== null && <Spacer />}
+          {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
         <Footer />
       </div>
     </div>
   );
-}
-
-function handleUpload(file: File) {
-  console.log(file);
-  // setUploaded(true);
 }
 
 function getActionList(): actionObject[] {

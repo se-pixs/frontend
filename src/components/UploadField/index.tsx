@@ -1,18 +1,21 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useStore } from '../../util/globalStore';
+
 import Button from '../Button';
 
 interface IProps {
   className?: string;
-  handleUpload: (files: File) => void;
 }
 
 function UploadField(props: IProps) {
+  const { setUploadedImage, clearUploadedImage } = useStore();
+
   const onDrop = useCallback((acceptedFiles) => {
     console.log(acceptedFiles.length);
     setFileName(acceptedFiles[0].path);
     setUploaded(true);
-    props.handleUpload(acceptedFiles[0]);
+    setUploadedImage(acceptedFiles[0]);
   }, []);
 
   const [uploaded, setUploaded] = useState(false);
@@ -32,6 +35,7 @@ function UploadField(props: IProps) {
   function clearUpload() {
     setFileName('');
     setUploaded(false);
+    clearUploadedImage();
   }
 
   let activeParagraph = (
