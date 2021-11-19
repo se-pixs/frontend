@@ -33,6 +33,8 @@ function Start() {
     reader.readAsDataURL(uploadedImage);
   }
 
+  let UPLOADED: boolean = false;
+
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
@@ -44,7 +46,7 @@ function Start() {
           <Title title='Action title' description='action description' />
           <UploadField />
           <Spacer />
-          <Config configList={configList} />
+          <Config uploaded={UPLOADED} configList={configList} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>

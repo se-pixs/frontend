@@ -5,6 +5,7 @@ import Button from '../Button';
 
 interface IProps {
   configList: any;
+  uploaded: boolean;
 }
 
 function Config(props: IProps) {
@@ -54,29 +55,36 @@ function Config(props: IProps) {
     <div className='w-full'>
       <p className='text-2xl font-bold mb-4'>Configurations</p>
       <div className='border-2  w-full px-10 py-10 border-customblue-500 rounded-lg'>
-        <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + ((sliderList.length > 0 ? 1 : 0) + (valueFieldInputList.length > 0 ? 1 : 0) + (colorPickerList.length > 0 ? 1 : 0))}>
-          {sliderList.length > 0 && (
-            <div>
-              {sliderList.map(
-                (input: any) =>
-                  sliderMap.set(input.sliderInput.name, input.sliderInput.value) && <SliderInput onValueChange={onSliderChange} key={input.sliderInput.name} name={input.sliderInput.name} min={input.sliderInput.min} max={input.sliderInput.max} value={input.sliderInput.value} className={className} />,
-              )}
-            </div>
-          )}
-          {valueFieldInputList.length > 0 && (
-            <div>
-              {valueFieldInputList.map(
-                (input: any) => inputFieldMap.set(input.valueFieldInput.name, '') && <ValueFieldInput onValueChange={onInputFieldChange} key={input.valueFieldInput.name} name={input.valueFieldInput.name} description={input.valueFieldInput.description} className={className} />,
-              )}
-            </div>
-          )}
-          {colorPickerList.length > 0 && <div>{colorPickerList.map((input: any) => colorPickerMap.set(input.colorPicker.name, hexToRGB('#0C7ECF')) && <ColorPicker onValueChange={onColorPickerChange} key={input.colorPicker.name} name={input.colorPicker.name} className={className} />)}</div>}
+        {props.uploaded ? 
+        <div>
+          <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + ((sliderList.length > 0 ? 1 : 0) + (valueFieldInputList.length > 0 ? 1 : 0) + (colorPickerList.length > 0 ? 1 : 0))}>
+            {sliderList.length > 0 && (
+              <div>
+                {sliderList.map(
+                  (input: any) =>
+                    sliderMap.set(input.sliderInput.name, input.sliderInput.value) && <SliderInput onValueChange={onSliderChange} key={input.sliderInput.name} name={input.sliderInput.name} min={input.sliderInput.min} max={input.sliderInput.max} value={input.sliderInput.value} className={className} />,
+                )}
+              </div>
+            )}
+            {valueFieldInputList.length > 0 && (
+              <div>
+                {valueFieldInputList.map(
+                  (input: any) => inputFieldMap.set(input.valueFieldInput.name, '') && <ValueFieldInput onValueChange={onInputFieldChange} key={input.valueFieldInput.name} name={input.valueFieldInput.name} description={input.valueFieldInput.description} className={className} />,
+                )}
+              </div>
+            )}
+            {colorPickerList.length > 0 && <div>{colorPickerList.map((input: any) => colorPickerMap.set(input.colorPicker.name, hexToRGB('#0C7ECF')) && <ColorPicker onValueChange={onColorPickerChange} key={input.colorPicker.name} name={input.colorPicker.name} className={className} />)}</div>}
+          </div>
+          <div className='w-full grid place-items-center'>
+            <Button className='mt-8' onclick={() => runAction()} disabled={false}>
+              Run action
+            </Button>
+          </div>          
+        </div>: 
+        <div className='p-20'>
+          <p className='text-center text-xl'>You must first upload an image!</p>
         </div>
-        <div className='w-full grid place-items-center'>
-          <Button className='mt-8' onclick={() => runAction()} disabled={false}>
-            Run action
-          </Button>
-        </div>
+        }
       </div>
     </div>
   );
