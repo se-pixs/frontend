@@ -32,13 +32,13 @@ function Header() {
 
   return (
     <header className='bg-customblue-500 py-8'>
-      <div className='px-5 flex justify-between w-full text-customwhite items-center'>
+      <div className='px-5 flex justify-between w-full text-customwhite-500 items-center'>
         <div className='flex-initial flex items-center'>
           <p className='flex-initial pr-5'>{pixsLogo}</p>
           <p className='flex-initial text-left text-2xl font-bold'>PiXS - Image Manipulation Extended</p>
         </div>
         <div className='flex-initial float-right text-white'>
-          <a href='https://github.com/se-pixs' className='hover:text-custompurple' target='_blank' rel='noreferrer'>
+          <a href='https://github.com/se-pixs' className='hover:text-custompurple-500' target='_blank' rel='noreferrer'>
             {ghLogo}
           </a>
         </div>

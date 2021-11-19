@@ -75,7 +75,7 @@ class SideBar extends Component<IProps, IState> {
     );
 
     return (
-      <div className={'bg-customblue-500 h-full text-customwhite ' + (this.state.isBig ? big : small)}>
+      <div className={'bg-customblue-500 h-full text-customwhite-500 ' + (this.state.isBig ? big : small)}>
         <motion.button animate={{ rotate: this.state.isBig ? 90 : 0 }} className='text-center px-4 py-8' onClick={() => this.handleClick()}>
           {this.state.isBig ? cross : hamburger}
         </motion.button>

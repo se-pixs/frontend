@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import SideBar from '../SideBar';
 import Header from '../Header';
 import Footer from '../Footer';
@@ -18,6 +20,8 @@ function Start() {
   const configList: any = getConfigList();
   let imgsrc = '/preview-placeholder.jpeg';
 
+  const UPLOADED = false;
+
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
@@ -25,18 +29,23 @@ function Start() {
       </div>
       <div className='flex-grow'>
         <Header />
-        <div className='bg-customwhite flex flex-col justify-between px-40 py-20'>
+        <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
           <Title className='' title='Action title' description='action description' />
-          <UploadField className='' />
+          <UploadField className='' handleUpload={handleUpload} />
           <Spacer />
           <Config configList={configList} />
-          <Spacer />
-          <Preview className='' imgSrc={imgsrc} />
+          {UPLOADED && <Spacer />}
+          {UPLOADED && <Preview className='' imgSrc={imgsrc} />}
         </div>
         <Footer />
       </div>
     </div>
   );
+}
+
+function handleUpload(file: File) {
+  console.log(file);
+  // setUploaded(true);
 }
 
 function getActionList(): actionObject[] {

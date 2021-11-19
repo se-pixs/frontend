@@ -4,6 +4,7 @@ import Button from '../Button';
 
 interface IProps {
   className?: string;
+  handleUpload: (files: File) => void;
 }
 
 function UploadField(props: IProps) {
@@ -11,6 +12,7 @@ function UploadField(props: IProps) {
     console.log(acceptedFiles.length);
     setFileName(acceptedFiles[0].path);
     setUploaded(true);
+    props.handleUpload(acceptedFiles[0]);
   }, []);
 
   const [uploaded, setUploaded] = useState(false);
@@ -34,20 +36,20 @@ function UploadField(props: IProps) {
 
   let activeParagraph = (
     <p>
-      <span className='font-bold text-custompurple'>Drop</span> your image here
+      <span className='font-bold text-custompurple-500'>Drop</span> your image here
     </p>
   );
 
   let inactiveParagraph = (
     <p>
-      Drag 'n' <span className='font-bold text-custompurple'>drop</span> some files here, or click to <span className='font-bold text-custompurple'>select</span> files.
+      Drag 'n' <span className='font-bold text-custompurple-500'>drop</span> some files here, or click to <span className='font-bold text-custompurple-500'>select</span> files.
     </p>
   );
   let nonAccepted = isDragActive ? activeParagraph : inactiveParagraph;
 
   return (
     <div>
-      <div {...getRootProps()} className={'w-full text-center border-custompurple border-4 py-20 rounded-lg cursor-pointer' + (uploaded ? ' border-solid ' : ' border-dashed ') + props.className}>
+      <div {...getRootProps()} className={'w-full text-center border-custompurple-500 border-4 py-20 rounded-lg cursor-pointer' + (uploaded ? ' border-solid ' : ' border-dashed ') + props.className}>
         <input {...getInputProps()} multiple={false} />
         <div className='text-xl'>{uploaded ? imgPreview : nonAccepted}</div>
       </div>
