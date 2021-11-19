@@ -5,6 +5,7 @@ import UploadField from '../UploadField';
 import Title from '../Title';
 import Config from '../Config';
 import Spacer from '../Spacer';
+import Preview from '../Preview';
 
 interface actionObject {
   name: string;
@@ -15,6 +16,7 @@ interface actionObject {
 function Start() {
   const actionsList: actionObject[] = getActionList();
   const configList: any = getConfigList();
+  let imgsrc = '/preview-placeholder.jpeg';
 
   return (
     <div className='bg-gray-200 flex'>
@@ -23,11 +25,12 @@ function Start() {
       </div>
       <div className='flex-grow'>
         <Header />
-        <div className=' bg-customwhite flex flex-col px-40 py-20'>
+        <div className='bg-customwhite h-screen flex flex-col justify-between px-40 py-20'>
           <Title className='' title='Action title' description='action description' />
           <UploadField className='' />
           <Spacer />
-          <Config configList={configList}/>
+          <Config configList={configList} />
+          <Preview className='mt-10' imgSrc={imgsrc} />
         </div>
         <Footer />
       </div>
@@ -65,80 +68,70 @@ function getActionList(): actionObject[] {
 function getConfigList(): any {
   return [
     {
-      sliderInputs: 
-      {      
+      sliderInputs: {
         items: [
           {
-            sliderInput: 
-            {
-              name: "Slider 1",
-              description: "A slider input",
-              min: "0", 
-              max: "100", 
-              value: "5"
-            }
+            sliderInput: {
+              name: 'Slider 1',
+              description: 'A slider input',
+              min: '0',
+              max: '100',
+              value: '5',
+            },
           },
           {
-            sliderInput: 
-            {
-              name: "Slider 2",
-              description: "A second slider input",
-              min: "0", 
-              max: "100", 
-              value: "3"
-            }
+            sliderInput: {
+              name: 'Slider 2',
+              description: 'A second slider input',
+              min: '0',
+              max: '100',
+              value: '3',
+            },
           },
           {
-            sliderInput: 
-            {
-              name: "3",
-              description: "A second slider input",
-              min: "0", 
-              max: "100", 
-              value: "3"
-            }
-          }
-        ]
+            sliderInput: {
+              name: '3',
+              description: 'A second slider input',
+              min: '0',
+              max: '100',
+              value: '3',
+            },
+          },
+        ],
       },
-      valueFieldInputs: 
-      {      
+      valueFieldInputs: {
         items: [
           {
-            valueFieldInput: 
-            {
-              name: "Field Input",
-              description: "A value field input"  
-            }
+            valueFieldInput: {
+              name: 'Field Input',
+              description: 'A value field input',
+            },
           },
           {
-            valueFieldInput: 
-            {
-              name: "Input",
-              description: "A second value field input"  
-            }
-          }
-        ]
+            valueFieldInput: {
+              name: 'Input',
+              description: 'A second value field input',
+            },
+          },
+        ],
       },
-      colorPickers: 
-      {      
+      colorPickers: {
         items: [
           {
-            colorPicker: 
-            {
-              name: "Color picker1",
-              description: "A color picker"  
-            }
+            colorPicker: {
+              name: 'Color picker1',
+              description: 'A color picker',
+            },
           },
           {
-            colorPicker: 
-            {
-              name: "2",
-              description: "A second color picker"  
-            }
-          }
-        ]
+            colorPicker: {
+              name: '2',
+              description: 'A second color picker',
+            },
+          },
+        ],
       },
-    }
+    },
   ];
 }
 export default Start;
