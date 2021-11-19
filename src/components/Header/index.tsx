@@ -1,4 +1,27 @@
 function Header() {
+  const pixsLogo = (
+    <svg xmlns='http://www.w3.org/2000/svg' width='380' height='387.757' viewBox='0 0 85 102.594' fill='currentColor' className='w-8 h-8'>
+      <g strokeWidth='0.265' transform='translate(-61.5 -103.57)'>
+        <text x='56.814' y='206.165' fontFamily='sans-serif' fontSize='141.11' style={{ lineHeight: '1.25' }}>
+          <tspan x='56.814' y='206.165'>
+            X
+          </tspan>
+        </text>
+        <path d='M101.04 177.59h7.825v23.814h-7.825z'></path>
+        <circle cx='106.31' cy='125.37' r='3.912'></circle>
+      </g>
+      <text x='-4.294' y='65.267' strokeWidth='0.245' fontFamily='sans-serif' fontSize='46.997' transform='scale(.9425 1.06102)' style={{ lineHeight: '1.25' }}>
+        <tspan x='-4.294' y='65.267'>
+          P
+        </tspan>
+      </text>
+      <text x='67.641' y='64.337' strokeWidth='0.246' fontFamily='sans-serif' fontSize='48.005' transform='scale(.9475 1.05541)' style={{ lineHeight: '1.25' }}>
+        <tspan x='67.641' y='64.337'>
+          S
+        </tspan>
+      </text>
+    </svg>
+  );
   const ghLogo = (
     <svg aria-hidden='true' focusable='false' data-prefix='fab' data-icon='github' className='w-10 h-10' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'>
       <path
@@ -11,8 +34,8 @@ function Header() {
     <header className='bg-customblue-500 py-8'>
       <div className='px-5 flex justify-between w-full text-customwhite items-center'>
         <div className='flex-initial flex items-center'>
-          <p className='flex-initial pr-5'>{ghLogo}</p>
-          <p className='flex-initial text-left text-2xl'>PiXS - Image Manipulation Extended</p>
+          <p className='flex-initial pr-5'>{pixsLogo}</p>
+          <p className='flex-initial text-left text-2xl font-bold'>PiXS - Image Manipulation Extended</p>
         </div>
         <div className='flex-initial float-right text-white'>
           <a href='https://github.com/se-pixs' className='hover:text-custompurple' target='_blank' rel='noreferrer'>
