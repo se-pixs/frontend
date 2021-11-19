@@ -3,6 +3,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import UploadField from '../UploadField';
 import Title from '../Title';
+import Preview from '../Preview';
 
 interface actionObject {
   name: string;
@@ -12,6 +13,7 @@ interface actionObject {
 
 function Start() {
   const actionsList: actionObject[] = getActionList();
+  let imgsrc = '/preview-placeholder.jpeg';
 
   return (
     <div className='bg-gray-200 flex'>
@@ -20,9 +22,10 @@ function Start() {
       </div>
       <div className='flex-grow'>
         <Header />
-        <div className=' bg-customwhite h-screen flex flex-col px-40 py-20'>
+        <div className='bg-customwhite h-screen flex flex-col justify-between px-40 py-20'>
           <Title className='' title='Action title' description='action description' />
           <UploadField className='' />
+          <Preview className='mt-10' imgSrc={imgsrc} />
         </div>
         <Footer />
       </div>
