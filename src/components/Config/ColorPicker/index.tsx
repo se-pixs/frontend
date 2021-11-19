@@ -19,9 +19,12 @@ function ColorPicker(props: IProps) {
       <label className='float-left pr-4'>{props.name + ':'}</label>
       <button className='float-right px-8 py-3' style={{ background: color }} onClick={() => setDisplayColorPicker(!displayColorPicker)}></button>
 
-      {displayColorPicker ? (
+      {displayColorPicker && (
         <div className='absolute'>
-          <div className='fixed' onClick={() => setDisplayColorPicker(!displayColorPicker)} />
+          <div className='fixed' onBlur={() => setDisplayColorPicker(!displayColorPicker)} />
+          <div className='bg-customwhite cursor-pointer w-full text-right pb-2' onClick={() => setDisplayColorPicker(!displayColorPicker)}>
+            X
+          </div>
           <SketchPicker
             disableAlpha
             className=''
@@ -34,7 +37,7 @@ function ColorPicker(props: IProps) {
             }}
           />
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

@@ -28,7 +28,6 @@ function Preview(props: IProps) {
 
   return (
     <div className={'flex flex-col' + ' ' + props.className}>
-      <hr className='border border-gray-400 mb-5' />
       <div className='flex-initial font-bold text-xl mb-5'>Preview</div>
       <div className='flex-initial flex justify-between items-center'>
         <div className='flex-initial'>

@@ -25,12 +25,13 @@ function Start() {
       </div>
       <div className='flex-grow'>
         <Header />
-        <div className='bg-customwhite h-screen flex flex-col justify-between px-40 py-20'>
+        <div className='bg-customwhite flex flex-col justify-between px-40 py-20'>
           <Title className='' title='Action title' description='action description' />
           <UploadField className='' />
           <Spacer />
           <Config configList={configList} />
-          <Preview className='mt-10' imgSrc={imgsrc} />
+          <Spacer />
+          <Preview className='' imgSrc={imgsrc} />
         </div>
         <Footer />
       </div>
