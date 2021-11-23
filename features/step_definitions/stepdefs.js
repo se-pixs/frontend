@@ -54,19 +54,16 @@ Then('user should see message {string}', function (expectedAnswer) {
 });
 
 // IG Pano Split
-Given('upladed image has at least a width of {word}', function (width) {
-  this.width = width;
-});
-
-Given('image has sucessfully been split into images with a width of {word}', function () {
+Given('image has sucessfully been split into smaller images', function () {
   this.success = true;
 });
 
-Given('image has not successfully been split into images with a width of {word}', function () {
+Given('image has not sucessfully been split into smaller images', function () {
   this.success = false;
 });
 
-When('user chooses action Instagram split panorame image', function () {
+
+When('user chooses action split original image into smaller images', function () {
   this.actualAnswer = isSuccessful(this.success);
 });
 
@@ -118,8 +115,8 @@ function isDownloaded(uploaded, manipulated) {
 
 function isItWiderThan1048576Pixels(width) {
   if (width >= 1048576) {
-      return 'progress bar';
+    return 'progress bar';
   } else {
-      return 'warning popup';
+    return 'warning popup';
   }
 }
