@@ -3,6 +3,7 @@ import { useState } from 'react';
 interface IProps {
   className?: string;
   name: string;
+  description: string;
   min: number;
   max: number;
   value: number;

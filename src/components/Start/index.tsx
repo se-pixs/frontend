@@ -11,6 +11,7 @@ import Spacer from '../Spacer';
 import Preview from '../Preview';
 
 import backend from '../../example.json'
+import ProgressBar from '../ProgressBar';
 
 interface actionObject {
   name: string;
@@ -45,6 +46,7 @@ function Start() {
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
+          <ProgressBar/>
           <Title title='Action title' description='action description' />
           <UploadField />
           <Spacer />
