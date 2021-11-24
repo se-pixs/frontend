@@ -1,0 +1,96 @@
+{
+  "title": "Actions Dev",
+  "description": "Actions that can be performed on dev instance",
+  "actions": [
+    {
+      "name": "upload",
+      "description": "Upload a file",
+      "helpMessage": "",
+      "path": "/upload",
+      "format": {
+        "type": "string",
+        "enum": [
+          "JPEG",
+          "PNG"
+        ]
+      },
+      "source": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "download",
+      "description": "Download a file",
+      "helpMessage": "",
+      "path": "/download",
+      "format": {
+        "type": "string",
+        "enum": [
+          "JPEG",
+          "PNG"
+        ]
+      }
+    },
+    {
+      "name": "change Format",
+      "description": "changes the format of the image to the provided format",
+      "helpMessage": "",
+      "path": "execute/changeFormat",
+      "parameters": {
+        "sliders": [
+          {
+            "name": "brightness",
+            "description": "the brightness to change the image to",
+            "value": 1,
+            "minimum": 0,
+            "maximum": 100,
+            "default": 50
+          }
+        ],
+        "valuefields": [
+          {
+            "name": "format",
+            "description": "the format to change the image to",
+            "type": "dropdown",
+            "range": [
+              "JPEG",
+              "PNG"
+            ],
+            "default": "PNG"
+          },
+          {
+            "name": "format2",
+            "description": "the format to change the image to",
+            "type": "string",
+            "range": [
+            ],
+            "default": "PNG"
+          }
+        ],
+        "colorpickers": [
+          {
+            "name": "color",
+            "description": "the color to change the image to",
+            "input": {
+              "red": {
+                "minimum": 0,
+                "maximum": 255,
+                "default": 136
+              },
+              "green": {
+                "minimum": 0,
+                "maximum": 255,
+                "default": 136
+              },
+              "blue": {
+                "minimum": 0,
+                "maximum": 255,
+                "default": 136
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

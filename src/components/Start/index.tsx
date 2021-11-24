@@ -10,6 +10,8 @@ import Config from '../Config';
 import Spacer from '../Spacer';
 import Preview from '../Preview';
 
+import backend from '../../example.json'
+
 interface actionObject {
   name: string;
   icon: React.ReactNode;
@@ -33,7 +35,7 @@ function Start() {
     reader.readAsDataURL(uploadedImage);
   }
 
-  let UPLOADED: boolean = false;
+  let UPLOADED: boolean = true;
 
   return (
     <div className='bg-gray-200 flex'>
@@ -84,72 +86,7 @@ function getActionList(): actionObject[] {
 }
 
 function getConfigList(): any {
-  return [
-    {
-      sliderInputs: {
-        items: [
-          {
-            sliderInput: {
-              name: 'Slider 1',
-              description: 'A slider input',
-              min: '0',
-              max: '100',
-              value: '5',
-            },
-          },
-          {
-            sliderInput: {
-              name: 'Slider 2',
-              description: 'A second slider input',
-              min: '0',
-              max: '100',
-              value: '3',
-            },
-          },
-          {
-            sliderInput: {
-              name: '3',
-              description: 'A second slider input',
-              min: '0',
-              max: '100',
-              value: '3',
-            },
-          },
-        ],
-      },
-      valueFieldInputs: {
-        items: [
-          {
-            valueFieldInput: {
-              name: 'Field Input',
-              description: 'A value field input',
-            },
-          },
-          {
-            valueFieldInput: {
-              name: 'Input',
-              description: 'A second value field input',
-            },
-          },
-        ],
-      },
-      colorPickers: {
-        items: [
-          {
-            colorPicker: {
-              name: 'Color picker1',
-              description: 'A color picker',
-            },
-          },
-          {
-            colorPicker: {
-              name: '2',
-              description: 'A second color picker',
-            },
-          },
-        ],
-      },
-    },
-  ];
+  return backend.actions[2].parameters;
 }
+
 export default Start;

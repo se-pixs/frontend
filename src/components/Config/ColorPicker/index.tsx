@@ -4,12 +4,14 @@ import { useState } from 'react';
 interface IProps {
   className?: string;
   name: string;
+  description: string;
+  defaultColor: any;
   onValueChange: (value: string, name: string) => void;
 }
 
 function ColorPicker(props: IProps) {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [color, setColor] = useState('#0C7ECF');
+  const [color, setColor] = useState("#" + ((1 << 24) + (props.defaultColor[0] << 16) + (props.defaultColor[1] << 8) + props.defaultColor[2]).toString(16).slice(1));
 
   function handler(event: any) {
     setColor(event);

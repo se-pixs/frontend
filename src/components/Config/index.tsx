@@ -11,9 +11,9 @@ interface IProps {
 function Config(props: IProps) {
   const className = 'mx-4 my-4 place-items-center w-full flow-root px-2';
 
-  const sliderList = props.configList[0].sliderInputs.items;
-  const valueFieldInputList = props.configList[0].valueFieldInputs.items;
-  const colorPickerList = props.configList[0].colorPickers.items;
+  const sliderList = props.configList.sliders;
+  const valueFieldInputList = props.configList.valuefields;
+  const colorPickerList = props.configList.colorpickers;
 
   let sliderMap = new Map();
   let inputFieldMap = new Map();
@@ -62,18 +62,18 @@ function Config(props: IProps) {
               <div>
                 {sliderList.map(
                   (input: any) =>
-                    sliderMap.set(input.sliderInput.name, input.sliderInput.value) && <SliderInput onValueChange={onSliderChange} key={input.sliderInput.name} name={input.sliderInput.name} min={input.sliderInput.min} max={input.sliderInput.max} value={input.sliderInput.value} className={className} />,
+                    sliderMap.set(input.name, input.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} min={input.minimum} max={input.maximum} value={input.default} className={className} />,
                 )}
               </div>
             )}
             {valueFieldInputList.length > 0 && (
               <div>
                 {valueFieldInputList.map(
-                  (input: any) => inputFieldMap.set(input.valueFieldInput.name, '') && <ValueFieldInput onValueChange={onInputFieldChange} key={input.valueFieldInput.name} name={input.valueFieldInput.name} description={input.valueFieldInput.description} className={className} />,
+                  (input: any) => inputFieldMap.set(input.name, input.default) && <ValueFieldInput onValueChange={onInputFieldChange} type={input.type} options={input.range} key={input.name} name={input.name} default={input.default} description={input.description} className={className} />
                 )}
               </div>
             )}
-            {colorPickerList.length > 0 && <div>{colorPickerList.map((input: any) => colorPickerMap.set(input.colorPicker.name, hexToRGB('#0C7ECF')) && <ColorPicker onValueChange={onColorPickerChange} key={input.colorPicker.name} name={input.colorPicker.name} className={className} />)}</div>}
+            {colorPickerList.length > 0 && <div>{colorPickerList.map((input: any) => colorPickerMap.set(input.name, Array.from(new Map().set('red', input.input.red.default).set('green', input.input.green.default).set('blue', input.input.blue.default), ([name, value]) => ({ name, value }))) && <ColorPicker onValueChange={onColorPickerChange} defaultColor={[input.input.red.default,input.input.green.default,input.input.blue.default]} key={input.name} name={input.name} description={input.description} className={className} />)}</div>}
           </div>
           <div className='w-full grid place-items-center'>
             <Button className='mt-8' onclick={() => runAction()} disabled={false}>
