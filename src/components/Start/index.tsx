@@ -19,6 +19,8 @@ interface actionObject {
   active: boolean;
 }
 
+const actionIndex = 1; //TODO action wählbar
+
 function Start() {
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const actionsList: actionObject[] = getActionList();
@@ -50,7 +52,7 @@ function Start() {
           <Title title='Action title' description='action description' />
           <UploadField />
           <Spacer />
-          <Config uploaded={UPLOADED} configList={configList} />
+          <Config runAction={runAction} uploaded={UPLOADED} configList={configList} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
@@ -58,6 +60,32 @@ function Start() {
       </div>
     </div>
   );
+}
+
+function runAction(event: any){
+  let output = backend.actions[actionIndex];
+
+  let sliders = event[0];
+  let inputfields = event[1];
+  let colorpickers = event[2];
+
+  if(output.parameters){  
+    for(let i = 0; i < output.parameters?.sliders.length; i++){
+      output.parameters.sliders[i].value = sliders[i].value;  
+    }
+    for(let i = 0; i < output.parameters?.valuefields.length; i++){
+      output.parameters.valuefields[i].value = inputfields[i].value;  
+    }
+    for(let i = 0; i < output.parameters?.colorpickers.length; i++){
+      output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
+      output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
+      output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
+    }
+  }
+
+  console.log(JSON.stringify(output))
+
+  //TODO further actions ... (send JSON to Backend)
 }
 
 function getActionList(): actionObject[] {
@@ -88,7 +116,7 @@ function getActionList(): actionObject[] {
 }
 
 function getConfigList(): any {
-  return backend.actions[2].parameters;
+  return backend.actions[actionIndex];
 }
 
 export default Start;
