@@ -12,7 +12,6 @@ function UploadField(props: IProps) {
   const { setUploadedImage, clearUploadedImage } = useStore();
 
   const onDrop = useCallback((acceptedFiles) => {
-    console.log(acceptedFiles.length);
     setFileName(acceptedFiles[0].path);
     setUploaded(true);
     setUploadedImage(acceptedFiles[0]);
