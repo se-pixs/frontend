@@ -32,14 +32,14 @@ function Preview(props: IProps) {
       <div className='flex-initial flex justify-between items-center'>
         <div className='flex-initial'>
           <p className='mb-3'>Uploaded image</p>
-          <div className='h-64 w-96'>
-            <img src={props.imgSrc} alt='Uploaded image' className='w-full h-full' />
+          <div className='w-96'>
+            <img src={props.imgSrc} alt='Uploaded' className='w-full h-full' />
           </div>
         </div>
         <div className='flex-initial'>{arrowIcon}</div>
         <div className='flex-initial'>
           {!loadingPreview && <p className='mb-3'>Manipulated image</p>}
-          <div className='h-64 w-96'>{loadingPreview ? processingIcon : <img src={props.imgSrcManipulated} alt='Manipulated image' className='w-full h-full' />}</div>
+          <div className='w-96'>{loadingPreview ? processingIcon : <img src={props.imgSrcManipulated} alt='Manipulated' className='w-full h-full' />}</div>
         </div>
       </div>
     </div>
