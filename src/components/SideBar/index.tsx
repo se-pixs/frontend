@@ -9,6 +9,8 @@ interface IState {
 
 interface IProps {
   actionsList: actionObject[];
+  selectedAction: string;
+  onSelectAction: (name: string) => void;
 }
 
 interface actionObject {
@@ -20,44 +22,21 @@ interface actionObject {
 class SideBar extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
-    this.checkActionList = this.checkActionList.bind(this);
-
-    let newActionList: actionObject[] = [];
-
-    if (this.props.actionsList.length > 0) {
-      newActionList = this.checkActionList();
-    }
 
     this.state = {
       isBig: true,
-      actionsList: newActionList,
+      actionsList: this.props.actionsList,      
     };
-  }
-
-  checkActionList(): actionObject[] {
-    let newActionList: actionObject[] = this.props.actionsList;
-
-    let flag: boolean = false;
-    for (let p of newActionList) {
-      if (p.active) {
-        if (!flag) {
-          flag = true;
-        } else {
-          p.active = false;
-        }
-      }
-    }
-    if (!flag) {
-      newActionList[0].active = true;
-    }
-
-    return newActionList;
   }
 
   handleClick(): void {
     this.setState((state) => ({
       isBig: !state.isBig,
     }));
+  }
+
+  handler(name: string): void {
+    this.props.onSelectAction(name);
   }
 
   render() {
@@ -80,7 +59,9 @@ class SideBar extends Component<IProps, IState> {
           {this.state.isBig ? cross : hamburger}
         </motion.button>
         {this.state.actionsList.map((action: actionObject) => (
-          <SideBarElement key={action.name} isBig={this.state.isBig} active={action.active} name={action.name} icon={action.icon} />
+          <div key={action.name} onClick={() => this.handler(action.name)} >
+            <SideBarElement isBig={this.state.isBig} active={action.name === this.props.selectedAction} name={action.name} icon={action.icon} />
+          </div>
         ))}
       </div>
     );

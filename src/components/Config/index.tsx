@@ -16,6 +16,8 @@ function Config(props: IProps) {
   let valueFieldInputList;
   let colorPickerList;
 
+  let actionName = props.configList.name;
+
   if(props.configList.parameters){
     sliderList = props.configList.parameters.sliders
     valueFieldInputList = props.configList.parameters.valuefields
@@ -51,7 +53,7 @@ function Config(props: IProps) {
     let arr1 = Array.from(sliderMap, ([name, value]) => ({ name, value }));
     let arr2 = Array.from(inputFieldMap, ([name, value]) => ({ name, value }));
     let arr3 = Array.from(colorPickerMap, ([name, value]) => ({ name, value }));
-    props.runAction([arr1, arr2, arr3]);
+    props.runAction([actionName,arr1, arr2, arr3]);
   }
 
   return (
