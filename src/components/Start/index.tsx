@@ -74,17 +74,17 @@ function runAction(event: any){
   let colorpickers = event[3];
 
   if(output.parameters){  
-    if(output.parameters?.sliders.length != 0){
+    if(output.parameters?.sliders){
       for(let i = 0; i < output.parameters?.sliders.length; i++){
         output.parameters.sliders[i].value = sliders[i].value;  
       }
     }
-    if(output.parameters?.valuefields.length != 0){
+    if(output.parameters?.valuefields){
       for(let i = 0; i < output.parameters?.valuefields.length; i++){
         output.parameters.valuefields[i].value = inputfields[i].value;  
       }
     }
-    if(output.parameters?.colorpickers.length != 0){
+    if(output.parameters?.colorpickers){
       for(let i = 0; i < output.parameters?.colorpickers.length; i++){
         output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
         output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;

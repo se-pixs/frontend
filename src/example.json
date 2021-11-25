@@ -14,6 +14,57 @@
           "PNG"
         ]
       },
+      "parameters": {
+        "valuefields": [
+          {
+            "name": "format",
+            "description": "the format to change the image to",
+            "value": {
+              "type": "dropdown",
+              "range": [
+                "JPEG",
+                "PNG"
+              ],
+              "default": "JPEG"
+            }
+          }
+        ],
+        "sliders": [
+          {
+            "name": "brightness",
+            "description": "the brightness to change the image to",
+            "value": {
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "default": 50
+            }
+          }
+        ],
+        "colorpickers": [
+          {
+            "name": "color",
+            "description": "the color to change the image to",
+            "input": {
+              "red": {
+                "minimum": 0,
+                "maximum": 255,
+                "default": 136
+              },
+              "green": {
+                "minimum": 0,
+                "maximum": 255,
+                "default": 136
+              },
+              "blue": {
+                "minimum": 0,
+                "maximum": 255,
+                "default": 136
+              }
+            }
+          }
+        ]
+      },
       "source": {
         "type": "string"
       }
