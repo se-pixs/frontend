@@ -139,7 +139,16 @@ function getConfigList(actionName: string): any {
 export default Start;
 
 function getConfigListForReal() {
-  const response = fetch('http://localhost:8000/')
+  const response = fetch('http://localhost:8000/', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Request-Method': 'GET',
+      'Access-Control-Allow-Credentials': 'false',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Request-Headers': 'origin, x-requested-with',
+      Origin: 'https://foo.bar.org',
+    },
+  })
     .then((res) => res.json())
     .catch((err) => console.log(err));
   console.log(response);
