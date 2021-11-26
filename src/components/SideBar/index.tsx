@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { motion } from 'framer-motion';
 import SideBarElement from '../SideBarElement';
-
+import { actionObject } from './types';
 interface IState {
   isBig: boolean;
   actionsList: actionObject[];
@@ -13,19 +13,13 @@ interface IProps {
   onSelectAction: (name: string) => void;
 }
 
-interface actionObject {
-  name: string;
-  icon: React.ReactNode;
-  active: boolean;
-}
-
 class SideBar extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
 
     this.state = {
       isBig: true,
-      actionsList: this.props.actionsList,      
+      actionsList: this.props.actionsList,
     };
   }
 
@@ -59,7 +53,7 @@ class SideBar extends Component<IProps, IState> {
           {this.state.isBig ? cross : hamburger}
         </motion.button>
         {this.state.actionsList.map((action: actionObject) => (
-          <div key={action.name} onClick={() => this.handler(action.name)} >
+          <div key={action.name} onClick={() => this.handler(action.name)}>
             <SideBarElement isBig={this.state.isBig} active={action.name === this.props.selectedAction} name={action.name} icon={action.icon} />
           </div>
         ))}
