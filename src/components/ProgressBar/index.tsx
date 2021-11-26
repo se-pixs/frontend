@@ -12,9 +12,9 @@ function ProgressBar(){
   
   return (
     <div className="w-full h-10 bg-gray-300 rounded-md">
-      <div id="progressBar" style={{width: `${completed}%`, transition: 'width 2s', backgroundSize: "contain" ,backgroundImage: `url("${rainbow}")` }} className="h-full rounded-md text-right">
+      <div id="progressBar" style={{width: `${completed}%`, transition: 'width 2s', backgroundSize: "contain" ,backgroundImage: `url("${rainbow}")`, minWidth: "63px"}} className="h-full rounded-md text-right">
         <div className="float-right">
-          <img src={nyanCat} className="h-10 rounded-r-md" alt="nyan cat" />
+          <img src={nyanCat} className="h-10 rounded-md" alt="nyan cat" />
         </div>
       </div>
     </div>

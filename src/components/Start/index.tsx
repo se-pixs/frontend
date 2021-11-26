@@ -43,7 +43,7 @@ function Start() {
     setActionName("");
     setTimeout(function(){
       setActionName(name);
-    },1)
+    },0.001)
   }
 
   let UPLOADED: boolean = true;
@@ -72,6 +72,8 @@ function Start() {
 
 function runAction(event: any){
   let output = JSON.parse(JSON.stringify(backend.actions.filter((action) => (action.name === event[0]))[0]));
+
+  output.icon = "";
 
   let sliders = event[1];
   let inputfields = event[2];
