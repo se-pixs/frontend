@@ -23,6 +23,8 @@ interface actionObject {
 function Start() {
   const [actionName, setActionName] = useState(backend.actions[0].name);
 
+  getConfigListForReal();
+
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const actionsList: actionObject[] = getActionList(actionName);
   const configList: any = getConfigList(actionName);
@@ -39,11 +41,11 @@ function Start() {
     reader.readAsDataURL(uploadedImage);
   }
 
-  function onActionChange(name: string){
-    setActionName("");
-    setTimeout(function(){
+  function onActionChange(name: string) {
+    setActionName('');
+    setTimeout(function () {
       setActionName(name);
-    },0.001)
+    }, 0.001);
   }
 
   let UPLOADED: boolean = true;
@@ -51,13 +53,13 @@ function Start() {
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
-        <SideBar onSelectAction={onActionChange} actionsList={actionsList} selectedAction={actionName}/>
+        <SideBar onSelectAction={onActionChange} actionsList={actionsList} selectedAction={actionName} />
       </div>
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          <ProgressBar/>
-          <Title title={actionName.toUpperCase()} description={actionName !== "" ? backend.actions.filter((action) => (action.name === actionName))[0].description : ""} />
+          <ProgressBar />
+          <Title title={actionName.toUpperCase()} description={actionName !== '' ? backend.actions.filter((action) => action.name === actionName)[0].description : ''} />
           <UploadField />
           <Spacer />
           <Config runAction={runAction} uploaded={UPLOADED} configList={configList} />
@@ -70,28 +72,28 @@ function Start() {
   );
 }
 
-function runAction(event: any){
-  let output = JSON.parse(JSON.stringify(backend.actions.filter((action) => (action.name === event[0]))[0]));
+function runAction(event: any) {
+  let output = JSON.parse(JSON.stringify(backend.actions.filter((action) => action.name === event[0])[0]));
 
-  output.icon = "";
+  output.icon = '';
 
   let sliders = event[1];
   let inputfields = event[2];
   let colorpickers = event[3];
 
-  if(output.parameters){  
-    if(output.parameters?.sliders){
-      for(let i = 0; i < output.parameters?.sliders.length; i++){
-        output.parameters.sliders[i].value = sliders[i].value;  
+  if (output.parameters) {
+    if (output.parameters?.sliders) {
+      for (let i = 0; i < output.parameters?.sliders.length; i++) {
+        output.parameters.sliders[i].value = sliders[i].value;
       }
     }
-    if(output.parameters?.valuefields){
-      for(let i = 0; i < output.parameters?.valuefields.length; i++){
-        output.parameters.valuefields[i].value = inputfields[i].value;  
+    if (output.parameters?.valuefields) {
+      for (let i = 0; i < output.parameters?.valuefields.length; i++) {
+        output.parameters.valuefields[i].value = inputfields[i].value;
       }
     }
-    if(output.parameters?.colorpickers){
-      for(let i = 0; i < output.parameters?.colorpickers.length; i++){
+    if (output.parameters?.colorpickers) {
+      for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
         output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
         output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
         output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
@@ -99,13 +101,13 @@ function runAction(event: any){
     }
   }
 
-  console.log(JSON.stringify(output))
+  console.log(JSON.stringify(output));
 
-  //TODO further actions ... (send JSON to Backend)  
+  //TODO further actions ... (send JSON to Backend)
 }
 
 function getActionList(actionName: string): any {
-  if(actionName === ""){
+  if (actionName === '') {
     return JSON.parse(JSON.stringify(def.actions));
   }
   const defaultIcon: React.ReactNode = (
@@ -115,23 +117,30 @@ function getActionList(actionName: string): any {
   );
 
   let newActionList: any = JSON.parse(JSON.stringify(backend.actions));
-    for (let p of newActionList) {
-      p.icon = defaultIcon; //TODO replace default Icon 
-      if(p.name === actionName){
-        p.active = true;
-      }else{
-        p.active = false;
-      }
+  for (let p of newActionList) {
+    p.icon = defaultIcon; //TODO replace default Icon
+    if (p.name === actionName) {
+      p.active = true;
+    } else {
+      p.active = false;
     }
+  }
 
   return newActionList;
 }
 
 function getConfigList(actionName: string): any {
-  if(actionName === ""){
+  if (actionName === '') {
     return JSON.parse(JSON.stringify(def.actions));
   }
-  return JSON.parse(JSON.stringify(backend.actions.filter((action) => (action.name === actionName))[0]));
+  return JSON.parse(JSON.stringify(backend.actions.filter((action) => action.name === actionName)[0]));
 }
 
 export default Start;
+
+function getConfigListForReal() {
+  const response = fetch('http://localhost:8000/')
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+  console.log(response);
+}
