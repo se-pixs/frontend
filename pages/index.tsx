@@ -33,7 +33,7 @@ export async function getServerSideProps() {
   let activeActionNameTemp = "";
 
   try {
-    const data = await fetch('http://127.0.0.1:8000/');
+    const data = await fetch('http://localhost:8000/');
     const jsonData = await data.json();
 
     activeActionNameTemp = jsonData.actions[2].name;
