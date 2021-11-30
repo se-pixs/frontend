@@ -12,17 +12,16 @@ import Spacer from '../Spacer';
 import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
 import { actionObject } from '../SideBar/types';
-import backend from '../../example.json';
 
 interface IProps {
   actionsList: actionObject[];
-  configsObject: any;
   activeActionName: string;
 }
 
 export default function Start(props: IProps) {
-  // const [actionName, setActionName] = useState(backend.actions[0].name);
   const [actionName, setActionName] = useState(props.activeActionName);
+  const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
+
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
 
@@ -42,9 +41,45 @@ export default function Start(props: IProps) {
 
   function onActionChange(name: string) {
     setActionName('');
+    setConfigsObject(JSON.parse(JSON.stringify({})));
     setTimeout(function () {
       setActionName(name);
+      setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
     }, 0.001);
+  }
+
+  function runAction(event: any) {
+    let output = JSON.parse(JSON.stringify(props.actionsList.filter((action) => action.name === event[0])[0]));
+
+    output.icon = '';
+
+    let sliders = event[1];
+    let inputfields = event[2];
+    let colorpickers = event[3];
+
+    if (output.parameters) {
+      if (output.parameters?.sliders) {
+        for (let i = 0; i < output.parameters?.sliders.length; i++) {
+          output.parameters.sliders[i].value = sliders[i].value;
+        }
+      }
+      if (output.parameters?.valuefields) {
+        for (let i = 0; i < output.parameters?.valuefields.length; i++) {
+          output.parameters.valuefields[i].value = inputfields[i].value;
+        }
+      }
+      if (output.parameters?.colorpickers) {
+        for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
+          output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
+          output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
+          output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
+        }
+      }
+    }
+
+    console.log(JSON.stringify(output));
+
+    //TODO further actions ... (send JSON to Backend)
   }
 
   const UPLOADED: boolean = true;
@@ -62,7 +97,7 @@ export default function Start(props: IProps) {
           {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
           {!readyToBeDownloaded && <UploadField />}
           <Spacer />
-          <Config runAction={runAction} uploaded={UPLOADED} configList={props.configsObject} />
+          <Config runAction={runAction} uploaded={UPLOADED} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
@@ -70,38 +105,4 @@ export default function Start(props: IProps) {
       </div>
     </div>
   );
-}
-
-function runAction(event: any) {
-  let output = JSON.parse(JSON.stringify(backend.actions.filter((action) => action.name === event[0])[0]));
-
-  output.icon = '';
-
-  let sliders = event[1];
-  let inputfields = event[2];
-  let colorpickers = event[3];
-
-  if (output.parameters) {
-    if (output.parameters?.sliders) {
-      for (let i = 0; i < output.parameters?.sliders.length; i++) {
-        output.parameters.sliders[i].value = sliders[i].value;
-      }
-    }
-    if (output.parameters?.valuefields) {
-      for (let i = 0; i < output.parameters?.valuefields.length; i++) {
-        output.parameters.valuefields[i].value = inputfields[i].value;
-      }
-    }
-    if (output.parameters?.colorpickers) {
-      for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
-        output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
-        output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
-        output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
-      }
-    }
-  }
-
-  console.log(JSON.stringify(output));
-
-  //TODO further actions ... (send JSON to Backend)
 }
