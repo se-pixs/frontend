@@ -1,4 +1,5 @@
 // import { useStore } from '../../util/globalStore';
+import { useState } from 'react';
 
 import Button from '../Button';
 
@@ -8,8 +9,38 @@ interface IProps {
 }
 
 function DownloadField(props: IProps) {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   return (
     <div className={'flex flex-col' + ' ' + props.className}>
+      {showDeleteModal && (
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center'>
+          <div className='fixed w-full h-full bg-gray-400 opacity-60'></div>
+          <div className='absolute flex justify-center items-center bg-white p-5 rounded-lg'>
+            <div>
+              <h2 className='text-xl font-bold'>Delete and retry</h2>
+              <hr className='mb-4 border-gray-300' />
+              <div>
+                <p className='text-lg px-2'>Do you really want to delete your image manipulation and retry?</p>
+                <div className='w-full flex justify-evenly'>
+                  <Button
+                    className='mt-4'
+                    onclick={() => {
+                      setShowDeleteModal(false);
+                      deleteAndRetry();
+                    }}
+                    disabled={false}>
+                    Yes
+                  </Button>
+                  <Button className='mt-4' onclick={() => setShowDeleteModal(false)} disabled={false} type={'error'}>
+                    No
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <h2 className='text-2xl font-bold text-customblue-200 mb-5 text-center'>Your edited image</h2>
       <div className='flex justify-center mb-5'>
         <div className='w-1/2 h-1/2'>
@@ -24,7 +55,7 @@ function DownloadField(props: IProps) {
         <Button className='mt-4' onclick={() => console.log('download')} disabled={false}>
           Download as JPEG
         </Button>
-        <Button className='mt-4' onclick={() => console.log('download')} disabled={false} type={'error'}>
+        <Button className='mt-4' onclick={() => setShowDeleteModal(true)} disabled={false} type={'error'}>
           Delete and retry
         </Button>
       </div>
@@ -33,3 +64,7 @@ function DownloadField(props: IProps) {
 }
 
 export default DownloadField;
+
+function deleteAndRetry() {
+  console.log('delete and retry');
+}
