@@ -18,10 +18,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
         <meta name='description' content='PiXS - Image Manipulation Extended' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Start
-        actionsList={props.actionsList}
-        activeActionName={props.activeActionName}
-      />
+      <Start actionsList={props.actionsList} activeActionName={props.activeActionName} />
     </div>
   );
 };
@@ -30,16 +27,21 @@ export default Home;
 
 export async function getServerSideProps() {
   let actionsListTemp: actionObject[] = [];
-  let activeActionNameTemp = "";
+  let activeActionNameTemp = '';
 
   try {
-    const data = await fetch('http://localhost:8000/');
+    const data = await fetch(pixsConfig.backend);
     const jsonData = await data.json();
 
     activeActionNameTemp = jsonData.actions[2].name;
     actionsListTemp = jsonData.actions.slice(2);
   } catch (e) {
     console.log(e);
+  }
+
+  // setting icons accordingly
+  for (let action of actionsListTemp) {
+    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend + action.icon;
   }
 
   return {

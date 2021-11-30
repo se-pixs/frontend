@@ -17,12 +17,15 @@ function SliderInput(props: IProps) {
     setValue(event.target.value);
     props.onValueChange(event.target.value + '', props.name);
   }
+  const actionNameToUpper: string = props.name.charAt(0).toUpperCase() + props.name.slice(1);
 
   return (
-    <div className={' ' + props.className}>
-      <label className='float-left mr-2'>{props.name + ':'}</label>
-      <div className='w-4 float-left'><p className='font-bold'>{value}</p></div>
-      <input className='float-right bg-red outline-none' type='range' min={props.min} max={props.max} defaultValue={props.value} step='1' onChange={(event) => handler(event)} />
+    <div className={'flex flex-col ' + props.className}>
+      <div className='w-full flex justify-between'>
+        <label className='mr-2'>{actionNameToUpper}</label>
+        <p className='font-bold mr-2'>{value}</p>
+      </div>
+      <input className='w-full outline-none' type='range' min={props.min} max={props.max} defaultValue={props.value} step='1' onChange={(event) => handler(event)} />
     </div>
   );
 }

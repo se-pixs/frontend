@@ -5,6 +5,7 @@ import SideBar from '../SideBar';
 import Header from '../Header';
 import Footer from '../Footer';
 import UploadField from '../UploadField';
+import DownloadField from '../DownloadField';
 import Title from '../Title';
 import Config from '../Config';
 import Spacer from '../Spacer';
@@ -39,13 +40,13 @@ export default function Start(props: IProps) {
   }
 
   function onActionChange(name: string) {
-    setActionName("");
+    setActionName('');
     setConfigsObject(JSON.parse(JSON.stringify({})));
     setTimeout(function () {
       setActionName(name);
       setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
     }, 0.001);
-  }  
+  }
 
   async function runAction(event: any) { 
   let output = JSON.parse(
@@ -54,34 +55,31 @@ export default function Start(props: IProps) {
     )
   );
 
-  output.icon = "";
+    output.icon = '';
 
-  let sliders = event[1];
-  let inputfields = event[2];
-  let colorpickers = event[3];
+    let sliders = event[1];
+    let inputfields = event[2];
+    let colorpickers = event[3];
 
-  if (output.parameters) {
-    if (output.parameters?.sliders) {
-      for (let i = 0; i < output.parameters?.sliders.length; i++) {
-        output.parameters.sliders[i].value = sliders[i].value;
+    if (output.parameters) {
+      if (output.parameters?.sliders) {
+        for (let i = 0; i < output.parameters?.sliders.length; i++) {
+          output.parameters.sliders[i].value = sliders[i].value;
+        }
+      }
+      if (output.parameters?.valuefields) {
+        for (let i = 0; i < output.parameters?.valuefields.length; i++) {
+          output.parameters.valuefields[i].value = inputfields[i].value;
+        }
+      }
+      if (output.parameters?.colorpickers) {
+        for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
+          output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
+          output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
+          output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
+        }
       }
     }
-    if (output.parameters?.valuefields) {
-      for (let i = 0; i < output.parameters?.valuefields.length; i++) {
-        output.parameters.valuefields[i].value = inputfields[i].value;
-      }
-    }
-    if (output.parameters?.colorpickers) {
-      for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
-        output.parameters.colorpickers[i].input.red =
-          colorpickers[0].value[0].value;
-        output.parameters.colorpickers[i].input.green =
-          colorpickers[0].value[1].value;
-        output.parameters.colorpickers[i].input.blue =
-          colorpickers[0].value[2].value;
-      }
-    }
-  }
 
  //console.log(JSON.stringify(output));
 
@@ -99,7 +97,7 @@ export default function Start(props: IProps) {
   }
 
   const UPLOADED: boolean = true;
-
+  const readyToBeDownloaded = true;
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
@@ -108,15 +106,12 @@ export default function Start(props: IProps) {
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          <ProgressBar />
+          {/* <ProgressBar /> */}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          <UploadField />
+          {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
+          {!readyToBeDownloaded && <UploadField />}
           <Spacer />
-          <Config
-            runAction={runAction}
-            uploaded={UPLOADED}
-            configList={configsObject}
-          />
+          <Config runAction={runAction} uploaded={UPLOADED} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
