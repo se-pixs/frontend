@@ -11,17 +11,16 @@ import Spacer from '../Spacer';
 import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
 import { actionObject } from '../SideBar/types';
-import backend from '../../example.json';
 
 interface IProps {
   actionsList: actionObject[];
-  configsObject: any;
   activeActionName: string;
 }
 
 export default function Start(props: IProps) {
-  // const [actionName, setActionName] = useState(backend.actions[0].name);
   const [actionName, setActionName] = useState(props.activeActionName);
+  const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
+
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
 
@@ -40,40 +39,22 @@ export default function Start(props: IProps) {
   }
 
   function onActionChange(name: string) {
-    setActionName('');
+    setActionName("");
+    setConfigsObject(JSON.parse(JSON.stringify({})));
     setTimeout(function () {
       setActionName(name);
+      setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
     }, 0.001);
-  }
+  }  
 
-  const UPLOADED: boolean = true;
-
-  return (
-    <div className='bg-gray-200 flex'>
-      <div className='flex-initial'>
-        <SideBar onSelectAction={onActionChange} actionsList={props.actionsList} selectedAction={actionName} />
-      </div>
-      <div className='flex-grow'>
-        <Header />
-        <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          <ProgressBar />
-          <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          <UploadField />
-          <Spacer />
-          <Config runAction={runAction} uploaded={UPLOADED} configList={props.configsObject} />
-          {uploadedImage !== null && <Spacer />}
-          {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
-        </div>
-        <Footer />
-      </div>
-    </div>
+  function runAction(event: any) {
+  let output = JSON.parse(
+    JSON.stringify(
+      props.actionsList.filter((action) => action.name === event[0])[0]
+    )
   );
-}
 
-function runAction(event: any) {
-  let output = JSON.parse(JSON.stringify(backend.actions.filter((action) => action.name === event[0])[0]));
-
-  output.icon = '';
+  output.icon = "";
 
   let sliders = event[1];
   let inputfields = event[2];
@@ -92,9 +73,12 @@ function runAction(event: any) {
     }
     if (output.parameters?.colorpickers) {
       for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
-        output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
-        output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
-        output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
+        output.parameters.colorpickers[i].input.red =
+          colorpickers[0].value[0].value;
+        output.parameters.colorpickers[i].input.green =
+          colorpickers[0].value[1].value;
+        output.parameters.colorpickers[i].input.blue =
+          colorpickers[0].value[2].value;
       }
     }
   }
@@ -102,4 +86,32 @@ function runAction(event: any) {
   console.log(JSON.stringify(output));
 
   //TODO further actions ... (send JSON to Backend)
+  }
+
+  const UPLOADED: boolean = true;
+
+  return (
+    <div className='bg-gray-200 flex'>
+      <div className='flex-initial'>
+        <SideBar onSelectAction={onActionChange} actionsList={props.actionsList} selectedAction={actionName} />
+      </div>
+      <div className='flex-grow'>
+        <Header />
+        <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
+          <ProgressBar />
+          <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
+          <UploadField />
+          <Spacer />
+          <Config
+            runAction={runAction}
+            uploaded={UPLOADED}
+            configList={configsObject}
+          />
+          {uploadedImage !== null && <Spacer />}
+          {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
+        </div>
+        <Footer />
+      </div>
+    </div>
+  );
 }
