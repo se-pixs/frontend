@@ -11,15 +11,15 @@ import Config from '../Config';
 import Spacer from '../Spacer';
 import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
+import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
 
 interface IProps {
   actionsList: actionObject[];
-  activeActionName: string;
 }
 
 export default function Start(props: IProps) {
-  const [actionName, setActionName] = useState(props.activeActionName);
+  const [actionName, setActionName] = useState(props.actionsList[0].name);
   const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
 
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
@@ -48,7 +48,7 @@ export default function Start(props: IProps) {
     }, 0.001);
   }
 
-  function runAction(event: any) {
+  async function runAction(event: any) {
     let output = JSON.parse(JSON.stringify(props.actionsList.filter((action) => action.name === event[0])[0]));
 
     output.icon = '';
@@ -77,9 +77,19 @@ export default function Start(props: IProps) {
       }
     }
 
-    console.log(JSON.stringify(output));
+    //console.log(JSON.stringify(output));
 
-    //TODO further actions ... (send JSON to Backend)
+    let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(output),
+    };
+
+    const response = await fetch(url, requestOptions);
+    const data = await response.json();
+    console.log(data);
   }
 
   const UPLOADED: boolean = true;
