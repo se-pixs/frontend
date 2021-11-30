@@ -5,6 +5,7 @@ import SideBar from '../SideBar';
 import Header from '../Header';
 import Footer from '../Footer';
 import UploadField from '../UploadField';
+import DownloadField from '../DownloadField';
 import Title from '../Title';
 import Config from '../Config';
 import Spacer from '../Spacer';
@@ -47,7 +48,7 @@ export default function Start(props: IProps) {
   }
 
   const UPLOADED: boolean = true;
-
+  const readyToBeDownloaded = true;
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
@@ -56,9 +57,10 @@ export default function Start(props: IProps) {
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          <ProgressBar />
+          {/* <ProgressBar /> */}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          <UploadField />
+          {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
+          {!readyToBeDownloaded && <UploadField />}
           <Spacer />
           <Config runAction={runAction} uploaded={UPLOADED} configList={props.configsObject} />
           {uploadedImage !== null && <Spacer />}
