@@ -15,11 +15,10 @@ import { actionObject } from '../SideBar/types';
 
 interface IProps {
   actionsList: actionObject[];
-  activeActionName: string;
 }
 
 export default function Start(props: IProps) {
-  const [actionName, setActionName] = useState(props.activeActionName);
+  const [actionName, setActionName] = useState(props.actionsList[0].name);
   const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
 
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
@@ -81,23 +80,23 @@ export default function Start(props: IProps) {
       }
     }
 
- //console.log(JSON.stringify(output));
+  //console.log(JSON.stringify(output));
 
-  let url = "http://localhost:8000/" + output.path;
+    let url = "http://localhost:8000/" + output.path;
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(output)
-  };
-  
-  const response = await fetch('http://localhost:8000/execute/changeFormat', requestOptions);
-  const data = await response.json();
-  console.log(data);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(output)
+    };
+    
+    const response = await fetch('http://localhost:8000/execute/changeFormat', requestOptions);
+    const data = await response.json();
+    console.log(data);
   }
 
   const UPLOADED: boolean = true;
-  const readyToBeDownloaded = true;
+  const readyToBeDownloaded = false;
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>

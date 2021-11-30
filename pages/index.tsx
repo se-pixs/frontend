@@ -6,8 +6,6 @@ import { actionObject } from '../components/SideBar/types';
 
 interface IProps {
   actionsList: actionObject[];
-  configsObject: any;
-  activeActionName: string;
 }
 
 const Home: NextPage<IProps> = (props: IProps) => {
@@ -18,7 +16,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
         <meta name='description' content='PiXS - Image Manipulation Extended' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <Start actionsList={props.actionsList} activeActionName={props.activeActionName} />
+      <Start actionsList={props.actionsList} />
     </div>
   );
 };
@@ -33,7 +31,6 @@ export async function getServerSideProps() {
     const data = await fetch(pixsConfig.backend);
     const jsonData = await data.json();
 
-    activeActionNameTemp = jsonData.actions[2].name;
     actionsListTemp = jsonData.actions.slice(2);
   } catch (e) {
     console.log(e);
@@ -47,7 +44,6 @@ export async function getServerSideProps() {
   return {
     props: {
       actionsList: actionsListTemp,
-      activeActionName: activeActionNameTemp,
     },
   };
 }
