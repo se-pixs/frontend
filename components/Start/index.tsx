@@ -11,6 +11,7 @@ import Config from '../Config';
 import Spacer from '../Spacer';
 import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
+import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
 
 interface IProps {
@@ -82,7 +83,7 @@ export default function Start(props: IProps) {
 
   //console.log(JSON.stringify(output));
 
-    let url = "http://localhost:8000/" + output.path;
+    let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
 
     const requestOptions = {
       method: 'POST',
@@ -90,7 +91,7 @@ export default function Start(props: IProps) {
       body: JSON.stringify(output)
     };
     
-    const response = await fetch('http://localhost:8000/execute/changeFormat', requestOptions);
+    const response = await fetch(url, requestOptions);
     const data = await response.json();
     console.log(data);
   }
