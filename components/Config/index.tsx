@@ -10,7 +10,7 @@ interface IProps {
 }
 
 function Config(props: IProps) {
-  const className = 'mx-4 my-4 place-items-center w-full flow-root px-2';
+  const className = 'mx-4 my-4 w-full px-2';
 
   let sliderList;
   let valueFieldInputList;
@@ -59,7 +59,7 @@ function Config(props: IProps) {
   return (
     <div className='w-full'>
       <p className='text-2xl font-bold mb-4'>Configurations</p>
-      <div className='border-2  w-full px-10 py-10 border-customblue-500 rounded-lg'>
+      <div className='border-2 w-full px-10 py-10 border-customblue-500 rounded-lg flex justify-around'>
         {props.uploaded ? (
           <div>
             <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + (((sliderList && sliderList.length) > 0 ? 1 : 0) + (valueFieldInputList && valueFieldInputList.length > 0 ? 1 : 0) + (colorPickerList && colorPickerList.length > 0 ? 1 : 0))}>
@@ -70,6 +70,7 @@ function Config(props: IProps) {
                   )}
                 </div>
               )}
+
               {valueFieldInputList && valueFieldInputList.length > 0 && (
                 <div>
                   {valueFieldInputList.map(
