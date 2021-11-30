@@ -7,6 +7,7 @@ interface IProps {
   configList: any;
   uploaded: boolean;
   runAction: (value: any) => void;
+  disabled: boolean;
 }
 
 function Config(props: IProps) {
@@ -56,11 +57,14 @@ function Config(props: IProps) {
     props.runAction([actionName, arr1, arr2, arr3]);
   }
 
+  type modes = 'notUploaded' | 'disabled' | 'active';
+  const modeToShow: modes = props.disabled ? 'disabled' : props.uploaded ? 'active' : 'notUploaded';
+
   return (
     <div className='w-full'>
       <p className='text-2xl font-bold mb-4'>Configurations</p>
       <div className='border-2 w-full px-10 py-10 border-customblue-500 rounded-lg flex justify-around'>
-        {props.uploaded ? (
+        {modeToShow == 'active' && (
           <div>
             <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + (((sliderList && sliderList.length) > 0 ? 1 : 0) + (valueFieldInputList && valueFieldInputList.length > 0 ? 1 : 0) + (colorPickerList && colorPickerList.length > 0 ? 1 : 0))}>
               {sliderList && sliderList.length > 0 && (
@@ -99,9 +103,15 @@ function Config(props: IProps) {
               </Button>
             </div>
           </div>
-        ) : (
+        )}
+        {modeToShow == 'notUploaded' && (
           <div className='p-20'>
             <p className='text-center text-xl'>You must first upload an image!</p>
+          </div>
+        )}
+        {modeToShow == 'disabled' && (
+          <div className='p-20'>
+            <p className='text-center text-xl'>You can see your result above!</p>
           </div>
         )}
       </div>

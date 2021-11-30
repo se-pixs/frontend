@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 import Button from '../Button';
+import BackgroundBlur from '../BackgroundBlur';
 
 interface IProps {
   className?: string;
@@ -14,32 +15,29 @@ function DownloadField(props: IProps) {
   return (
     <div className={'flex flex-col' + ' ' + props.className}>
       {showDeleteModal && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center'>
-          <div className='fixed w-full h-full bg-gray-400 opacity-60'></div>
-          <div className='absolute flex justify-center items-center bg-white p-5 rounded-lg'>
+        <BackgroundBlur>
+          <div>
+            <h2 className='text-xl font-bold'>Delete and retry</h2>
+            <hr className='mb-4 border-gray-300' />
             <div>
-              <h2 className='text-xl font-bold'>Delete and retry</h2>
-              <hr className='mb-4 border-gray-300' />
-              <div>
-                <p className='text-lg px-2'>Do you really want to delete your image manipulation and retry?</p>
-                <div className='w-full flex justify-evenly'>
-                  <Button
-                    className='mt-4'
-                    onclick={() => {
-                      setShowDeleteModal(false);
-                      deleteAndRetry();
-                    }}
-                    disabled={false}>
-                    Yes
-                  </Button>
-                  <Button className='mt-4' onclick={() => setShowDeleteModal(false)} disabled={false} type={'error'}>
-                    No
-                  </Button>
-                </div>
+              <p className='text-lg px-2'>Do you really want to delete your image manipulation and retry?</p>
+              <div className='w-full flex justify-evenly'>
+                <Button
+                  className='mt-4'
+                  onclick={() => {
+                    setShowDeleteModal(false);
+                    deleteAndRetry();
+                  }}
+                  disabled={false}>
+                  Yes
+                </Button>
+                <Button className='mt-4' onclick={() => setShowDeleteModal(false)} disabled={false} type={'error'}>
+                  No
+                </Button>
               </div>
             </div>
           </div>
-        </div>
+        </BackgroundBlur>
       )}
       <h2 className='text-2xl font-bold text-customblue-200 mb-5 text-center'>Your edited image</h2>
       <div className='flex justify-center mb-5'>

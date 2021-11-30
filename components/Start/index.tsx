@@ -84,6 +84,7 @@ export default function Start(props: IProps) {
 
   const UPLOADED: boolean = true;
   const readyToBeDownloaded = true;
+  const processIsRunning = true;
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
@@ -92,12 +93,12 @@ export default function Start(props: IProps) {
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          {/* <ProgressBar /> */}
+          {processIsRunning && <ProgressBar />}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
           {!readyToBeDownloaded && <UploadField />}
           <Spacer />
-          <Config runAction={runAction} uploaded={UPLOADED} configList={configsObject} />
+          <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={UPLOADED} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
