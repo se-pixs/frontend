@@ -1,6 +1,6 @@
 export declare interface actionObject {
   name: string;
-  icon: React.ReactNode;
+  icon: string;
   active: boolean;
   description: string;
 }
