@@ -37,7 +37,7 @@ export async function getServerSideProps() {
     const jsonData = await data.json();
 
     activeActionNameTemp = jsonData.actions[2].name;
-    actionsListTemp = jsonData.actions;
+    actionsListTemp = jsonData.actions.slice(2);
   } catch (e) {
     console.log(e);
   }

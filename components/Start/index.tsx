@@ -47,7 +47,7 @@ export default function Start(props: IProps) {
     }, 0.001);
   }  
 
-  function runAction(event: any) {
+  async function runAction(event: any) { 
   let output = JSON.parse(
     JSON.stringify(
       props.actionsList.filter((action) => action.name === event[0])[0]
@@ -83,9 +83,19 @@ export default function Start(props: IProps) {
     }
   }
 
-  console.log(JSON.stringify(output));
+ //console.log(JSON.stringify(output));
 
-  //TODO further actions ... (send JSON to Backend)
+  let url = "http://localhost:8000/" + output.path;
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(output)
+  };
+  
+  const response = await fetch('http://localhost:8000/execute/changeFormat', requestOptions);
+  const data = await response.json();
+  console.log(data);
   }
 
   const UPLOADED: boolean = true;
