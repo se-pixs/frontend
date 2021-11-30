@@ -10,9 +10,14 @@ interface IProps {
 function DownloadField(props: IProps) {
   return (
     <div className={'flex flex-col' + ' ' + props.className}>
-      <h2 className='text-2xl font-bold text-customblue-200 mb-5'>Here is your edited image:</h2>
-      <img src={props.imageData} alt='' />
-      <div className='flex justify-between'>
+      <h2 className='text-2xl font-bold text-customblue-200 mb-5 text-center'>Your edited image</h2>
+      <div className='flex justify-center mb-5'>
+        <div className='w-1/2 h-1/2'>
+          <img src={props.imageData} alt='Downloaded' height='fill' width='fill' />
+        </div>
+      </div>
+
+      <div className='flex justify-around'>
         <Button className='mt-4' onclick={() => console.log('download')} disabled={false}>
           Download as PNG
         </Button>
