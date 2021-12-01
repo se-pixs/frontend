@@ -16,7 +16,7 @@ function DownloadField(props: IProps) {
     <div className={'flex flex-col' + ' ' + props.className}>
       {showDeleteModal && (
         <BackgroundBlur>
-          <div>
+          <div className='bg-white p-5 rounded-lg'>
             <h2 className='text-xl font-bold'>Delete and retry</h2>
             <hr className='mb-4 border-gray-300' />
             <div>

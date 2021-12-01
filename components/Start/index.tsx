@@ -13,6 +13,7 @@ import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
 import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
+import BackgroundBlur from '../BackgroundBlur';
 
 interface IProps {
   actionsList: actionObject[];
@@ -92,9 +93,9 @@ export default function Start(props: IProps) {
     console.log(data);
   }
 
-  const UPLOADED: boolean = true;
-  const readyToBeDownloaded = true;
-  const processIsRunning = true;
+  const [processIsRunning, setProcessIsRunning] = useState(false);
+  const [readyToBeDownloaded, SetReadyToBeDownloaded] = useState(false);
+
   return (
     <div className='bg-gray-200 flex'>
       <div className='flex-initial'>
@@ -103,12 +104,18 @@ export default function Start(props: IProps) {
       <div className='flex-grow'>
         <Header />
         <div className='bg-customwhite-500 flex flex-col justify-between px-40 py-20'>
-          {processIsRunning && <ProgressBar />}
+          {processIsRunning && (
+            <BackgroundBlur className=''>
+              <div className='w-screen px-10'>
+                <ProgressBar className='' />
+              </div>
+            </BackgroundBlur>
+          )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
           {!readyToBeDownloaded && <UploadField />}
           <Spacer />
-          <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={UPLOADED} configList={configsObject} />
+          <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
