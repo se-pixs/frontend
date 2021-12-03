@@ -24,7 +24,7 @@ export default function Start(props: IProps) {
   const [actionName, setActionName] = useState(props.actionsList[0].name);
   const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
 
-  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
 
   const [processIsRunning, setProcessIsRunning] = useState(false);
