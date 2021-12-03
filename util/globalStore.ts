@@ -1,14 +1,14 @@
-import create from "zustand";
+import create from 'zustand';
 
 interface GlobalStore {
-  uploadedImage: File | null;
-  setUploadedImage: (file: File) => void;
+  uploadedImage: Blob | null;
+  setUploadedImage: (file: Blob) => void;
   clearUploadedImage: () => void;
 }
 
 export const useStore = create<GlobalStore>((set) => ({
   uploadedImage: null,
-  setUploadedImage: (img: File) => {
+  setUploadedImage: (img: Blob) => {
     set(() => ({ uploadedImage: img }));
   },
   clearUploadedImage: () => {

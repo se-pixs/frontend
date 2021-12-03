@@ -1,5 +1,7 @@
 // import { useStore } from '../../util/globalStore';
 import { useState } from 'react';
+import { saveAs } from 'file-saver';
+import { useStore } from '../../util/globalStore';
 
 import Button from '../Button';
 import BackgroundBlur from '../BackgroundBlur';
@@ -10,7 +12,32 @@ interface IProps {
 }
 
 function DownloadField(props: IProps) {
+  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // save file to user's device
+  function saveFile(type: 'PNG' | 'JPEG') {
+    if (uploadedImage !== null) {
+      console.log('type', type);
+      if (type === 'PNG') {
+        const pngImage = getPNGImage(uploadedImage);
+        saveAs(pngImage, 'pixs-image.png');
+      } else {
+        const jpegImage = getJPEGImage(uploadedImage);
+        saveAs(jpegImage, 'pixs-image.jpeg');
+      }
+    }
+  }
+
+  function getPNGImage(imageData: Blob): Blob {
+    // TODO: implement with backend call
+    return imageData;
+  }
+
+  function getJPEGImage(imageData: Blob): Blob {
+    // TODO: implement with backend call
+    return imageData;
+  }
 
   return (
     <div className={'flex flex-col' + ' ' + props.className}>
@@ -47,10 +74,10 @@ function DownloadField(props: IProps) {
       </div>
 
       <div className='flex justify-around'>
-        <Button className='mt-4' onclick={() => console.log('download')} disabled={false}>
+        <Button className='mt-4' onclick={() => saveFile('PNG')} disabled={false}>
           Download as PNG
         </Button>
-        <Button className='mt-4' onclick={() => console.log('download')} disabled={false}>
+        <Button className='mt-4' onclick={() => saveFile('JPEG')} disabled={false}>
           Download as JPEG
         </Button>
         <Button className='mt-4' onclick={() => setShowDeleteModal(true)} disabled={false} type={'error'}>

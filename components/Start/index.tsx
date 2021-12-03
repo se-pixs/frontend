@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useStore } from '../../util/globalStore';
 
 import SideBar from '../SideBar';
@@ -11,9 +11,10 @@ import Config from '../Config';
 import Spacer from '../Spacer';
 import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
+import BackgroundBlur from '../BackgroundBlur';
+
 import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
-import BackgroundBlur from '../BackgroundBlur';
 
 interface IProps {
   actionsList: actionObject[];
@@ -26,15 +27,19 @@ export default function Start(props: IProps) {
   const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
 
+  const [processIsRunning, setProcessIsRunning] = useState(false);
+  const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
+
   // set the image src to the uploaded image
   if (typeof window !== 'undefined') {
     let reader = new FileReader();
+
     reader.onload = (e) => {
       setImgSrc((e.target === null ? '/preview-placeholder.jpeg' : e.target.result) as string);
-      if (e.target !== null && e.target.result !== null) {
-        // setUploadedImage(new File(e.target.result, "uploaded img")); // doesn't work
-      }
+      // ! for test usage
+      // setReadyToBeDownloaded(uploadedImage !== null);
     };
+
     if (uploadedImage !== null) {
       reader.readAsDataURL(uploadedImage as Blob);
     }
@@ -78,7 +83,8 @@ export default function Start(props: IProps) {
       }
     }
 
-    //console.log(JSON.stringify(output));
+    // ! for test usage
+    // console.log(JSON.stringify(output));
 
     let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
 
@@ -92,9 +98,6 @@ export default function Start(props: IProps) {
     const data = await response.json();
     console.log(data);
   }
-
-  const [processIsRunning, setProcessIsRunning] = useState(false);
-  const [readyToBeDownloaded, SetReadyToBeDownloaded] = useState(false);
 
   return (
     <div className='bg-gray-200 flex'>
