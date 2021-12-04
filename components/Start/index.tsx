@@ -89,24 +89,24 @@ export default function Start(props: IProps) {
 
     let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
 
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(output),
-    // };
-    // const response = await fetch(url, requestOptions);
+    // const response = await Axios({
+    //   method: 'post',
+    //   url: url,
+    //   headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'true', 'Access-Control-Allow-Credentials': 'true' },
+    //   data: JSON.stringify(output),
+    //   withCredentials: true,
+    // });
+    // console.log(response.data);
 
-    // const response = await Axios.get(pixsConfig.backend);
-
-    const response = await Axios({
-      method: 'post',
-      url: url,
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(output),
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'true', 'Access-Control-Allow-Credentials': 'true' },
-      data: JSON.stringify(output),
-      withCredentials: true,
+      credentials: 'same-origin',
     });
 
-    console.log(response.data);
+    const data = await res.json();
+    console.log(data);
   }
 
   return (
