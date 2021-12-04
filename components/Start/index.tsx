@@ -101,7 +101,7 @@ export default function Start(props: IProps) {
     const response = await Axios({
       method: 'post',
       url: url,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'true', 'Access-Control-Allow-Credentials': 'true' },
       data: JSON.stringify(output),
       withCredentials: true,
     });
