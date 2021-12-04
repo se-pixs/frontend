@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../../util/globalStore';
+import Axios from 'axios';
 
 import SideBar from '../SideBar';
 import Header from '../Header';
@@ -88,15 +89,24 @@ export default function Start(props: IProps) {
 
     let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(output),
-    };
+    // const requestOptions = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(output),
+    // };
+    // const response = await fetch(url, requestOptions);
 
-    const response = await fetch(url, requestOptions);
-    const data = await response.json();
-    console.log(data);
+    // const response = await Axios.get(pixsConfig.backend);
+
+    const response = await Axios({
+      method: 'post',
+      url: url,
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify(output),
+      withCredentials: true,
+    });
+
+    console.log(response.data);
   }
 
   return (
