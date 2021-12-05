@@ -29,9 +29,9 @@ export default function Start(props: IProps) {
 
   const { uploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
-  // const hasBeenUploaded = useRef(uploadedImage !== '');
   const [processIsRunning, setProcessIsRunning] = useState(false);
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
+  const hasBeenUploaded = useRef(uploadedImage !== null);
 
   // set the image src to the uploaded image
   if (typeof window !== 'undefined') {
@@ -46,20 +46,24 @@ export default function Start(props: IProps) {
     if (uploadedImage !== null) {
       reader.readAsDataURL(uploadedImage as Blob);
 
-      // upload image to backend
-      let data = new FormData();
-      data.append('file', uploadedImage);
-      data.append('format', getFormatOfImage(uploadedImage));
+      // only upload image if it has been uploaded yet
+      if (!hasBeenUploaded.current) {
+        hasBeenUploaded.current = true;
 
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      };
-      Axios.post(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
-        console.log(data);
-      });
+        let data = new FormData();
+        data.append('file', uploadedImage);
+        data.append('format', getFormatOfImage(uploadedImage));
+
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        };
+        Axios.post(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
+          console.log(data);
+        });
+      }
     }
   }
 
