@@ -20,6 +20,7 @@ import { actionObject } from '../SideBar/types';
 
 interface IProps {
   actionsList: actionObject[];
+  uploadingAndDownloadingAction: actionObject[];
 }
 
 export default function Start(props: IProps) {
@@ -44,7 +45,6 @@ export default function Start(props: IProps) {
 
     if (uploadedImage !== null) {
       reader.readAsDataURL(uploadedImage as Blob);
-      console.log(configsObject);
 
       // upload image to backend
       let data = new FormData();
@@ -57,7 +57,7 @@ export default function Start(props: IProps) {
         },
         withCredentials: true,
       };
-      Axios.post(pixsConfig.backend + configsObject.path, data, config).then((data) => {
+      Axios.post(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
         console.log(data);
       });
     }

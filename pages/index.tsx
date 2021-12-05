@@ -9,6 +9,7 @@ import Axios from 'axios';
 interface IProps {
   actionsList: actionObject[];
   cookie: string;
+  uploadingAndDownloadingAction: actionObject[];
 }
 
 const Home: NextPage<IProps> = (props: IProps) => {
@@ -27,7 +28,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
         <meta name='description' content='PiXS - Image Manipulation Extended' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      {!error && <Start actionsList={props.actionsList} />}
+      {!error && <Start actionsList={props.actionsList} uploadingAndDownloadingAction={props.uploadingAndDownloadingAction} />}
       {error && <div>An error occured. Please try reloading the page</div>}
     </div>
   );
@@ -39,11 +40,13 @@ export async function getServerSideProps() {
   let actionsListTemp: actionObject[] = [];
   // let activeActionNameTemp = '';
   let customCookie: string = '';
+  let uploadingAndDownloadingActionTemp: actionObject[] = [];
 
   try {
     // const data = await fetch(pixsConfig.backend);
     const response = await Axios.get(pixsConfig.backend);
 
+    uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 1);
     actionsListTemp = response.data.actions.slice(2);
     customCookie = response.headers['set-cookie'] ? response.headers['set-cookie'][0] : '';
   } catch (e) {
@@ -59,6 +62,7 @@ export async function getServerSideProps() {
     props: {
       actionsList: actionsListTemp,
       cookie: customCookie,
+      uploadingAndDownloadingAction: uploadingAndDownloadingActionTemp,
     },
   };
 }
