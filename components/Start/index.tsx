@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../../util/globalStore';
+import { getFormatOfImage } from '../../util/imageUtils';
 import Axios from 'axios';
 
 import SideBar from '../SideBar';
@@ -43,6 +44,22 @@ export default function Start(props: IProps) {
 
     if (uploadedImage !== null) {
       reader.readAsDataURL(uploadedImage as Blob);
+      console.log(configsObject);
+
+      // upload image to backend
+      let data = new FormData();
+      data.append('file', uploadedImage);
+      data.append('format', getFormatOfImage(uploadedImage));
+
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      };
+      Axios.post(pixsConfig.backend + configsObject.path, data, config).then((data) => {
+        console.log(data);
+      });
     }
   }
 
@@ -89,24 +106,14 @@ export default function Start(props: IProps) {
 
     let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
 
-    // const response = await Axios({
-    //   method: 'post',
-    //   url: url,
-    //   headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'true', 'Access-Control-Allow-Credentials': 'true' },
-    //   data: JSON.stringify(output),
-    //   withCredentials: true,
-    // });
-    // console.log(response.data);
-
-    const res = await fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(output),
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'true', 'Access-Control-Allow-Credentials': 'true' },
-      credentials: 'same-origin',
+    const response = await Axios({
+      method: 'post',
+      url: url,
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify(output),
+      withCredentials: true,
     });
-
-    const data = await res.json();
-    console.log(data);
+    console.log(response.data);
   }
 
   return (
