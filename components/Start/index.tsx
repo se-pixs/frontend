@@ -108,7 +108,7 @@ export default function Start(props: IProps) {
     // ! for test usage
     // console.log(JSON.stringify(output));
 
-    let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
+    let url = pixsConfig.backend + output.path;
 
     const response = await Axios({
       method: 'post',
