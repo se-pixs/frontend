@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useStore } from '../../util/globalStore';
 import { getFormatOfImage } from '../../util/imageUtils';
 import Axios from 'axios';
@@ -29,7 +29,7 @@ export default function Start(props: IProps) {
 
   const { uploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
-
+  // const hasBeenUploaded = useRef(uploadedImage !== '');
   const [processIsRunning, setProcessIsRunning] = useState(false);
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
 
