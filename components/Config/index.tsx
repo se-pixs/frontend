@@ -58,7 +58,7 @@ function Config(props: IProps) {
   }
 
   type modes = 'notUploaded' | 'disabled' | 'active';
-  const modeToShow: modes = props.disabled ? 'disabled' : props.uploaded ? 'active' : 'notUploaded';
+  const modeToShow: modes = props.uploaded ? 'active' : 'notUploaded';
 
   return (
     <div className='w-full'>
@@ -107,11 +107,6 @@ function Config(props: IProps) {
         {modeToShow == 'notUploaded' && (
           <div className='p-20'>
             <p className='text-center text-xl'>You must first upload an image!</p>
-          </div>
-        )}
-        {modeToShow == 'disabled' && (
-          <div className='p-20'>
-            <p className='text-center text-xl'>You can see your result above!</p>
           </div>
         )}
       </div>

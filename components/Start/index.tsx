@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useStore } from '../../util/globalStore';
 import { getFormatOfImage } from '../../util/imageUtils';
 import Axios from 'axios';
+import { saveAs } from 'file-saver';
 
 import SideBar from '../SideBar';
 import Header from '../Header';
@@ -17,6 +18,7 @@ import BackgroundBlur from '../BackgroundBlur';
 
 import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
+import { type } from 'os';
 
 interface IProps {
   actionsList: actionObject[];
@@ -30,7 +32,7 @@ export default function Start(props: IProps) {
   const [processIsRunning, setProcessIsRunning] = useState(false);
   const [responseArrived, setResponseArrrived] = useState(true);
 
-  const { uploadedImage } = useStore();
+  const { uploadedImage, setUploadedImage, clearUploadedImage  } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
   const hasBeenUploaded = useRef(uploadedImage !== null);
@@ -114,14 +116,13 @@ export default function Start(props: IProps) {
         }
       }
     }
-
     // ! for test usage
     // console.log(JSON.stringify(output));
 
     let url = pixsConfig.backend + output.path;
 
-    setProcessIsRunning(true);
     setResponseArrrived(false);
+    setProcessIsRunning(true);
 
     const response = await Axios({
       method: 'post',
@@ -130,14 +131,26 @@ export default function Start(props: IProps) {
       data: JSON.stringify(output),
       withCredentials: true,
     });
-    console.log(response.data)
     setResponseArrrived(true);
-
+    
+    const response2 = await Axios({
+      method: 'get',
+      url: pixsConfig.backend + "/download",
+      withCredentials: true
+    });
 
     console.log(pixsConfig.backend + "/download");
+    setReadyToBeDownloaded(true);
+
+
+    let file = new File([response2.data], "test")
+    saveAs(file, "test.jpg")
+
     
-    const response2 = await Axios.get(pixsConfig.backend + "/download");
-    console.log(response2);
+  }
+
+  function deleteAndRetry(){
+    setReadyToBeDownloaded(false);
   }
 
   return (
@@ -156,7 +169,7 @@ export default function Start(props: IProps) {
             </BackgroundBlur>
           )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
+          {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} imageData='/preview-placeholder.jpeg' />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload}/>}
           <Spacer />
           <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />

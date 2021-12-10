@@ -9,6 +9,7 @@ import BackgroundBlur from '../BackgroundBlur';
 interface IProps {
   className?: string;
   imageData: string;
+  deleteAndRetry(): void;
 }
 
 function DownloadField(props: IProps) {
@@ -37,6 +38,11 @@ function DownloadField(props: IProps) {
   function getJPEGImage(imageData: Blob): Blob {
     // TODO: implement with backend call
     return imageData;
+  }
+
+  function deleteAndRetry() {
+    props.deleteAndRetry();
+    clearUploadedImage();
   }
 
   return (
@@ -89,7 +95,3 @@ function DownloadField(props: IProps) {
 }
 
 export default DownloadField;
-
-function deleteAndRetry() {
-  console.log('delete and retry');
-}

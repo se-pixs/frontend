@@ -11,24 +11,35 @@ function ProgressBar(props: IProps) {
   const [completed, setCompleted] = useState(0);
   const nyanCat = '/nyanCat.gif';
   const rainbow = '/rainbow.gif';
+  
+  let progress = 0;
 
   React.useEffect(() => {
-    let progress = 0;
     let id = setInterval(() => {
-      if(progress < 80 || !(props.response && progress >= 80)){ //TODO
+      if(progress < 80){
+        progress = progress + 1; 
+        setCompleted(progress);
+      }else{
+        clearInterval(id);
+      }
+    }, 10);
+  },[]);
+
+  React.useEffect(() => {
+    let id = setInterval(() => {
+      if(props.response){
         progress = progress + 1; 
         setCompleted(progress);
       }
 
       if(progress >= 100){
         clearInterval(id);
-        progress = 0;
         setTimeout(() => {
           props.onEnd();
         }, 700)
       }
     }, 10);
-  }, []);
+  },[props.response]);
 
   return (
     <div className={'bg-customblue-500 p-3 rounded-lg mx-10' + ' ' + props.className}>
