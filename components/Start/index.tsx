@@ -1,8 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../util/globalStore';
 import { getFormatOfImage } from '../../util/imageUtils';
 import Axios from 'axios';
-import { saveAs } from 'file-saver';
 
 import SideBar from '../SideBar';
 import Header from '../Header';
@@ -139,13 +138,13 @@ export default function Start(props: IProps) {
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true
     });
-
-    console.log(pixsConfig.backend + "/download");
     setReadyToBeDownloaded(true);
 
-    let fileName = "uploaded." + response2.data.type.split('/')[1];
-    let file = new File([response2.data], fileName, { type: response2.data.type });
-    setUploadedImage(file);
+    if(response2.data.type === "image/png" || response2.data.type === "image/jpeg"){
+      let fileName = "uploaded." + response2.data.type.split('/')[1];
+      let file = new File([response2.data], fileName, { type: response2.data.type });
+      setUploadedImage(file);
+    }
     
   }
 
@@ -169,7 +168,7 @@ export default function Start(props: IProps) {
             </BackgroundBlur>
           )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} imageData='/preview-placeholder.jpeg' />}
+          {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} imageData={imgsrc} />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload}/>}
           <Spacer />
           <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />

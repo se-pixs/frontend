@@ -70,7 +70,7 @@ function Config(props: IProps) {
               {sliderList && sliderList.length > 0 && (
                 <div>
                   {sliderList.map(
-                    (input: any) => sliderMap.set(input.name, input.value.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />,
+                    (input: any) => sliderMap.set(input.name, input.value.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} step={input.value.step} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />,
                   )}
                 </div>
               )}
