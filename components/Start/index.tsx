@@ -136,16 +136,16 @@ export default function Start(props: IProps) {
     const response2 = await Axios({
       method: 'get',
       url: pixsConfig.backend + "/download",
+      responseType: 'blob',
       withCredentials: true
     });
 
     console.log(pixsConfig.backend + "/download");
     setReadyToBeDownloaded(true);
 
-
-    let file = new File([response2.data], "test")
-    saveAs(file, "test.jpg")
-
+    let fileName = "uploaded." + response2.data.type.split('/')[1];
+    let file = new File([response2.data], fileName, { type: response2.data.type });
+    setUploadedImage(file);
     
   }
 
