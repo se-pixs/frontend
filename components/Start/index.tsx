@@ -27,9 +27,11 @@ export default function Start(props: IProps) {
   const [actionName, setActionName] = useState(props.actionsList[0].name);
   const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
 
+  const [processIsRunning, setProcessIsRunning] = useState(false);
+  const [responseArrived, setResponseArrrived] = useState(true);
+
   const { uploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
-  const [processIsRunning, setProcessIsRunning] = useState(false);
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
   const hasBeenUploaded = useRef(uploadedImage !== null);
 
@@ -74,6 +76,14 @@ export default function Start(props: IProps) {
       setActionName(name);
       setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
     }, 0.001);
+  }  
+
+  function newUpload(){
+    hasBeenUploaded.current = false;
+  }
+
+  function onProcessFinished(){
+    setProcessIsRunning(false);
   }
 
   async function runAction(event: any) {
@@ -110,6 +120,9 @@ export default function Start(props: IProps) {
 
     let url = pixsConfig.backend + output.path;
 
+    setProcessIsRunning(true);
+    setResponseArrrived(false);
+
     const response = await Axios({
       method: 'post',
       url: url,
@@ -117,7 +130,14 @@ export default function Start(props: IProps) {
       data: JSON.stringify(output),
       withCredentials: true,
     });
-    console.log(response.data);
+    console.log(response.data)
+    setResponseArrrived(true);
+
+
+    console.log(pixsConfig.backend + "/download");
+    
+    const response2 = await Axios.get(pixsConfig.backend + "/download");
+    console.log(response2);
   }
 
   return (
@@ -131,13 +151,13 @@ export default function Start(props: IProps) {
           {processIsRunning && (
             <BackgroundBlur className=''>
               <div className='w-screen px-10'>
-                <ProgressBar className='' />
+                <ProgressBar className='' response={responseArrived} onEnd={onProcessFinished}/>
               </div>
             </BackgroundBlur>
           )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
-          {!readyToBeDownloaded && <UploadField />}
+          {!readyToBeDownloaded && <UploadField onUpload={newUpload}/>}
           <Spacer />
           <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}

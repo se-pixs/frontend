@@ -3,6 +3,8 @@ import React from 'react';
 
 interface IProps {
   className?: string;
+  response: boolean;
+  onEnd: () => void;
 }
 
 function ProgressBar(props: IProps) {
@@ -11,7 +13,21 @@ function ProgressBar(props: IProps) {
   const rainbow = '/rainbow.gif';
 
   React.useEffect(() => {
-    setInterval(() => setCompleted(Math.floor(Math.random() * 100) + 1), 2000);
+    let progress = 0;
+    let id = setInterval(() => {
+      if(progress < 80 || !(props.response && progress >= 80)){ //TODO
+        progress = progress + 1; 
+        setCompleted(progress);
+      }
+
+      if(progress >= 100){
+        clearInterval(id);
+        progress = 0;
+        setTimeout(() => {
+          props.onEnd();
+        }, 700)
+      }
+    }, 10);
   }, []);
 
   return (
@@ -21,7 +37,7 @@ function ProgressBar(props: IProps) {
           id='progressBar'
           style={{
             width: `${completed}%`,
-            transition: 'width 2s',
+            transition: 'width 0.1s',
             backgroundSize: 'contain',
             backgroundImage: `url(${rainbow})`,
             minWidth: '63px',
