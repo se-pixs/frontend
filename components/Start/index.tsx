@@ -136,7 +136,7 @@ export default function Start(props: IProps) {
     const response2 = await Axios({
       method: 'get',
       url: pixsConfig.backend + "/download",
-      responseType: 'blob',
+      responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true
     });
 
