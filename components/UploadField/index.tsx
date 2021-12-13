@@ -6,12 +6,14 @@ import Button from '../Button';
 
 interface IProps {
   className?: string;
+  onUpload: () => void;
 }
 
 function UploadField(props: IProps) {
   const { setUploadedImage, clearUploadedImage } = useStore();
 
   const onDrop = useCallback((acceptedFiles) => {
+    props.onUpload();
     setFileName(acceptedFiles[0].path);
     setUploaded(true);
     setUploadedImage(acceptedFiles[0]);

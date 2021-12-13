@@ -3,4 +3,5 @@ export declare interface actionObject {
   icon: string;
   active: boolean;
   description: string;
+  path: string;
 }

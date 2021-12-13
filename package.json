@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^5.3.3",
     "get-relative-luminance": "^1.0.0",

@@ -9,6 +9,7 @@ import BackgroundBlur from '../BackgroundBlur';
 interface IProps {
   className?: string;
   imageData: string;
+  deleteAndRetry(): void;
 }
 
 function DownloadField(props: IProps) {
@@ -16,27 +17,22 @@ function DownloadField(props: IProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // save file to user's device
-  function saveFile(type: 'PNG' | 'JPEG') {
+  function saveFile() {
     if (uploadedImage !== null) {
-      console.log('type', type);
-      if (type === 'PNG') {
-        const pngImage = getPNGImage(uploadedImage);
-        saveAs(pngImage, 'pixs-image.png');
-      } else {
-        const jpegImage = getJPEGImage(uploadedImage);
-        saveAs(jpegImage, 'pixs-image.jpeg');
+      let type = uploadedImage.type.split("/")[1];
+      if (type === 'png') {
+        saveAs(uploadedImage, 'pixs-image.png');
+      } else if(type === 'jpeg'){
+        saveAs(uploadedImage, 'pixs-image.jpeg');
+      } else{
+        //TODO Zip
       }
     }
   }
 
-  function getPNGImage(imageData: Blob): Blob {
-    // TODO: implement with backend call
-    return imageData;
-  }
-
-  function getJPEGImage(imageData: Blob): Blob {
-    // TODO: implement with backend call
-    return imageData;
+  function deleteAndRetry() {
+    props.deleteAndRetry();
+    clearUploadedImage();
   }
 
   return (
@@ -74,11 +70,8 @@ function DownloadField(props: IProps) {
       </div>
 
       <div className='flex justify-around'>
-        <Button className='mt-4' onclick={() => saveFile('PNG')} disabled={false}>
-          Download as PNG
-        </Button>
-        <Button className='mt-4' onclick={() => saveFile('JPEG')} disabled={false}>
-          Download as JPEG
+        <Button className='mt-4' onclick={() => saveFile()} disabled={false}>
+          Download
         </Button>
         <Button className='mt-4' onclick={() => setShowDeleteModal(true)} disabled={false} type={'error'}>
           Delete and retry
@@ -89,7 +82,3 @@ function DownloadField(props: IProps) {
 }
 
 export default DownloadField;
-
-function deleteAndRetry() {
-  console.log('delete and retry');
-}

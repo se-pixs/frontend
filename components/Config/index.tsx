@@ -58,7 +58,7 @@ function Config(props: IProps) {
   }
 
   type modes = 'notUploaded' | 'disabled' | 'active';
-  const modeToShow: modes = props.disabled ? 'disabled' : props.uploaded ? 'active' : 'notUploaded';
+  const modeToShow: modes = props.uploaded ? 'active' : 'notUploaded';
 
   return (
     <div className='w-full'>
@@ -70,7 +70,7 @@ function Config(props: IProps) {
               {sliderList && sliderList.length > 0 && (
                 <div>
                   {sliderList.map(
-                    (input: any) => sliderMap.set(input.name, input.value.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />,
+                    (input: any) => sliderMap.set(input.name, input.value.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} step={input.value.step} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />,
                   )}
                 </div>
               )}
@@ -107,11 +107,6 @@ function Config(props: IProps) {
         {modeToShow == 'notUploaded' && (
           <div className='p-20'>
             <p className='text-center text-xl'>You must first upload an image!</p>
-          </div>
-        )}
-        {modeToShow == 'disabled' && (
-          <div className='p-20'>
-            <p className='text-center text-xl'>You can see your result above!</p>
           </div>
         )}
       </div>

@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../util/globalStore';
+import { getFormatOfImage } from '../../util/imageUtils';
+import Axios from 'axios';
 
 import SideBar from '../SideBar';
 import Header from '../Header';
@@ -15,20 +17,24 @@ import BackgroundBlur from '../BackgroundBlur';
 
 import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
+import { type } from 'os';
 
 interface IProps {
   actionsList: actionObject[];
+  uploadingAndDownloadingAction: actionObject[];
 }
 
 export default function Start(props: IProps) {
   const [actionName, setActionName] = useState(props.actionsList[0].name);
   const [configsObject, setConfigsObject] = useState(props.actionsList.filter((action: any) => action.name === actionName)[0]);
 
-  const { uploadedImage } = useStore();
-  const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
-
   const [processIsRunning, setProcessIsRunning] = useState(false);
+  const [responseArrived, setResponseArrrived] = useState(true);
+
+  const { uploadedImage, setUploadedImage, clearUploadedImage  } = useStore();
+  const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
+  const hasBeenUploaded = useRef(uploadedImage !== null);
 
   // set the image src to the uploaded image
   if (typeof window !== 'undefined') {
@@ -42,6 +48,25 @@ export default function Start(props: IProps) {
 
     if (uploadedImage !== null) {
       reader.readAsDataURL(uploadedImage as Blob);
+
+      // only upload image if it has been uploaded yet
+      if (!hasBeenUploaded.current) {
+        hasBeenUploaded.current = true;
+
+        let data = new FormData();
+        data.append('file', uploadedImage);
+        data.append('format', getFormatOfImage(uploadedImage));
+
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        };
+        Axios.post(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
+          console.log(data);
+        });
+      }
     }
   }
 
@@ -52,6 +77,14 @@ export default function Start(props: IProps) {
       setActionName(name);
       setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
     }, 0.001);
+  }  
+
+  function newUpload(){
+    hasBeenUploaded.current = false;
+  }
+
+  function onProcessFinished(){
+    setProcessIsRunning(false);
   }
 
   async function runAction(event: any) {
@@ -82,21 +115,41 @@ export default function Start(props: IProps) {
         }
       }
     }
-
     // ! for test usage
     // console.log(JSON.stringify(output));
 
-    let url = pixsConfig.backend.substring(0, pixsConfig.backend.length - 1) + output.path;
+    let url = pixsConfig.backend + output.path;
 
-    const requestOptions = {
-      method: 'POST',
+    setResponseArrrived(false);
+    setProcessIsRunning(true);
+
+    const response = await Axios({
+      method: 'post',
+      url: url,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(output),
-    };
+      data: JSON.stringify(output),
+      withCredentials: true,
+    });
+    setResponseArrrived(true);
+    
+    const response2 = await Axios({
+      method: 'get',
+      url: pixsConfig.backend + "/download",
+      responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
+      withCredentials: true
+    });
+    setReadyToBeDownloaded(true);
 
-    const response = await fetch(url, requestOptions);
-    const data = await response.json();
-    console.log(data);
+    if(response2.data.type === "image/png" || response2.data.type === "image/jpeg"){
+      let fileName = "uploaded." + response2.data.type.split('/')[1];
+      let file = new File([response2.data], fileName, { type: response2.data.type });
+      setUploadedImage(file);
+    }
+    
+  }
+
+  function deleteAndRetry(){
+    setReadyToBeDownloaded(false);
   }
 
   return (
@@ -110,13 +163,13 @@ export default function Start(props: IProps) {
           {processIsRunning && (
             <BackgroundBlur className=''>
               <div className='w-screen px-10'>
-                <ProgressBar className='' />
+                <ProgressBar className='' response={responseArrived} onEnd={onProcessFinished}/>
               </div>
             </BackgroundBlur>
           )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          {readyToBeDownloaded && <DownloadField imageData='/preview-placeholder.jpeg' />}
-          {!readyToBeDownloaded && <UploadField />}
+          {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} imageData={imgsrc} />}
+          {!readyToBeDownloaded && <UploadField onUpload={newUpload}/>}
           <Spacer />
           <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}

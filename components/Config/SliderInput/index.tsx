@@ -7,6 +7,7 @@ interface IProps {
   min: number;
   max: number;
   value: number;
+  step: number;
   onValueChange: (value: string, name: string) => void;
 }
 
@@ -25,7 +26,7 @@ function SliderInput(props: IProps) {
         <label className='mr-2'>{actionNameToUpper}</label>
         <p className='font-bold mr-2'>{value}</p>
       </div>
-      <input className='w-full outline-none' type='range' min={props.min} max={props.max} defaultValue={props.value} step='1' onChange={(event) => handler(event)} />
+      <input className='w-full outline-none' type='range' min={props.min} max={props.max} defaultValue={props.value} step={props.step} onChange={(event) => handler(event)} />
     </div>
   );
 }

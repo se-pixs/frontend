@@ -3,16 +3,43 @@ import React from 'react';
 
 interface IProps {
   className?: string;
+  response: boolean;
+  onEnd: () => void;
 }
 
 function ProgressBar(props: IProps) {
   const [completed, setCompleted] = useState(0);
   const nyanCat = '/nyanCat.gif';
   const rainbow = '/rainbow.gif';
+  
+  let progress = 0;
 
   React.useEffect(() => {
-    setInterval(() => setCompleted(Math.floor(Math.random() * 100) + 1), 2000);
-  }, []);
+    let id = setInterval(() => {
+      if(progress < 80){
+        progress = progress + 1; 
+        setCompleted(progress);
+      }else{
+        clearInterval(id);
+      }
+    }, 10);
+  },[]);
+
+  React.useEffect(() => {
+    let id = setInterval(() => {
+      if(props.response){
+        progress = progress + 1; 
+        setCompleted(progress);
+      }
+
+      if(progress >= 100){
+        clearInterval(id);
+        setTimeout(() => {
+          props.onEnd();
+        }, 700)
+      }
+    }, 10);
+  },[props.response]);
 
   return (
     <div className={'bg-customblue-500 p-3 rounded-lg mx-10' + ' ' + props.className}>
@@ -21,7 +48,7 @@ function ProgressBar(props: IProps) {
           id='progressBar'
           style={{
             width: `${completed}%`,
-            transition: 'width 2s',
+            transition: 'width 0.1s',
             backgroundSize: 'contain',
             backgroundImage: `url(${rainbow})`,
             minWidth: '63px',
