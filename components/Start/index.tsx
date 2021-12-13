@@ -17,7 +17,6 @@ import BackgroundBlur from '../BackgroundBlur';
 
 import pixsConfig from '../../pixs.config.json';
 import { actionObject } from '../SideBar/types';
-import { type } from 'os';
 
 interface IProps {
   actionsList: actionObject[];
@@ -31,7 +30,7 @@ export default function Start(props: IProps) {
   const [processIsRunning, setProcessIsRunning] = useState(false);
   const [responseArrived, setResponseArrrived] = useState(true);
 
-  const { uploadedImage, setUploadedImage, clearUploadedImage  } = useStore();
+  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
   const hasBeenUploaded = useRef(uploadedImage !== null);
@@ -77,13 +76,13 @@ export default function Start(props: IProps) {
       setActionName(name);
       setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
     }, 0.001);
-  }  
+  }
 
-  function newUpload(){
+  function newUpload() {
     hasBeenUploaded.current = false;
   }
 
-  function onProcessFinished(){
+  function onProcessFinished() {
     setProcessIsRunning(false);
   }
 
@@ -131,24 +130,23 @@ export default function Start(props: IProps) {
       withCredentials: true,
     });
     setResponseArrrived(true);
-    
+
     const response2 = await Axios({
       method: 'get',
-      url: pixsConfig.backend + "/download",
+      url: pixsConfig.backend + '/download',
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
-      withCredentials: true
+      withCredentials: true,
     });
     setReadyToBeDownloaded(true);
 
-    if(response2.data.type === "image/png" || response2.data.type === "image/jpeg"){
-      let fileName = "uploaded." + response2.data.type.split('/')[1];
+    if (response2.data.type === 'image/png' || response2.data.type === 'image/jpeg') {
+      let fileName = 'uploaded.' + response2.data.type.split('/')[1];
       let file = new File([response2.data], fileName, { type: response2.data.type });
       setUploadedImage(file);
     }
-    
   }
 
-  function deleteAndRetry(){
+  function deleteAndRetry() {
     setReadyToBeDownloaded(false);
   }
 
@@ -163,13 +161,13 @@ export default function Start(props: IProps) {
           {processIsRunning && (
             <BackgroundBlur className=''>
               <div className='w-screen px-10'>
-                <ProgressBar className='' response={responseArrived} onEnd={onProcessFinished}/>
+                <ProgressBar className='' response={responseArrived} onEnd={onProcessFinished} />
               </div>
             </BackgroundBlur>
           )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} imageData={imgsrc} />}
-          {!readyToBeDownloaded && <UploadField onUpload={newUpload}/>}
+          {!readyToBeDownloaded && <UploadField onUpload={newUpload} />}
           <Spacer />
           <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}
