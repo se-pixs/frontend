@@ -1,0 +1,5 @@
+{
+  "backend": "http://localhost:8000/",
+  "frontend": "http://localhost:3000/",
+  "iconPlaceholder": "/icon-placeholder.svg"
+}
