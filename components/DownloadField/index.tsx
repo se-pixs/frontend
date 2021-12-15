@@ -19,13 +19,13 @@ function DownloadField(props: IProps) {
   // save file to user's device
   function saveFile() {
     if (uploadedImage !== null) {
-      let type = uploadedImage.type.split("/")[1];
+      let type = uploadedImage.type.split('/')[1];
       if (type === 'png') {
         saveAs(uploadedImage, 'pixs-image.png');
-      } else if(type === 'jpeg'){
+      } else if (type === 'jpeg') {
         saveAs(uploadedImage, 'pixs-image.jpeg');
-      } else{
-        //TODO Zip
+      } else {
+        saveAs(uploadedImage, 'pixs-image.zip');
       }
     }
   }

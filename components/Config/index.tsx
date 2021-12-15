@@ -30,7 +30,8 @@ function Config(props: IProps) {
   let colorPickerMap = new Map();
 
   function onSliderChange(value: string, name: string) {
-    sliderMap.set(name, value);
+    const int_value : number = parseInt(value);
+    sliderMap.set(name, int_value);
   }
   function onInputFieldChange(value: string, name: string) {
     inputFieldMap.set(name, value);

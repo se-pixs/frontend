@@ -139,7 +139,7 @@ export default function Start(props: IProps) {
     });
     setReadyToBeDownloaded(true);
 
-    if (response2.data.type === 'image/png' || response2.data.type === 'image/jpeg') {
+    if (response2.data.type === 'image/png' || response2.data.type === 'image/jpeg' || response2.data.type.includes('zip')) {
       let fileName = 'uploaded.' + response2.data.type.split('/')[1];
       let file = new File([response2.data], fileName, { type: response2.data.type });
       setUploadedImage(file);
