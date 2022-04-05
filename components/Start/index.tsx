@@ -53,7 +53,7 @@ export default function Start(props: IProps) {
         hasBeenUploaded.current = true;
 
         let data = new FormData();
-        data.append('file', uploadedImage);
+        data.append('image', uploadedImage);
         data.append('format', getFormatOfImage(uploadedImage));
 
         let config = {
@@ -108,9 +108,9 @@ export default function Start(props: IProps) {
       }
       if (output.parameters?.colorpickers) {
         for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
-          output.parameters.colorpickers[i].input.red = colorpickers[0].value[0].value;
-          output.parameters.colorpickers[i].input.green = colorpickers[0].value[1].value;
-          output.parameters.colorpickers[i].input.blue = colorpickers[0].value[2].value;
+          output.parameters.colorpickers[i].value.red = colorpickers[0].value[0].value;
+          output.parameters.colorpickers[i].value.green = colorpickers[0].value[1].value;
+          output.parameters.colorpickers[i].value.blue = colorpickers[0].value[2].value;
         }
       }
     }

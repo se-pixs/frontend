@@ -92,8 +92,8 @@ function Config(props: IProps) {
                     (input: any) =>
                       colorPickerMap.set(
                         input.name,
-                        Array.from(new Map().set('red', input.input.red.default).set('green', input.input.green.default).set('blue', input.input.blue.default), ([name, value]) => ({ name, value })),
-                      ) && <ColorPicker onValueChange={onColorPickerChange} defaultColor={[input.input.red.default, input.input.green.default, input.input.blue.default]} key={input.name} name={input.name} description={input.description} className={className} />,
+                        Array.from(new Map().set('red', input.value.red.default).set('green', input.value.green.default).set('blue', input.value.blue.default), ([name, value]) => ({ name, value })),
+                      ) && <ColorPicker onValueChange={onColorPickerChange} defaultColor={[input.value.red.default, input.value.green.default, input.value.blue.default]} key={input.name} name={input.name} description={input.description} className={className} />,
                   )}
                 </div>
               )}
