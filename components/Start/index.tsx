@@ -53,8 +53,16 @@ export default function Start(props: IProps) {
         hasBeenUploaded.current = true;
 
         let data = new FormData();
-        data.append('image', uploadedImage);
-        data.append('format', getFormatOfImage(uploadedImage));
+        if(uploadedImage.type === "image/jpeg" || uploadedImage.type === "image/png") {
+          data.append('image', uploadedImage);
+          data.append('format', getFormatOfImage(uploadedImage));
+          console.log(getFormatOfImage(uploadedImage));
+        }else if(uploadedImage.type.includes('zip')){
+          data.append('zip', uploadedImage);
+          data.append('format', "ZIP");
+        }else{
+          console.error("File type not supported");
+        }
 
         let config = {
           headers: {
