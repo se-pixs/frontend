@@ -138,10 +138,13 @@ export default function Start(props: IProps) {
       withCredentials: true,
     });
     setResponseArrrived(true);
+    updateImg();
+  }
 
+  async function updateImg(){
     const response2 = await Axios({
       method: 'get',
-      url: pixsConfig.backend + '/download',
+      url: pixsConfig.backend + props.uploadingAndDownloadingAction[1].path,
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
     });
@@ -156,6 +159,16 @@ export default function Start(props: IProps) {
 
   function deleteAndRetry() {
     setReadyToBeDownloaded(false);
+  }
+
+  async function reverse(){
+    Axios({
+      method: 'get',
+      url: pixsConfig.backend + props.uploadingAndDownloadingAction[2].path,
+      responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
+      withCredentials: true,
+    });
+    updateImg();
   }
 
   return (
@@ -174,7 +187,7 @@ export default function Start(props: IProps) {
             </BackgroundBlur>
           )}
           <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
-          {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} imageData={imgsrc} />}
+          {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} reverse={reverse} imageData={imgsrc} />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload} />}
           <Spacer />
           <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />

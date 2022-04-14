@@ -46,8 +46,8 @@ export async function getServerSideProps() {
     // const data = await fetch(pixsConfig.backend);
     const response = await Axios.get(pixsConfig.backend);
 
-    uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 1);
-    actionsListTemp = response.data.actions.slice(2);
+    uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 3);
+    actionsListTemp = response.data.actions.slice(3);
     customCookie = response.headers['set-cookie'] ? response.headers['set-cookie'][0] : '';
   } catch (e) {
     console.log(e);
