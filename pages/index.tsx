@@ -4,6 +4,7 @@ import Start from '../components/Start';
 import pixsConfig from '../pixs.config.json';
 import { actionObject } from '../components/SideBar/types';
 import Axios from 'axios';
+import http from 'http';
 // import cookieCutter from 'cookie-cutter';
 
 interface IProps {
@@ -44,7 +45,15 @@ export async function getServerSideProps() {
 
   try {
     // const data = await fetch(pixsConfig.backend);
-    const response = await Axios.get(pixsConfig.backend);
+    var agent = new http.Agent({ family: 4 });
+    const axios = Axios.create({
+      httpAgent :agent
+    });
+    axios.interceptors.request.use((request) => {
+      console.log(request);
+      return request;
+    });
+    const response = await axios.get(pixsConfig.backend);
 
     uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 3);
     actionsListTemp = response.data.actions.slice(3);
