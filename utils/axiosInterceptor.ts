@@ -7,7 +7,7 @@ export { axiosGetIpInterceptor, axiosPostIpInterceptor, axiosObjectInterceptor }
 async function axiosGetIpInterceptor(path: string): Promise<any> {
   let response = null;
 
-  if (!pixsConfig.useIPv6) {
+  if (pixsConfig.useIPv6) {
     response = await Axios.get(path);
   } else {
     let agent = new http.Agent({ family: 4 });
@@ -28,7 +28,7 @@ async function axiosPostIpInterceptor(path: string, data: {}, config: {}): Promi
   return Axios.post(path, data, config);
 
   // let response = null;
-  // if (!pixsConfig.useIPv6) {
+  // if (pixsConfig.useIPv6) {
   //   response = await Axios.get(path);
   // } else {
   //   let agent = new http.Agent({ family: 4 });
