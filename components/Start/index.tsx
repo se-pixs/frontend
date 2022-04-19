@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { useStore } from '../../util/globalStore';
-import { getFormatOfImage } from '../../util/imageUtils';
+import { useStore } from '../../utils/globalStore';
+import { getFormatOfImage } from '../../utils/imageUtils';
 import Axios from 'axios';
 
 import SideBar from '../SideBar';
@@ -53,15 +53,15 @@ export default function Start(props: IProps) {
         hasBeenUploaded.current = true;
 
         let data = new FormData();
-        if(uploadedImage.type === "image/jpeg" || uploadedImage.type === "image/png") {
+        if (uploadedImage.type === 'image/jpeg' || uploadedImage.type === 'image/png') {
           data.append('image', uploadedImage);
           data.append('format', getFormatOfImage(uploadedImage));
           console.log(getFormatOfImage(uploadedImage));
-        }else if(uploadedImage.type.includes('zip')){
+        } else if (uploadedImage.type.includes('zip')) {
           data.append('zip', uploadedImage);
-          data.append('format', "ZIP");
-        }else{
-          console.error("File type not supported");
+          data.append('format', 'ZIP');
+        } else {
+          console.error('File type not supported');
         }
 
         let config = {
@@ -141,7 +141,7 @@ export default function Start(props: IProps) {
     updateImg();
   }
 
-  async function updateImg(){
+  async function updateImg() {
     const response2 = await Axios({
       method: 'get',
       url: pixsConfig.backend + props.uploadingAndDownloadingAction[1].path,
@@ -161,7 +161,7 @@ export default function Start(props: IProps) {
     setReadyToBeDownloaded(false);
   }
 
-  async function reverse(){
+  async function reverse() {
     Axios({
       method: 'get',
       url: pixsConfig.backend + props.uploadingAndDownloadingAction[2].path,
