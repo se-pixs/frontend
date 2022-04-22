@@ -1,7 +1,7 @@
-// import { useStore } from '../../util/globalStore';
+// import { useStore } from '../../utils/globalStore';
 import { useState } from 'react';
 import { saveAs } from 'file-saver';
-import { useStore } from '../../util/globalStore';
+import { useStore } from '../../utils/globalStore';
 
 import Button from '../Button';
 import BackgroundBlur from '../BackgroundBlur';

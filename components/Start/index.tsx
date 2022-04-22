@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { useStore } from '../../util/globalStore';
-import { getFormatOfImage } from '../../util/imageUtils';
-import Axios from 'axios';
+import { useStore } from '../../utils/globalStore';
+import { getFormatOfImage } from '../../utils/imageUtils';
+import { axiosPostIpInterceptor, axiosObjectInterceptor } from '../../utils/axiosInterceptor';
 
 import SideBar from '../SideBar';
 import Header from '../Header';
@@ -53,15 +53,15 @@ export default function Start(props: IProps) {
         hasBeenUploaded.current = true;
 
         let data = new FormData();
-        if(uploadedImage.type === "image/jpeg" || uploadedImage.type === "image/png") {
+        if (uploadedImage.type === 'image/jpeg' || uploadedImage.type === 'image/png') {
           data.append('image', uploadedImage);
           data.append('format', getFormatOfImage(uploadedImage));
           console.log(getFormatOfImage(uploadedImage));
-        }else if(uploadedImage.type.includes('zip')){
+        } else if (uploadedImage.type.includes('zip')) {
           data.append('zip', uploadedImage);
-          data.append('format', "ZIP");
-        }else{
-          console.error("File type not supported");
+          data.append('format', 'ZIP');
+        } else {
+          console.error('File type not supported');
         }
 
         let config = {
@@ -70,7 +70,8 @@ export default function Start(props: IProps) {
           },
           withCredentials: true,
         };
-        Axios.post(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
+
+        axiosPostIpInterceptor(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
           console.log(data);
         });
       }
@@ -130,24 +131,30 @@ export default function Start(props: IProps) {
     setResponseArrrived(false);
     setProcessIsRunning(true);
 
-    const response = await Axios({
+    const axiosConfig = {
       method: 'post',
       url: url,
       headers: { 'Content-Type': 'application/json' },
       data: JSON.stringify(output),
       withCredentials: true,
-    });
+    };
+
+    const response = await axiosObjectInterceptor(axiosConfig);
+
     setResponseArrrived(true);
     updateImg();
   }
 
-  async function updateImg(){
-    const response2 = await Axios({
+  async function updateImg() {
+    const axiosConfig = {
       method: 'get',
       url: pixsConfig.backend + props.uploadingAndDownloadingAction[1].path,
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
-    });
+    };
+
+    const response2 = await axiosObjectInterceptor(axiosConfig);
+
     setReadyToBeDownloaded(true);
 
     if (response2.data.type === 'image/png' || response2.data.type === 'image/jpeg' || response2.data.type.includes('zip')) {
@@ -161,13 +168,16 @@ export default function Start(props: IProps) {
     setReadyToBeDownloaded(false);
   }
 
-  async function reverse(){
-    Axios({
+  async function reverse() {
+    const axiosConfig = {
       method: 'get',
       url: pixsConfig.backend + props.uploadingAndDownloadingAction[2].path,
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
-    });
+    };
+
+    // Axios(axiosConfig);
+    axiosObjectInterceptor(axiosConfig);
     updateImg();
   }
 

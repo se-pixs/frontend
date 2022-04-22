@@ -1,6 +1,6 @@
 import { SketchPicker } from 'react-color';
 import { useState } from 'react';
-import { getContrastColor } from '../../../util/color';
+import { getContrastColor } from '../../../utils/color';
 
 interface IProps {
   className?: string;

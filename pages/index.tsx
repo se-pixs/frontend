@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Start from '../components/Start';
 import pixsConfig from '../pixs.config.json';
 import { actionObject } from '../components/SideBar/types';
-import Axios from 'axios';
+import { axiosGetIpInterceptor } from '../utils/axiosInterceptor';
 // import cookieCutter from 'cookie-cutter';
 
 interface IProps {
@@ -44,7 +44,7 @@ export async function getServerSideProps() {
 
   try {
     // const data = await fetch(pixsConfig.backend);
-    const response = await Axios.get(pixsConfig.backend);
+    let response = await axiosGetIpInterceptor(pixsConfig.backend);
 
     uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 3);
     actionsListTemp = response.data.actions.slice(3);
