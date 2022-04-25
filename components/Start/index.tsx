@@ -15,7 +15,7 @@ import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
 import BackgroundBlur from '../BackgroundBlur';
 
-import pixsConfig from '../../pixs.config.json';
+import pixsConfig from '../../pixs.config';
 import { actionObject } from '../SideBar/types';
 
 interface IProps {
@@ -71,7 +71,7 @@ export default function Start(props: IProps) {
           withCredentials: true,
         };
 
-        axiosPostIpInterceptor(pixsConfig.backend + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
+        axiosPostIpInterceptor(pixsConfig.backend.resources + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
           console.log(data);
         });
       }
@@ -126,7 +126,7 @@ export default function Start(props: IProps) {
     // ! for test usage
     // console.log(JSON.stringify(output));
 
-    let url = pixsConfig.backend + output.path;
+    let url = pixsConfig.backend.resources + output.path;
 
     setResponseArrrived(false);
     setProcessIsRunning(true);
@@ -148,7 +148,7 @@ export default function Start(props: IProps) {
   async function updateImg() {
     const axiosConfig = {
       method: 'get',
-      url: pixsConfig.backend + props.uploadingAndDownloadingAction[1].path,
+      url: pixsConfig.backend.resources + props.uploadingAndDownloadingAction[1].path,
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
     };
@@ -171,7 +171,7 @@ export default function Start(props: IProps) {
   async function reverse() {
     const axiosConfig = {
       method: 'get',
-      url: pixsConfig.backend + props.uploadingAndDownloadingAction[2].path,
+      url: pixsConfig.backend.resources + props.uploadingAndDownloadingAction[2].path,
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
     };
