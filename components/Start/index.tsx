@@ -196,7 +196,7 @@ export default function Start(props: IProps) {
               </div>
             </BackgroundBlur>
           )}
-          <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
+          <Title title={configsObject.displayName} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} reverse={reverse} imageData={imgsrc} />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload} />}
           <Spacer />
