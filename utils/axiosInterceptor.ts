@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import http from 'http';
-import pixsConfig from '../pixs.config';
+import pixsConfig from '../pixs.config.template';
 
 export { axiosGetIpInterceptor, axiosPostIpInterceptor, axiosObjectInterceptor };
 

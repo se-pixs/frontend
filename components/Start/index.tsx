@@ -15,7 +15,7 @@ import Preview from '../Preview';
 import ProgressBar from '../ProgressBar';
 import BackgroundBlur from '../BackgroundBlur';
 
-import pixsConfig from '../../pixs.config';
+import pixsConfig from '../../pixs.config.template';
 import { actionObject } from '../SideBar/types';
 
 interface IProps {

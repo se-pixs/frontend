@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Start from '../components/Start';
-import pixsConfig from '../pixs.config';
+import pixsConfig from '../pixs.config.template';
 import { actionObject } from '../components/SideBar/types';
 import { axiosGetIpInterceptor } from '../utils/axiosInterceptor';
 // import cookieCutter from 'cookie-cutter';
