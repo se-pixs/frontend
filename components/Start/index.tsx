@@ -110,7 +110,11 @@ export default function Start(props: IProps) {
       }
       if (output.parameters?.valuefields) {
         for (let i = 0; i < output.parameters?.valuefields.length; i++) {
-          output.parameters.valuefields[i].value = inputfields[i].value;
+          if (inputfields[i].value.type === 'integer') {
+            output.parameters.valuefields[i].value = parseInt(inputfields[i].value.value);
+          } else {
+            output.parameters.valuefields[i].value = inputfields[i].value;
+          }
         }
       }
       if (output.parameters?.colorpickers) {
@@ -121,8 +125,8 @@ export default function Start(props: IProps) {
         }
       }
     }
-    // ! for test usage
-    // console.log(JSON.stringify(output));
+    // ! DEBUG
+    // console.log(output);
 
     let url = pixsConfig.backend.resources + output.path;
 

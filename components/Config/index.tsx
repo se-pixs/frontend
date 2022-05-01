@@ -30,11 +30,11 @@ function Config(props: IProps) {
   let colorPickerMap = new Map();
 
   function onSliderChange(value: string, name: string) {
-    const int_value : number = parseInt(value);
+    const int_value: number = parseInt(value);
     sliderMap.set(name, int_value);
   }
-  function onInputFieldChange(value: string, name: string) {
-    inputFieldMap.set(name, value);
+  function onInputFieldChange(value: string, name: string, type: string) {
+    inputFieldMap.set(name, { value: value, type: type });
   }
   function onColorPickerChange(value: string, name: string) {
     colorPickerMap.set(name, hexToRGB(value));
@@ -71,16 +71,19 @@ function Config(props: IProps) {
               {sliderList && sliderList.length > 0 && (
                 <div>
                   {sliderList.map(
-                    (input: any) => sliderMap.set(input.name, input.value.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} step={input.value.step} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />,
+                    (input: any) =>
+                      sliderMap.set(input.name, input.value.default) && (
+                        <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} step={input.value.step} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />
+                      ),
                   )}
                 </div>
               )}
 
-              {valueFieldInputList && valueFieldInputList.length > 0 && (
+              {valueFieldInputList.length > 0 && (
                 <div>
                   {valueFieldInputList.map(
                     (input: any) =>
-                      inputFieldMap.set(input.name, input.value.default) && (
+                      inputFieldMap.set(input.name, { value: input.value.default, type: input.value.type }) && (
                         <ValueFieldInput onValueChange={onInputFieldChange} type={input.value.type} options={input.value.range} key={input.name} name={input.name} default={input.value.default} description={input.description} className={className} />
                       ),
                   )}
