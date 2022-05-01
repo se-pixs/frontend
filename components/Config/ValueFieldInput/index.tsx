@@ -5,12 +5,12 @@ interface IProps {
   type: string;
   options: any;
   default: string;
-  onValueChange: (value: string, name: string) => void;
+  onValueChange: (value: string, name: string, type: string) => void;
 }
 
 function ValueFieldInput(props: IProps) {
   function handler(event: any) {
-    props.onValueChange(event.target.value, props.name);
+    props.onValueChange(event.target.value, props.name, props.type);
   }
 
   const customClass = ' flex-auto border border-gray-400 rounded-md pl-1 pr-2 py-1 outline-none focus:ring-2 focus:ring-custompurple-400';

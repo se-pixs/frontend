@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useStore } from '../../utils/globalStore';
+import useStore from '../../utils/store/globalStore';
 
 import Button from '../Button';
 

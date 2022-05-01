@@ -56,7 +56,7 @@ class SideBar extends Component<IProps, IState> {
         {this.state.actionsList !== null &&
           this.state.actionsList.map((action: actionObject) => (
             <div key={action.name} onClick={() => this.handler(action.name)}>
-              <SideBarElement isBig={this.state.isBig} active={action.name === this.props.selectedAction} name={action.displayName} icon={action.icon} />
+              <SideBarElement isBig={this.state.isBig} active={action.name === this.props.selectedAction} displayName={action.displayName} icon={action.icon} />
             </div>
           ))}
       </div>
