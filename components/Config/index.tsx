@@ -35,6 +35,7 @@ function Config(props: IProps) {
   }
   function onInputFieldChange(value: string, name: string, type: string) {
     inputFieldMap.set(name, { value: value, type: type });
+    inputFieldMap = validateTypesForInputField(inputFieldMap);
   }
   function onColorPickerChange(value: string, name: string) {
     colorPickerMap.set(name, hexToRGB(value));
@@ -51,9 +52,24 @@ function Config(props: IProps) {
     return null;
   }
 
+  function validateTypesForInputField(inputFieldMap: Map<any, any>): Map<any, any> {
+    inputFieldMap.forEach((value, key) => {
+      if (value.type === 'integer') {
+        const intValue: number = parseInt(value.value);
+        if (typeof intValue !== 'number' || Number.isNaN(intValue)) {
+          inputFieldMap.set(key, { value: 0, type: value.type });
+        } else {
+          inputFieldMap.set(key, { value: intValue, type: value.type });
+        }
+      }
+    });
+
+    return inputFieldMap;
+  }
+
   function runAction() {
     let arr1 = Array.from(sliderMap, ([name, value]) => ({ name, value }));
-    let arr2 = Array.from(inputFieldMap, ([name, value]) => ({ name, value }));
+    let arr2 = Array.from(validateTypesForInputField(inputFieldMap), ([name, value]) => ({ name, value }));
     let arr3 = Array.from(colorPickerMap, ([name, value]) => ({ name, value }));
     props.runAction([actionName, arr1, arr2, arr3]);
   }
