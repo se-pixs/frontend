@@ -13,6 +13,10 @@ function ValueFieldInput(props: IProps) {
     props.onValueChange(event.target.value, props.name);
   }
 
+  // ! DEBUG
+  // console.log('props.type');
+  // console.log(props.type);
+
   const customClass = ' flex-auto border border-gray-400 rounded-md pl-1 pr-2 py-1 outline-none focus:ring-2 focus:ring-custompurple-400';
   const actionNameToUpper: string = props.name.charAt(0).toUpperCase() + props.name.slice(1);
 

@@ -56,7 +56,8 @@ export default function Start(props: IProps) {
         if (uploadedImage.type === 'image/jpeg' || uploadedImage.type === 'image/png') {
           data.append('image', uploadedImage);
           data.append('format', getFormatOfImage(uploadedImage));
-          console.log(getFormatOfImage(uploadedImage));
+          // ! DEBUG
+          // console.log(getFormatOfImage(uploadedImage));
         } else if (uploadedImage.type.includes('zip')) {
           data.append('zip', uploadedImage);
           data.append('format', 'ZIP');
@@ -72,7 +73,8 @@ export default function Start(props: IProps) {
         };
 
         axiosPostIpInterceptor(pixsConfig.backend.resources + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
-          console.log(data);
+          // ! DEBUG
+          // console.log(data);
         });
       }
     }

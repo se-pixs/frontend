@@ -15,7 +15,8 @@ async function axiosGetIpInterceptor(path: string): Promise<any> {
       httpAgent: agent,
     });
     axios.interceptors.request.use((request) => {
-      console.log(request);
+      // ! DEBUG
+      // console.log(request);
       return request;
     });
     response = await axios.get(path);

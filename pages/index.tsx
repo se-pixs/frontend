@@ -17,6 +17,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
 
   if (typeof document !== 'undefined') {
     document.cookie = props.cookie;
+    // ! DEBUG
     console.log(props.cookie);
     console.log(document.cookie);
   }
