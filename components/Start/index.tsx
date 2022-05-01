@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useStore } from '../../utils/globalStore';
+import useStore from '../../utils/store/globalStore';
 import { getFormatOfImage } from '../../utils/imageUtils';
 import { axiosPostIpInterceptor, axiosObjectInterceptor } from '../../utils/axiosInterceptor';
 
@@ -17,10 +17,12 @@ import BackgroundBlur from '../BackgroundBlur';
 
 import pixsConfig from '../../pixs.config';
 import { actionObject } from '../SideBar/types';
+import { AppError } from '../../utils/error';
 
 interface IProps {
   actionsList: actionObject[];
   uploadingAndDownloadingAction: actionObject[];
+  onError: (error: AppError) => void;
 }
 
 export default function Start(props: IProps) {
@@ -141,7 +143,13 @@ export default function Start(props: IProps) {
       withCredentials: true,
     };
 
-    const response = await axiosObjectInterceptor(axiosConfig);
+    let response;
+
+    try {
+      response = await axiosObjectInterceptor(axiosConfig);
+    } catch (error: AppError | any) {
+      props.onError(new AppError('InternalServerError', 'Running action failed', error.message));
+    }
 
     setResponseArrrived(true);
     updateImg();
@@ -154,8 +162,12 @@ export default function Start(props: IProps) {
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
     };
-
-    const response2 = await axiosObjectInterceptor(axiosConfig);
+    let response2;
+    try {
+      response2 = await axiosObjectInterceptor(axiosConfig);
+    } catch (error: AppError | any) {
+      props.onError(new AppError('InternalServerError', 'Updating image failed', error.message));
+    }
 
     setReadyToBeDownloaded(true);
 
@@ -178,8 +190,15 @@ export default function Start(props: IProps) {
       withCredentials: true,
     };
 
-    // Axios(axiosConfig);
-    axiosObjectInterceptor(axiosConfig);
+    try {
+      await axiosObjectInterceptor(axiosConfig);
+    } catch (error: AppError | any) {
+      if (error instanceof AppError) {
+        props.onError(error);
+      } else {
+        props.onError(new AppError('InternalServerError', 'Reversing action failed', error.message));
+      }
+    }
     updateImg();
   }
 
