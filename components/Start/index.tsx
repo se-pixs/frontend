@@ -79,12 +79,8 @@ export default function Start(props: IProps) {
   }
 
   function onActionChange(name: string) {
-    setActionName('');
-    setConfigsObject(JSON.parse(JSON.stringify({})));
-    setTimeout(function () {
-      setActionName(name);
-      setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
-    }, 0.001);
+    setActionName(name);
+    setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
   }
 
   function newUpload() {
@@ -196,7 +192,7 @@ export default function Start(props: IProps) {
               </div>
             </BackgroundBlur>
           )}
-          <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
+          <Title title={props.actionsList.filter((action) => action.name === actionName)[0].displayName} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} reverse={reverse} imageData={imgsrc} />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload} />}
           <Spacer />
