@@ -21,7 +21,8 @@ const createBearSlice = (set: SetState<MyState>, get: GetState<MyState>) => ({
   modalButton: 'Reload',
   showModal: false,
   modalButtonOnClick: () => {
-    console.log('clicked');
+    //@ts-ignore
+    window.location.reload(true);
   },
   toggleModal: () => {
     set((prev) => ({ showModal: !prev.showModal }));
