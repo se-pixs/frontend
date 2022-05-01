@@ -112,10 +112,11 @@ export default function Start(props: IProps) {
       }
       if (output.parameters?.valuefields) {
         for (let i = 0; i < output.parameters?.valuefields.length; i++) {
+          //inputfields[i].value looks like: {value: "value", type: "type"}
           if (inputfields[i].value.type === 'integer') {
             output.parameters.valuefields[i].value = parseInt(inputfields[i].value.value);
           } else {
-            output.parameters.valuefields[i].value = inputfields[i].value;
+            output.parameters.valuefields[i].value = inputfields[i].value.value;
           }
         }
       }
