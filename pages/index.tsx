@@ -34,7 +34,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
 
   function handleError(error: AppError) {
     console.log(error.toJSON());
-    setErrorOccurred(true);
+    if (!errorOccurred) setErrorOccurred(true);
     // initModalForError();
   }
 
