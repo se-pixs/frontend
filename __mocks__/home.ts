@@ -1,4 +1,5 @@
 import type { actionObject } from '../components/SideBar/types';
+import { AppError } from '../utils/error';
 
 const customActionsList: actionObject[] = [
   {
@@ -18,7 +19,7 @@ const customActionsList: actionObject[] = [
     path: '/execute/action2',
   },
 ];
-const customCookie: string = '';
+const customCookie: string = 'Hello world out there';
 const customuploadingAndDownloadingAction: actionObject[] = [
   {
     name: 'uploadingAction',
@@ -37,5 +38,6 @@ const customuploadingAndDownloadingAction: actionObject[] = [
     path: '/execute/downloadingAction',
   },
 ];
+const customAppError: AppError = new AppError('InternalServerError', 'Internal server error');
 
-export { customActionsList, customCookie, customuploadingAndDownloadingAction };
+export { customActionsList, customCookie, customuploadingAndDownloadingAction, customAppError };
