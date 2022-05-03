@@ -13,7 +13,7 @@ interface IProps {
 }
 
 function DownloadField(props: IProps) {
-  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage, clearUploadedImage } = useStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // save file to user's device
