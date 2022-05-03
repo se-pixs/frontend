@@ -31,10 +31,11 @@ async function axiosGetIpInterceptor(path: string): Promise<any> {
     try {
       response = await Axios.get(path);
     } catch (error: any) {
+      console.log(error);
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError('InternalServerError', 'axiosGetIpInterceptor threw error using IPv6', error.message);
+        throw new AppError('InternalServerError', 'axiosGetIpInterceptor threw error using IPv4', error.message);
       }
     }
   }

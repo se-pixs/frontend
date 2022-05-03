@@ -14,7 +14,7 @@ interface IProps {
   actionsList: actionObject[];
   cookie: string;
   uploadingAndDownloadingAction: actionObject[];
-  error?: AppError;
+  error?: string;
 }
 
 const Home: NextPage<IProps> = (props: IProps) => {
@@ -22,6 +22,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
 
   if (typeof props.error !== 'undefined') {
+    console.log(props.error);
     handleError(props.error);
   }
 
@@ -32,8 +33,8 @@ const Home: NextPage<IProps> = (props: IProps) => {
     // console.log(document.cookie);
   }
 
-  function handleError(error: AppError) {
-    console.log(error.toJSON());
+  function handleError(error: string) {
+    console.log(error);
     if (!errorOccurred) setErrorOccurred(true);
     // initModalForError();
   }
@@ -101,7 +102,7 @@ function returnPropsForOnError(error: AppError): IProps {
     actionsList: getMockDataForOnError(),
     cookie: '',
     uploadingAndDownloadingAction: getMockDataForOnError(),
-    error: error,
+    error: error.message,
   };
 }
 
