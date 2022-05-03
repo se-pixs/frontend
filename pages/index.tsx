@@ -46,7 +46,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       {errorOccurred && <Modal />}
-      {!errorOccurred && <Start actionsList={props.actionsList} uploadingAndDownloadingAction={props.uploadingAndDownloadingAction} onError={(error: AppError) => handleError(error)} />}
+      {!errorOccurred && <Start actionsList={props.actionsList} uploadingAndDownloadingAction={props.uploadingAndDownloadingAction} onError={(error: AppError) => handleError(error.message)} />}
     </div>
   );
 };
