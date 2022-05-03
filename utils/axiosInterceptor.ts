@@ -31,7 +31,6 @@ async function axiosGetIpInterceptor(path: string): Promise<any> {
     try {
       response = await Axios.get(path);
     } catch (error: any) {
-      console.log(error);
       if (error instanceof AppError) {
         throw error;
       } else {

@@ -22,7 +22,6 @@ const Home: NextPage<IProps> = (props: IProps) => {
   const [errorOccurred, setErrorOccurred] = useState(false);
 
   if (typeof props.error !== 'undefined') {
-    console.log(props.error);
     handleError(props.error);
   }
 
