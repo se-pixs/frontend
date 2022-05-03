@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Home from '../pages/index';
+import Home, { getServerSideProps } from '../pages/index';
 import { customActionsList, customCookie, customuploadingAndDownloadingAction, customAppError } from '../__mocks__/home';
+import * as axiosInterceptor from '../utils/axiosInterceptor';
+import { notDeepEqual } from 'assert';
 
 describe('Home', () => {
   it('renders correctly without error', async () => {
@@ -45,21 +47,51 @@ describe('Home', () => {
     expect(modalButton).toBeInTheDocument();
   });
 
-  // it('gets correct data', async () => {
-  //   let response: { props: IProps } | null = null;
-  //   let error = null;
-  //   try {
-  //     response = await getServerSideProps();
-  //   } catch (error) {
-  //     error = error;
-  //   }
+  /**
+   * @jest-environment node
+   */
+  it('gets mock data on error', async () => {
+    // jest.mock('../utils/axiosInterceptor', () => {
+    //   const originalModule = jest.requireActual('../utils/axiosInterceptor');
+    //   const customReturn = {
+    //     data: {
+    //       actionsList: customActionsList,
+    //       cookie: customCookie,
+    //       uploadingAndDownloadingAction: customuploadingAndDownloadingAction,
+    //     },
+    //   };
+    //   return {
+    //     __esModule: true,
+    //     ...originalModule,
+    //     axiosGetIpInterceptor: jest.fn(() => customReturn),
+    //   };
+    // });
+    const spy = jest.spyOn(axiosInterceptor, 'axiosGetIpInterceptor').mockImplementation(async () => {
+      const customReturn = {
+        data: {
+          actionsList: customActionsList,
+          cookie: 'awdawdawdawda',
+          uploadingAndDownloadingAction: customuploadingAndDownloadingAction,
+        },
+      };
+      return Promise.resolve(customReturn);
+    });
 
-  //   expect(error).toBeNull();
+    const { props } = await getServerSideProps();
 
-  //   expect(response).not.toBeNull();
-  //   expect(response).toBeTruthy();
-  //   expect(response?.props.error).toBeUndefined();
+    // expect(props.error).toBeUndefined();
+    expect(props.actionsList).toEqual(customActionsList);
+    expect(props.cookie).not.toEqual('');
+    expect(props.uploadingAndDownloadingAction).toEqual(customuploadingAndDownloadingAction);
 
-  //   // expect(value).toEqual({ props: { businessName: 'Name', businessID: 'fjdks' } });
-  // });
+    //   expect(response).toEqual(
+    //     expect.objectContaining({
+    //       props: {
+    //         actionsList: [],
+    //         cookie: '',
+    //         uploadingAndDownloadingAction: [],
+    //       },
+    //     }),
+    //   );
+  });
 });
