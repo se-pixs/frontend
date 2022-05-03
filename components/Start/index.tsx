@@ -44,7 +44,7 @@ export default function Start(props: IProps) {
     reader.onload = (e) => {
       setImgSrc((e.target === null ? '/preview-placeholder.jpeg' : e.target.result) as string);
       // ! for test usage
-      // setReadyToBeDownloaded(uploadedImage !== null);
+      setReadyToBeDownloaded(uploadedImage !== null);
     };
 
     if (uploadedImage !== null) {

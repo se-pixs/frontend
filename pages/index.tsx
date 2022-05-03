@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Start from '../components/Start';
 import pixsConfig from '../pixs.config';
 import { actionObject } from '../components/SideBar/types';
-import { axiosGetIpInterceptor } from '../utils/axiosInterceptor';
+import { axiosGetIpInterceptor, axiosObjectInterceptor, axiosPostIpInterceptor } from '../utils/axiosInterceptor';
 import { AppError } from '../utils/error';
 import useStore from '../utils/store/globalStore';
 import Modal from '../components/Modal';
@@ -20,16 +20,58 @@ interface IProps {
 const Home: NextPage<IProps> = (props: IProps) => {
   const showModal: boolean = useStore((state) => state.showModal);
   const [errorOccurred, setErrorOccurred] = useState(false);
+  let actionsOfNewCookie: actionObject[] = [];
+  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
 
   if (typeof props.error !== 'undefined') {
     handleError(props.error);
   }
 
+  async function getDownloadImage() {
+    let res = null;
+    try {
+      res = await axiosPostIpInterceptor(pixsConfig.backend.api, new FormData(), { withCredentials: true });
+    } catch (error) {
+      console.log('error');
+    }
+
+    const parsedResult: Omit<IProps, 'error'> = parseActions(res);
+    const downloadingAction: actionObject = parsedResult.uploadingAndDownloadingAction[1];
+    actionsOfNewCookie = parsedResult.actionsList;
+
+    let res2 = null;
+    try {
+      res2 = await axiosObjectInterceptor({
+        method: 'get',
+        url: pixsConfig.backend.resources + downloadingAction.path,
+        responseType: 'blob',
+        withCredentials: true,
+      });
+    } catch (error: any) {
+      // throws 500 error if no image is available
+      //todo: handle error
+      return;
+    }
+
+    if (uploadedImage === null) {
+      setUploadedImage(res2.data);
+    }
+    // console.log(res2);
+  }
+
+  // handle cookie
   if (typeof document !== 'undefined') {
-    document.cookie = props.cookie;
-    // ! DEBUG
-    // console.log(props.cookie);
-    // console.log(document.cookie);
+    const prevCookie: string | null = getSessionIdCookieIfAvailable(document);
+
+    if (prevCookie !== null) {
+      document.cookie = prevCookie;
+
+      getDownloadImage().then(() => {
+        // console.log('done');
+      });
+    } else {
+      document.cookie = props.cookie;
+    }
   }
 
   function handleError(error: string) {
@@ -46,7 +88,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       {errorOccurred && <Modal />}
-      {!errorOccurred && <Start actionsList={props.actionsList} uploadingAndDownloadingAction={props.uploadingAndDownloadingAction} onError={(error: AppError) => handleError(error.message)} />}
+      {!errorOccurred && <Start actionsList={actionsOfNewCookie.length === 0 ? props.actionsList : actionsOfNewCookie} uploadingAndDownloadingAction={props.uploadingAndDownloadingAction} onError={(error: AppError) => handleError(error.message)} />}
     </div>
   );
 };
@@ -54,45 +96,43 @@ const Home: NextPage<IProps> = (props: IProps) => {
 export default Home;
 
 export async function getServerSideProps() {
-  let actionsListTemp: actionObject[] = [];
-  // let activeActionNameTemp = '';
-  let customCookie: string = '';
-  let uploadingAndDownloadingActionTemp: actionObject[] = [];
+  let response;
 
   try {
-    let response;
-    try {
-      response = await axiosGetIpInterceptor(pixsConfig.backend.api);
-    } catch (error: AppError | any) {
-      if (error instanceof AppError) {
-        return { props: returnPropsForOnError(error) };
-      } else {
-        return { props: returnPropsForOnError(new AppError('InternalServerError', 'Loading data failed', error.message)) };
-      }
+    response = await axiosGetIpInterceptor(pixsConfig.backend.api);
+  } catch (error: AppError | any) {
+    if (error instanceof AppError) {
+      return { props: returnPropsForOnError(error) };
+    } else {
+      return { props: returnPropsForOnError(new AppError('InternalServerError', 'Loading data failed', error.message)) };
     }
-
-    uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 3);
-    actionsListTemp = response.data.actions.slice(3);
-    customCookie = response.headers['set-cookie'] ? response.headers['set-cookie'][0] : '';
-  } catch (e) {
-    console.log(e);
   }
 
-  if (customCookie == '') {
+  let parsedResponse = parseActions(response);
+
+  if (parsedResponse.cookie == '') {
     return { props: returnPropsForOnError(new AppError('InternalServerError', 'No cookie received')) };
   }
 
   // setting icons accordingly
-  for (let action of actionsListTemp) {
+  for (let action of parsedResponse.actionsList) {
     action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.resources + action.icon;
   }
 
   return {
     props: {
-      actionsList: actionsListTemp,
-      cookie: customCookie,
-      uploadingAndDownloadingAction: uploadingAndDownloadingActionTemp,
+      actionsList: parsedResponse.actionsList,
+      cookie: parsedResponse.cookie,
+      uploadingAndDownloadingAction: parsedResponse.uploadingAndDownloadingAction,
     },
+  };
+}
+
+function parseActions(response: any): Omit<IProps, 'error'> {
+  return {
+    uploadingAndDownloadingAction: response.data.actions.slice(0, 3),
+    actionsList: response.data.actions.slice(3),
+    cookie: response.headers['set-cookie'] ? response.headers['set-cookie'][0] : '',
   };
 }
 
@@ -144,4 +184,15 @@ function initModalForError(text?: string) {
   setModalButton('Reload');
   setModalButtonOnClick(handleReload);
   setShowModal(true);
+}
+
+function getSessionIdCookieIfAvailable(document: any): string | null {
+  const cookies: string[] = document.cookie.split(';').map((cookie: string) => cookie.trim());
+  const sessionId: string[] = cookies.filter((c: string) => c.includes('sessionid'));
+
+  if (sessionId.length === 0) {
+    return null;
+  }
+
+  return sessionId[0].split('=')[1];
 }
