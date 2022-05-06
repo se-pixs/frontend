@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "27b145d1-f7c2-4720-bb65-08ef995b7c81",
+		"name": "PiXS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initial request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload image",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Set-Cookie",
+						"value": "sessionid=2k21m3gmedx377rve8af1bp1lxahsfhy; expires=Fri, 06 May 2022 05:55:02 GMT; Max-Age=6000; Path=/; SameSite=Lax",
+						"type": "default"
+					}
+				]
+			},
+			"response": []
+		},
+		{
+			"name": "Reverse action",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Set-Cookie",
+						"value": "sessionid=2k21m3gmedx377rve8af1bp1lxahsfhy; expires=Fri, 06 May 2022 05:55:02 GMT; Max-Age=6000; Path=/; SameSite=Lax",
+						"type": "default"
+					}
+				]
+			},
+			"response": []
+		},
+		{
+			"name": "Change format",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Set-Cookie",
+						"value": "sessionid=2k21m3gmedx377rve8af1bp1lxahsfhy; expires=Fri, 06 May 2022 05:55:02 GMT; Max-Age=6000; Path=/; SameSite=Lax",
+						"type": "default"
+					}
+				]
+			},
+			"response": []
+		},
+		{
+			"name": "IG Pano split",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Set-Cookie",
+						"value": "sessionid=2k21m3gmedx377rve8af1bp1lxahsfhy; expires=Fri, 06 May 2022 05:55:02 GMT; Max-Age=6000; Path=/; SameSite=Lax",
+						"type": "default"
+					}
+				]
+			},
+			"response": []
+		},
+		{
+			"name": "Convert to pixel art",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Set-Cookie",
+						"value": "sessionid=2k21m3gmedx377rve8af1bp1lxahsfhy; expires=Fri, 06 May 2022 05:55:02 GMT; Max-Age=6000; Path=/; SameSite=Lax",
+						"type": "default"
+					}
+				]
+			},
+			"response": []
+		},
+		{
+			"name": "Convert to low poly",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Set-Cookie",
+						"value": "sessionid=2k21m3gmedx377rve8af1bp1lxahsfhy; expires=Fri, 06 May 2022 05:55:02 GMT; Max-Age=6000; Path=/; SameSite=Lax",
+						"type": "default"
+					}
+				]
+			},
+			"response": []
+		}
+	]
+}
