@@ -28,19 +28,19 @@ function Preview(props: IProps) {
 
   return (
     <div className={'flex flex-col' + ' ' + props.className}>
-      <div className='flex-initial font-bold text-xl mb-5'>Preview</div>
+      <div className='flex-initial font-bold text-xl mb-5'>Your Image</div>
       <div className='flex-initial flex justify-between items-center'>
         <div className='flex-initial'>
-          <p className='mb-3'>Uploaded image</p>
+          {/* <p className='mb-3'>Uploaded image</p> */}
           <div className='w-96'>
             <img src={props.imgSrc} alt='Uploaded' className='w-full h-full' />
           </div>
         </div>
-        <div className='flex-initial'>{arrowIcon}</div>
+        {/* <div className='flex-initial'>{arrowIcon}</div>
         <div className='flex-initial'>
           {!loadingPreview && <p className='mb-3'>Manipulated image</p>}
           <div className='w-96'>{loadingPreview ? processingIcon : <img src={props.imgSrcManipulated} alt='Manipulated' className='w-full h-full' />}</div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
