@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: pixs-runner
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 16.2
