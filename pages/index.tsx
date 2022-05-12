@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Start from '../components/Start';
-import pixsConfig from '../pixs.config.template';
+import pixsConfig from '../pixs.config';
 import { actionObject } from '../components/SideBar/types';
 import { axiosGetIpInterceptor } from '../utils/axiosInterceptor';
 // import cookieCutter from 'cookie-cutter';
@@ -44,7 +44,7 @@ export async function getServerSideProps() {
 
   try {
     // const data = await fetch(pixsConfig.backend);
-    let response = await axiosGetIpInterceptor(pixsConfig.backend.api);
+    let response = await axiosGetIpInterceptor(pixsConfig.backend.internal_address);
 
     uploadingAndDownloadingActionTemp = response.data.actions.slice(0, 3);
     actionsListTemp = response.data.actions.slice(3);
@@ -55,7 +55,7 @@ export async function getServerSideProps() {
 
   // setting icons accordingly
   for (let action of actionsListTemp) {
-    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.resources + action.icon;
+    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.external_address + action.icon;
   }
 
   return {
