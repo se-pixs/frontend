@@ -1,4 +1,4 @@
-name: Deploy Pixs frontend & backend containerized
+name: Deploy Pixs frontend & backend containerized1
 on: [push]
 jobs:
   Explore-GitHub-Actions:
