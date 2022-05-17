@@ -35,7 +35,5 @@ jobs:
       - name: Clean up docker host
         run: |
           docker system prune -f
-          cd ../../../
-          pwd
-          rm -rf ./frontend
+          rm -rf ../../../frontend
         
