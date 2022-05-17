@@ -11,6 +11,7 @@ jobs:
           path: dev
       - name: Build frontend using Docker
         run: |
+          pwd
           docker build . -t frontend:latest
       - name: Checkout backend repo
         uses: actions/checkout@v3
