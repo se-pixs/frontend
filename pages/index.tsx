@@ -30,7 +30,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
   async function getDownloadImage() {
     let res = null;
     try {
-      res = await axiosPostIpInterceptor(pixsConfig.backend.api, new FormData(), { withCredentials: true });
+      res = await axiosPostIpInterceptor(pixsConfig.backend.external_address, new FormData(), { withCredentials: true });
     } catch (error) {
       console.log('error');
     }
@@ -43,7 +43,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
     try {
       res2 = await axiosObjectInterceptor({
         method: 'get',
-        url: pixsConfig.backend.resources + downloadingAction.path,
+        url: pixsConfig.backend.external_address + downloadingAction.path,
         responseType: 'blob',
         withCredentials: true,
       });
@@ -99,7 +99,7 @@ export async function getServerSideProps() {
   let response;
 
   try {
-    response = await axiosGetIpInterceptor(pixsConfig.backend.api);
+    response = await axiosGetIpInterceptor(pixsConfig.backend.external_address);
   } catch (error: AppError | any) {
     if (error instanceof AppError) {
       return { props: returnPropsForOnError(error) };

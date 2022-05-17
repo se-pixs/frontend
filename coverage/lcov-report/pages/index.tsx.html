@@ -421,7 +421,7 @@ export async function getServerSideProps() {
   try {
     let response;
     try {
-      response = await axiosGetIpInterceptor(pixsConfig.backend.api);
+      response = await axiosGetIpInterceptor(pixsConfig.backend.external_address);
     } catch (error: AppError | any) {
 <span class="cstat-no" title="statement not covered" >      if (error instanceof AppError) {</span>
 <span class="cstat-no" title="statement not covered" >        return { props: returnPropsForOnError(error) };</span>
@@ -443,7 +443,7 @@ export async function getServerSideProps() {
 &nbsp;
   // setting icons accordingly
 <span class="cstat-no" title="statement not covered" >  for (let action of actionsListTemp) {</span>
-<span class="cstat-no" title="statement not covered" >    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.resources + action.icon;</span>
+<span class="cstat-no" title="statement not covered" >    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.internal_address + action.icon;</span>
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
