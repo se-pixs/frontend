@@ -116,7 +116,7 @@ export async function getServerSideProps() {
 
   // setting icons accordingly
   for (let action of parsedResponse.actionsList) {
-    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.resources + action.icon;
+    action.icon = action.icon == '' ? pixsConfig.iconPlaceholder : pixsConfig.backend.external_address + action.icon;
   }
 
   return {
