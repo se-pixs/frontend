@@ -1,9 +1,14 @@
 name: Deploy Pixs frontend & backend containerized
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Deploy Pixs on a Docker host:
     runs-on: self-hosted
     steps:
+      - name: Terminate & delete running containers
+        run: |
+          docker stop pixs-backend pixs-frontend
+          docker rm pixs-backend pixs-frontend
+          docker volume prune -f
       - name: Checkout frontend repo
         uses: actions/checkout@v3
         with:
