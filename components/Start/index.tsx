@@ -89,6 +89,7 @@ export default function Start(props: IProps) {
 
   function newUpload() {
     hasBeenUploaded.current = false;
+    updateActions();
   }
 
   function onProcessFinished() {
@@ -177,6 +178,24 @@ export default function Start(props: IProps) {
       let file = new File([response2.data], fileName, { type: response2.data.type });
       setUploadedImage(file);
     }
+  }
+
+  async function updateActions() {
+    let res = null;
+    try {
+      res = await axiosObjectInterceptor({
+        method: 'get',
+        url: pixsConfig.backend.resources,
+        withCredentials: true,
+      });
+    } catch (error: any) {
+      // throws 500 error if no image is available
+      //todo: handle error
+      return;
+    }
+    let actions = res.data.actions.slice(3);
+    setConfigsObject(actions.filter((action: any) => action.name === actionName)[0])
+
   }
 
   function deleteAndRetry() {
