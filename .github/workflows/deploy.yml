@@ -4,14 +4,20 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: self-hosted
     steps:
-      - name: Checkout
+      - name: Checkout frontend repo
         uses: actions/checkout@v3
         with:
           repository: se-pixs/frontend
           path: dev
-
-      - name: Checkout tools repo
+      - name: Build frontend using Docker
+        run: |
+          docker build . -t frontend:latest
+      - name: Checkout backend repo
         uses: actions/checkout@v3
         with:
           repository: se-pixs/backend
           path: main
+      - name: Build backend using Docker
+        run: |
+          docker build . -t backend:latest
+          docker-compose up -d
