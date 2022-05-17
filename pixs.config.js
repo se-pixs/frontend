@@ -1,7 +1,7 @@
 module.exports = {
   backend: {
-    api: getPropertyOrUseDefault(process.env.BACKEND_API_URL, "http://localhost:8000"),
-    resources: getPropertyOrUseDefault(process.env.BACKEND_RESOURCES_URL, "http://localhost:8000"),
+    internal_address: getPropertyOrUseDefault(process.env.BACKEND_INTERNAL_ADDRESS, "http://pixs-backend:8000"),
+    external_address: getPropertyOrUseDefault(process.env.NEXT_PUBLIC_BACKEND_EXTERNAL_ADDRESS, "http://localhost:8000")
   },
   frontend: "http://localhost:3000",
   iconPlaceholder: "/icon-placeholder.svg",
