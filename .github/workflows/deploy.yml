@@ -26,3 +26,7 @@ jobs:
           pwd
           docker build . -t backend:latest
           docker-compose up -d
+      - name: Clean up docker host
+        run: |
+          docker system prune
+        
