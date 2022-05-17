@@ -22,5 +22,7 @@ jobs:
       - name: Build backend using Docker
         run: |
           pwd
+          cd ./backend
+          pwd
           docker build . -t backend:latest
           docker-compose up -d
