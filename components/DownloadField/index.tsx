@@ -1,7 +1,6 @@
-// import { useStore } from '../../utils/globalStore';
 import { useState } from 'react';
 import { saveAs } from 'file-saver';
-import { useStore } from '../../utils/globalStore';
+import useStore from '../../utils/store/globalStore';
 
 import Button from '../Button';
 import BackgroundBlur from '../BackgroundBlur';
@@ -14,7 +13,7 @@ interface IProps {
 }
 
 function DownloadField(props: IProps) {
-  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage, clearUploadedImage } = useStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // save file to user's device

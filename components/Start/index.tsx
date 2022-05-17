@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useStore } from '../../utils/globalStore';
+import useStore from '../../utils/store/globalStore';
 import { getFormatOfImage } from '../../utils/imageUtils';
 import { axiosPostIpInterceptor, axiosObjectInterceptor } from '../../utils/axiosInterceptor';
 
@@ -17,10 +17,12 @@ import BackgroundBlur from '../BackgroundBlur';
 
 import pixsConfig from '../../pixs.config';
 import { actionObject } from '../SideBar/types';
+import { AppError } from '../../utils/error';
 
 interface IProps {
   actionsList: actionObject[];
   uploadingAndDownloadingAction: actionObject[];
+  onError: (error: AppError) => void;
 }
 
 export default function Start(props: IProps) {
@@ -42,7 +44,7 @@ export default function Start(props: IProps) {
     reader.onload = (e) => {
       setImgSrc((e.target === null ? '/preview-placeholder.jpeg' : e.target.result) as string);
       // ! for test usage
-      // setReadyToBeDownloaded(uploadedImage !== null);
+      setReadyToBeDownloaded(uploadedImage !== null);
     };
 
     if (uploadedImage !== null) {
@@ -56,7 +58,8 @@ export default function Start(props: IProps) {
         if (uploadedImage.type === 'image/jpeg' || uploadedImage.type === 'image/png') {
           data.append('image', uploadedImage);
           data.append('format', getFormatOfImage(uploadedImage));
-          console.log(getFormatOfImage(uploadedImage));
+          // ! DEBUG
+          // console.log(getFormatOfImage(uploadedImage));
         } else if (uploadedImage.type.includes('zip')) {
           data.append('zip', uploadedImage);
           data.append('format', 'ZIP');
@@ -79,12 +82,8 @@ export default function Start(props: IProps) {
   }
 
   function onActionChange(name: string) {
-    setActionName('');
-    setConfigsObject(JSON.parse(JSON.stringify({})));
-    setTimeout(function () {
-      setActionName(name);
-      setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
-    }, 0.001);
+    setActionName(name);
+    setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
   }
 
   function newUpload() {
@@ -112,7 +111,12 @@ export default function Start(props: IProps) {
       }
       if (output.parameters?.valuefields) {
         for (let i = 0; i < output.parameters?.valuefields.length; i++) {
-          output.parameters.valuefields[i].value = inputfields[i].value;
+          //inputfields[i].value looks like: {value: "value", type: "type"}
+          if (inputfields[i].value.type === 'integer') {
+            output.parameters.valuefields[i].value = parseInt(inputfields[i].value.value);
+          } else {
+            output.parameters.valuefields[i].value = inputfields[i].value.value;
+          }
         }
       }
       if (output.parameters?.colorpickers) {
@@ -123,8 +127,8 @@ export default function Start(props: IProps) {
         }
       }
     }
-    // ! for test usage
-    // console.log(JSON.stringify(output));
+    // ! DEBUG
+    // console.log(output);
 
     let url = pixsConfig.backend.external_address + output.path;
 
@@ -139,7 +143,13 @@ export default function Start(props: IProps) {
       withCredentials: true,
     };
 
-    const response = await axiosObjectInterceptor(axiosConfig);
+    let response;
+
+    try {
+      response = await axiosObjectInterceptor(axiosConfig);
+    } catch (error: AppError | any) {
+      props.onError(new AppError('InternalServerError', 'Running action failed', error.message));
+    }
 
     setResponseArrrived(true);
     updateImg();
@@ -152,8 +162,12 @@ export default function Start(props: IProps) {
       responseType: 'blob', // necessary because JS is a terrible language, stupid and requires this ~ Github Copilot
       withCredentials: true,
     };
-
-    const response2 = await axiosObjectInterceptor(axiosConfig);
+    let response2;
+    try {
+      response2 = await axiosObjectInterceptor(axiosConfig);
+    } catch (error: AppError | any) {
+      props.onError(new AppError('InternalServerError', 'Updating image failed', error.message));
+    }
 
     setReadyToBeDownloaded(true);
 
@@ -176,8 +190,15 @@ export default function Start(props: IProps) {
       withCredentials: true,
     };
 
-    // Axios(axiosConfig);
-    axiosObjectInterceptor(axiosConfig);
+    try {
+      await axiosObjectInterceptor(axiosConfig);
+    } catch (error: AppError | any) {
+      if (error instanceof AppError) {
+        props.onError(error);
+      } else {
+        props.onError(new AppError('InternalServerError', 'Reversing action failed', error.message));
+      }
+    }
     updateImg();
   }
 
@@ -196,7 +217,7 @@ export default function Start(props: IProps) {
               </div>
             </BackgroundBlur>
           )}
-          <Title title={actionName.toUpperCase()} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
+          <Title title={configsObject.displayName} description={actionName !== '' ? props.actionsList.filter((action) => action.name === actionName)[0].description : ''} />
           {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} reverse={reverse} imageData={imgsrc} />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload} />}
           <Spacer />

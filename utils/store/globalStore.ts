@@ -1,4 +1,5 @@
 import create from 'zustand';
+import createModalSlice, { ModalSlice } from './createModalSlice';
 
 interface GlobalStore {
   uploadedImage: Blob | null;
@@ -6,7 +7,9 @@ interface GlobalStore {
   clearUploadedImage: () => void;
 }
 
-export const useStore = create<GlobalStore>((set) => ({
+export type MyState = ModalSlice & GlobalStore; // combine with other slices through "&"
+
+const useStore = create<MyState>((set, get) => ({
   uploadedImage: null,
   setUploadedImage: (img: Blob) => {
     set(() => ({ uploadedImage: img }));
@@ -14,4 +17,7 @@ export const useStore = create<GlobalStore>((set) => ({
   clearUploadedImage: () => {
     set(() => ({ uploadedImage: null }));
   },
+  ...createModalSlice(set, get),
 }));
+
+export default useStore;
