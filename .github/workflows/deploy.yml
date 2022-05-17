@@ -28,5 +28,5 @@ jobs:
           docker-compose up -d
       - name: Clean up docker host
         run: |
-          docker system prune
+          docker system prune -f
         
