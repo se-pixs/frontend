@@ -15,7 +15,7 @@ async function axiosGetIpInterceptor(path: string): Promise<any> {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError('InternalServerError', 'axiosGetIpInterceptor threw error using IPv6', error.message);
+        throw new AppError('InternalServerError', `axiosGetIpInterceptor threw error using IPv6 because: ${error.message}`, error.message);
       }
     }
   } else {
@@ -34,7 +34,7 @@ async function axiosGetIpInterceptor(path: string): Promise<any> {
       if (error instanceof AppError) {
         throw error;
       } else {
-        throw new AppError('InternalServerError', 'axiosGetIpInterceptor threw error using IPv4', error.message);
+        throw new AppError('InternalServerError', `axiosGetIpInterceptor threw error using IPv4 because: ${error.message}`, error.message);
       }
     }
   }
