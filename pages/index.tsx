@@ -21,7 +21,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
   const showModal: boolean = useStore((state) => state.showModal);
   const [errorOccurred, setErrorOccurred] = useState(false);
   let actionsOfNewCookie: actionObject[] = [];
-  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage, setUploadedImage, deleteAndRetryActive } = useStore();
 
   if (typeof props.error !== 'undefined') {
     handleError(props.error);
@@ -30,7 +30,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
   async function getDownloadImage() {
     let res = null;
     try {
-      res = await axiosPostIpInterceptor(pixsConfig.backend.api, new FormData(), { withCredentials: true });
+      res = await axiosPostIpInterceptor(pixsConfig.backend.external_address, new FormData(), { withCredentials: true });
     } catch (error) {
       console.log('error');
     }
@@ -43,7 +43,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
     try {
       res2 = await axiosObjectInterceptor({
         method: 'get',
-        url: pixsConfig.backend.resources + downloadingAction.path,
+        url: pixsConfig.backend.external_address + downloadingAction.path,
         responseType: 'blob',
         withCredentials: true,
       });
@@ -60,17 +60,18 @@ const Home: NextPage<IProps> = (props: IProps) => {
   }
 
   // handle cookie
-  if (typeof document !== 'undefined') {
-    const prevCookie: string | null = getSessionIdCookieIfAvailable(document);
+  if (!deleteAndRetryActive) {
+    if (typeof document !== 'undefined') {
+      const prevCookie: string | null = getSessionIdCookieIfAvailable(document);
 
-    if (prevCookie !== null) {
-      document.cookie = prevCookie;
-
-      getDownloadImage().then(() => {
-        // console.log('done');
-      });
-    } else {
-      document.cookie = props.cookie;
+      if (prevCookie !== null) {
+        document.cookie = prevCookie;
+        getDownloadImage().then(() => {
+          console.log('done');
+        });
+      } else {
+        document.cookie = props.cookie;
+      }
     }
   }
 
@@ -99,7 +100,7 @@ export async function getServerSideProps() {
   let response;
 
   try {
-    response = await axiosGetIpInterceptor(pixsConfig.backend.api);
+    response = await axiosGetIpInterceptor(pixsConfig.backend.external_address);
   } catch (error: AppError | any) {
     if (error instanceof AppError) {
       return { props: returnPropsForOnError(error) };

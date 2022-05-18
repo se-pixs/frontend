@@ -32,7 +32,6 @@ function DownloadField(props: IProps) {
 
   function deleteAndRetry() {
     props.deleteAndRetry();
-    clearUploadedImage();
   }
 
   return (

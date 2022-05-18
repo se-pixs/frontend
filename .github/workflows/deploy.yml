@@ -1,17 +1,39 @@
-name: GitHub test2 Actions Demo
+name: Deploy Pixs frontend & backend containerizedt
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Deploy-pixs-on-docker-host:
     runs-on: self-hosted
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - name: Terminate & delete running containers
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's sdddddtahfdgdfghhhhtus is ${{ job.status }}."
+          docker stop pixs-backend pixs-frontend
+          docker rm pixs-backend pixs-frontend
+          docker volume prune -f
+      - name: Checkout frontend repo
+        uses: actions/checkout@v3
+        with:
+          repository: se-pixs/frontend
+          path: ./
+      - name: Build frontend using Docker
+        run: |
+          pwd
+          docker build . -t frontend:latest
+          pwd
+      - name: Checkout backend repo
+        uses: actions/checkout@v3
+        with:
+          repository: se-pixs/backend
+          ref: deploy
+          path: ./backend
+      - name: Build backend using Docker
+        run: |
+          pwd
+          cd ./backend
+          pwd
+          docker build . -t backend:latest
+          docker-compose up -d
+      - name: Clean up docker host
+        run: |
+          docker system prune -f
+          rm -rf ../../../frontend
+        
