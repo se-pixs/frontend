@@ -42,11 +42,12 @@ function Config(props: IProps) {
     selectionFieldMap.set(name, value);
   }
   function onSliderChange(value: string, name: string) {
-    const int_value : number = parseInt(value);
+    const int_value: number = parseInt(value);
     sliderMap.set(name, int_value);
   }
-  function onInputFieldChange(value: string, name: string) {
-    inputFieldMap.set(name, value);
+  function onInputFieldChange(value: string, name: string, type: string) {
+    inputFieldMap.set(name, { value: value, type: type });
+    inputFieldMap = validateTypesForInputField(inputFieldMap);
   }
   function onColorPickerChange(value: string, name: string) {
     colorPickerMap.set(name, hexToRGB(value));
@@ -63,10 +64,25 @@ function Config(props: IProps) {
     return null;
   }
 
+  function validateTypesForInputField(inputFieldMap: Map<any, any>): Map<any, any> {
+    inputFieldMap.forEach((value, key) => {
+      if (value.type === 'integer') {
+        const intValue: number = parseInt(value.value);
+        if (typeof intValue !== 'number' || Number.isNaN(intValue)) {
+          inputFieldMap.set(key, { value: 0, type: value.type });
+        } else {
+          inputFieldMap.set(key, { value: intValue, type: value.type });
+        }
+      }
+    });
+
+    return inputFieldMap;
+  }
+
   function runAction() {
     let arr0 = Array.from(selectionFieldMap, ([name, value]) => ({ name, value }));
     let arr1 = Array.from(sliderMap, ([name, value]) => ({ name, value }));
-    let arr2 = Array.from(inputFieldMap, ([name, value]) => ({ name, value }));
+    let arr2 = Array.from(validateTypesForInputField(inputFieldMap), ([name, value]) => ({ name, value }));
     let arr3 = Array.from(colorPickerMap, ([name, value]) => ({ name, value }));
     props.runAction([actionName, arr0, arr1, arr2, arr3]);
   }
@@ -93,16 +109,19 @@ function Config(props: IProps) {
               {sliderList && sliderList.length > 0 && (
                 <div>
                   {sliderList.map(
-                    (input: any) => sliderMap.set(input.name, input.value.default) && <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} step={input.value.step} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />,
+                    (input: any) =>
+                      sliderMap.set(input.name, input.value.default) && (
+                        <SliderInput onValueChange={onSliderChange} key={input.name} name={input.name} description={input.description} step={input.value.step} min={input.value.min} max={input.value.max} value={input.value.default} className={className} />
+                      ),
                   )}
                 </div>
               )}
 
-              {valueFieldInputList && valueFieldInputList.length > 0 && (
+              {valueFieldInputList.length > 0 && (
                 <div>
                   {valueFieldInputList.map(
                     (input: any) =>
-                      inputFieldMap.set(input.name, input.value.default) && (
+                      inputFieldMap.set(input.name, { value: input.value.default, type: input.value.type }) && (
                         <ValueFieldInput onValueChange={onInputFieldChange} type={input.value.type} options={input.value.range} key={input.name} name={input.name} default={input.value.default} description={input.description} className={className} />
                       ),
                   )}

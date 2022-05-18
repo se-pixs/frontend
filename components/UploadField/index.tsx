@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useStore } from '../../utils/globalStore';
+import useStore from '../../utils/store/globalStore';
 
 import Button from '../Button';
 
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 function UploadField(props: IProps) {
-  const { setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
 
   const onDrop = useCallback((acceptedFiles) => {
     props.onUpload();
@@ -19,8 +19,8 @@ function UploadField(props: IProps) {
     setUploadedImage(acceptedFiles[0]);
   }, []);
 
-  const [uploaded, setUploaded] = useState(false);
-  const [filename, setFileName] = useState('');
+  const [uploaded, setUploaded] = useState(uploadedImage !== null);
+  const [filename, setFileName] = useState(uploadedImage === null ? '' : `pixs.${uploadedImage.type.split('/')[1]}`);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
