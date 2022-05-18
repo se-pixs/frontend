@@ -1,3 +1,4 @@
+import SelectionField from './SelectionField';
 import SliderInput from './SliderInput';
 import ValueFieldInput from './ValueFieldInput';
 import ColorPicker from './ColorPicker';
@@ -6,6 +7,7 @@ import Button from '../Button';
 interface IProps {
   configList: any;
   uploaded: boolean;
+  imageData: string;
   runAction: (value: any) => void;
   disabled: boolean;
 }
@@ -13,6 +15,7 @@ interface IProps {
 function Config(props: IProps) {
   const className = 'mx-4 my-4 w-full px-2';
 
+  let selectionField;
   let sliderList;
   let valueFieldInputList;
   let colorPickerList;
@@ -20,6 +23,10 @@ function Config(props: IProps) {
   let actionName = props.configList.name;
 
   if (props.configList.parameters) {
+    if(props.configList.parameters.selectionfields) {
+      selectionField = props.configList.parameters.selectionfields;
+      console.log(selectionField)
+    }
     sliderList = props.configList.parameters.sliders;
     valueFieldInputList = props.configList.parameters.valuefields;
     colorPickerList = props.configList.parameters.colorpickers;
@@ -28,7 +35,12 @@ function Config(props: IProps) {
   let sliderMap = new Map();
   let inputFieldMap = new Map();
   let colorPickerMap = new Map();
+  let selectionFieldMap = new Map();
 
+  
+  function onSelectionField(value: any, name: string) { // value: {positionX: number, positionY: number, width: number, height: number, areas: number}
+    selectionFieldMap.set(name, value);
+  }
   function onSliderChange(value: string, name: string) {
     const int_value: number = parseInt(value);
     sliderMap.set(name, int_value);
@@ -68,10 +80,11 @@ function Config(props: IProps) {
   }
 
   function runAction() {
+    let arr0 = Array.from(selectionFieldMap, ([name, value]) => ({ name, value }));
     let arr1 = Array.from(sliderMap, ([name, value]) => ({ name, value }));
     let arr2 = Array.from(validateTypesForInputField(inputFieldMap), ([name, value]) => ({ name, value }));
     let arr3 = Array.from(colorPickerMap, ([name, value]) => ({ name, value }));
-    props.runAction([actionName, arr1, arr2, arr3]);
+    props.runAction([actionName, arr0, arr1, arr2, arr3]);
   }
 
   type modes = 'notUploaded' | 'disabled' | 'active';
@@ -83,6 +96,15 @@ function Config(props: IProps) {
       <div className='border-2 w-full px-10 py-10 border-customblue-500 rounded-lg flex justify-around'>
         {modeToShow == 'active' && (
           <div>
+            <div className='w-full'>             
+              {selectionField && (
+                <div>
+                  {selectionField.map(
+                    (input: any) => selectionFieldMap.set(input.name, { positionX: input.value.positionX.default, positionY: input.value.positionY.default, width: input.value.width.default, height: input.value.height.default, areas: input.value.areas.default }) && <SelectionField onValueChange={onSelectionField} key={input.name} name={input.name} description={input.description} imageData={props.imageData} positionX={input.value.positionX.default} positionXmin={input.value.positionX.min} positionXmax={input.value.positionX.max} positionY={input.value.positionY.default} positionYmin={input.value.positionY.min} positionYmax={input.value.positionY.max} width={input.value.width.default} widthMin={input.value.width.min} widthMax={input.value.width.max} height={input.value.height.default} heightMin={input.value.height.Min} heightMax={input.value.height.max} areas={input.value.areas.default} areasMin={input.value.areas.min} areasMax={input.value.areas.max} className={className} />
+                  )}	
+                </div>
+              )}
+            </div>
             <div className={'w-full grid grid-rows-1 place-items-start grid-cols-' + (((sliderList && sliderList.length) > 0 ? 1 : 0) + (valueFieldInputList && valueFieldInputList.length > 0 ? 1 : 0) + (colorPickerList && colorPickerList.length > 0 ? 1 : 0))}>
               {sliderList && sliderList.length > 0 && (
                 <div>
