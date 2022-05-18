@@ -99,21 +99,11 @@ export default function Start(props: IProps) {
 
     output.icon = '';
 
-    let selectionField = event[1];
-    let sliders = event[2];
-    let inputfields = event[3];
-    let colorpickers = event[4];
+    let sliders = event[1];
+    let inputfields = event[2];
+    let colorpickers = event[3];
 
     if (output.parameters) {
-      if (output.parameters?.selectionfields) {
-        for (let i = 0; i < output.parameters?.selectionfields.length; i++) {
-          output.parameters.selectionfields[i].value.positionX = parseInt(selectionField[i].value.positionX);
-          output.parameters.selectionfields[i].value.positionY = parseInt(selectionField[i].value.positionY);          
-          output.parameters.selectionfields[i].value.width = parseInt(selectionField[i].value.width);       
-          output.parameters.selectionfields[i].value.height = parseInt(selectionField[i].value.height);
-          output.parameters.selectionfields[i].value.areas = selectionField[i].value.areas;
-        }
-      }
       if (output.parameters?.sliders) {
         for (let i = 0; i < output.parameters?.sliders.length; i++) {
           output.parameters.sliders[i].value = sliders[i].value;
@@ -137,7 +127,6 @@ export default function Start(props: IProps) {
         }
       }
     }
-
     // ! DEBUG
     // console.log(output);
 
@@ -232,7 +221,7 @@ export default function Start(props: IProps) {
           {readyToBeDownloaded && <DownloadField deleteAndRetry={deleteAndRetry} reverse={reverse} imageData={imgsrc} />}
           {!readyToBeDownloaded && <UploadField onUpload={newUpload} />}
           <Spacer />
-          <Config runAction={runAction} imageData={imgsrc} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />
+          <Config runAction={runAction} disabled={readyToBeDownloaded} uploaded={uploadedImage !== null} configList={configsObject} />
           {uploadedImage !== null && <Spacer />}
           {uploadedImage !== null && <Preview imgSrc={imgsrc} />}
         </div>
