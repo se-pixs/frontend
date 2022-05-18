@@ -32,11 +32,14 @@ export default function Start(props: IProps) {
   const [processIsRunning, setProcessIsRunning] = useState(false);
   const [responseArrived, setResponseArrrived] = useState(true);
 
-  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage, setUploadedImage, clearUploadedImage, setDeleteAndRetryActive } = useStore();
   const [imgsrc, setImgSrc] = useState('/preview-placeholder.jpeg');
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
   const hasBeenUploaded = useRef(uploadedImage !== null);
-  console.log('BACKEND_EXTERNAL_ADDRESS:',  process.env.NEXT_PUBLIC_BACKEND_EXTERNAL_ADDRESS)
+
+  // ! DEBUG
+  // console.log('BACKEND_EXTERNAL_ADDRESS:', process.env.NEXT_PUBLIC_BACKEND_EXTERNAL_ADDRESS);
+
   // set the image src to the uploaded image
   if (typeof window !== 'undefined') {
     let reader = new FileReader();
@@ -180,6 +183,9 @@ export default function Start(props: IProps) {
 
   function deleteAndRetry() {
     setReadyToBeDownloaded(false);
+    clearUploadedImage();
+    setDeleteAndRetryActive(true);
+    // console.log(uploadedImage);
   }
 
   async function reverse() {
@@ -198,6 +204,7 @@ export default function Start(props: IProps) {
       } else {
         props.onError(new AppError('InternalServerError', 'Reversing action failed', error.message));
       }
+      return;
     }
     updateImg();
   }

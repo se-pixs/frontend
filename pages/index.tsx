@@ -21,7 +21,7 @@ const Home: NextPage<IProps> = (props: IProps) => {
   const showModal: boolean = useStore((state) => state.showModal);
   const [errorOccurred, setErrorOccurred] = useState(false);
   let actionsOfNewCookie: actionObject[] = [];
-  const { uploadedImage, setUploadedImage, clearUploadedImage } = useStore();
+  const { uploadedImage, setUploadedImage, deleteAndRetryActive } = useStore();
 
   if (typeof props.error !== 'undefined') {
     handleError(props.error);
@@ -60,17 +60,18 @@ const Home: NextPage<IProps> = (props: IProps) => {
   }
 
   // handle cookie
-  if (typeof document !== 'undefined') {
-    const prevCookie: string | null = getSessionIdCookieIfAvailable(document);
+  if (!deleteAndRetryActive) {
+    if (typeof document !== 'undefined') {
+      const prevCookie: string | null = getSessionIdCookieIfAvailable(document);
 
-    if (prevCookie !== null) {
-      document.cookie = prevCookie;
-
-      getDownloadImage().then(() => {
-        // console.log('done');
-      });
-    } else {
-      document.cookie = props.cookie;
+      if (prevCookie !== null) {
+        document.cookie = prevCookie;
+        getDownloadImage().then(() => {
+          console.log('done');
+        });
+      } else {
+        document.cookie = props.cookie;
+      }
     }
   }
 
