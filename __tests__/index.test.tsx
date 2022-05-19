@@ -29,7 +29,7 @@ describe('Home', () => {
   });
 
   it('renders correctly on error', async () => {
-    render(<Home actionsList={customActionsList} cookie={customCookie} uploadingAndDownloadingAction={customuploadingAndDownloadingAction} error={customAppError} />);
+    render(<Home actionsList={customActionsList} cookie={customCookie} uploadingAndDownloadingAction={customuploadingAndDownloadingAction} error={customAppError.toString()} />);
 
     expect(() =>
       screen.getByRole('heading', {
@@ -50,48 +50,23 @@ describe('Home', () => {
   /**
    * @jest-environment node
    */
-  it('gets mock data on error', async () => {
-    // jest.mock('../utils/axiosInterceptor', () => {
-    //   const originalModule = jest.requireActual('../utils/axiosInterceptor');
-    //   const customReturn = {
-    //     data: {
-    //       actionsList: customActionsList,
-    //       cookie: customCookie,
-    //       uploadingAndDownloadingAction: customuploadingAndDownloadingAction,
-    //     },
-    //   };
-    //   return {
-    //     __esModule: true,
-    //     ...originalModule,
-    //     axiosGetIpInterceptor: jest.fn(() => customReturn),
-    //   };
-    // });
-    const spy = jest.spyOn(axiosInterceptor, 'axiosGetIpInterceptor').mockImplementation(async () => {
-      const customReturn = {
-        data: {
-          actionsList: customActionsList,
-          cookie: 'awdawdawdawda',
-          uploadingAndDownloadingAction: customuploadingAndDownloadingAction,
-        },
-      };
-      return Promise.resolve(customReturn);
-    });
+  // it('gets mock data on error', async () => {
+  //   const spy = jest.spyOn(axiosInterceptor, 'axiosGetIpInterceptor').mockImplementation(async () => {
+  //     const customReturn = {
+  //       data: {
+  //         actionsList: customActionsList,
+  //         cookie: 'awdawdawdawda',
+  //         uploadingAndDownloadingAction: customuploadingAndDownloadingAction,
+  //       },
+  //     };
+  //     return Promise.resolve(customReturn);
+  //   });
 
-    const { props } = await getServerSideProps();
+  //   const { props } = await getServerSideProps();
 
-    // expect(props.error).toBeUndefined();
-    expect(props.actionsList).toEqual(customActionsList);
-    expect(props.cookie).not.toEqual('');
-    expect(props.uploadingAndDownloadingAction).toEqual(customuploadingAndDownloadingAction);
-
-    //   expect(response).toEqual(
-    //     expect.objectContaining({
-    //       props: {
-    //         actionsList: [],
-    //         cookie: '',
-    //         uploadingAndDownloadingAction: [],
-    //       },
-    //     }),
-    //   );
-  });
+  //   // expect(props.error).toBeUndefined();
+  //   expect(props.actionsList).toEqual(customActionsList);
+  //   expect(props.cookie).not.toEqual('');
+  //   expect(props.uploadingAndDownloadingAction).toEqual(customuploadingAndDownloadingAction);
+  // });
 });
