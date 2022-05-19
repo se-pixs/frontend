@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1652968878847" clover="3.2.0">
-  <project timestamp="1652968878847" name="All files">
-    <metrics statements="145" coveredstatements="68" conditionals="44" coveredconditionals="18" methods="42" coveredmethods="19" elements="231" coveredelements="105" complexity="0" loc="145" ncloc="145" packages="5" files="5" classes="5"/>
+<coverage generated="1652968896221" clover="3.2.0">
+  <project timestamp="1652968896221" name="All files">
+    <metrics statements="139" coveredstatements="62" conditionals="44" coveredconditionals="18" methods="39" coveredmethods="16" elements="222" coveredelements="96" complexity="0" loc="139" ncloc="139" packages="4" files="4" classes="4"/>
     <package name="components.DownloadField">
       <metrics statements="22" coveredstatements="16" conditionals="7" coveredconditionals="2" methods="7" coveredmethods="7"/>
       <file name="index.tsx" path="/Users/I538956/workspace/dhbw/swe/frontend/components/DownloadField/index.tsx">
@@ -28,18 +28,6 @@
         <line num="51" count="1" type="stmt"/>
         <line num="54" count="2" type="stmt"/>
         <line num="62" count="2" type="stmt"/>
-      </file>
-    </package>
-    <package name="components.Modal">
-      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
-      <file name="deleteModal.tsx" path="/Users/I538956/workspace/dhbw/swe/frontend/components/Modal/deleteModal.tsx">
-        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
-        <line num="1" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="38" count="2" type="stmt"/>
       </file>
     </package>
     <package name="components.SideBar">
