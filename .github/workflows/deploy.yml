@@ -15,6 +15,7 @@ jobs:
           uses: actions/checkout@v3
           if: always()
           with:
+            fetch-depth: '0'
             repository: se-pixs/frontend
             path: ./
         - name: Build frontend using Docker
