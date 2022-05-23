@@ -8,11 +8,12 @@ jobs:
       steps:
         - name: Terminate & delete running containers
           run: |
-            #docker stop pixs-backend pixs-frontend
-            #docker rm pixs-backend pixs-frontend
+            docker stop pixs-backend pixs-frontend
+            docker rm pixs-backend pixs-frontend
             docker volume prune -f
         - name: Checkout frontend repo
           uses: actions/checkout@v3
+          if: always()
           with:
             repository: se-pixs/frontend
             path: ./
