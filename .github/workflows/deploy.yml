@@ -1,4 +1,4 @@
-name: Deploy Pixs frontend & backend containerizedt1
+name: Deploy Pixs frontend & backend containerized
 on: [push, workflow_call]
 
   
