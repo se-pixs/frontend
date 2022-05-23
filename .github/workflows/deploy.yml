@@ -18,17 +18,20 @@ jobs:
             repository: se-pixs/frontend
             path: ./
         - name: Build frontend using Docker
+          if: always()
           run: |
             pwd
             docker build . -t frontend:latest
             pwd
         - name: Checkout backend repo
           uses: actions/checkout@v3
+          if: always()
           with:
             repository: se-pixs/backend
             ref: deploy
             path: ./backend
         - name: Build backend using Docker
+          if: always()
           run: |
             pwd
             cd ./backend
@@ -36,6 +39,7 @@ jobs:
             docker build . -t backend:latest
             docker-compose up -d
         - name: Clean up docker host
+          if: always()
           run: |
             docker system prune -f
             rm -rf ../../../frontend
