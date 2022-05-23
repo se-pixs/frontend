@@ -1,39 +1,41 @@
 name: Deploy Pixs frontend & backend containerizedt1
-on: [push]
+on: [push, workflow_call]
+
+  
 jobs:
-  Deploy-pixs-on-docker-host:
-    runs-on: self-hosted
-    steps:
-      - name: Terminate & delete running containers
-        run: |
-          #docker stop pixs-backend pixs-frontend
-          #docker rm pixs-backend pixs-frontend
-          docker volume prune -f
-      - name: Checkout frontend repo
-        uses: actions/checkout@v3
-        with:
-          repository: se-pixs/frontend
-          path: ./
-      - name: Build frontend using Docker
-        run: |
-          pwd
-          docker build . -t frontend:latest
-          pwd
-      - name: Checkout backend repo
-        uses: actions/checkout@v3
-        with:
-          repository: se-pixs/backend
-          ref: deploy
-          path: ./backend
-      - name: Build backend using Docker
-        run: |
-          pwd
-          cd ./backend
-          pwd
-          docker build . -t backend:latest
-          docker-compose up -d
-      - name: Clean up docker host
-        run: |
-          docker system prune -f
-          rm -rf ../../../frontend
-        
+    Deploy-pixs-on-docker-host:
+      runs-on: self-hosted
+      steps:
+        - name: Terminate & delete running containers
+          run: |
+            #docker stop pixs-backend pixs-frontend
+            #docker rm pixs-backend pixs-frontend
+            docker volume prune -f
+        - name: Checkout frontend repo
+          uses: actions/checkout@v3
+          with:
+            repository: se-pixs/frontend
+            path: ./
+        - name: Build frontend using Docker
+          run: |
+            pwd
+            docker build . -t frontend:latest
+            pwd
+        - name: Checkout backend repo
+          uses: actions/checkout@v3
+          with:
+            repository: se-pixs/backend
+            ref: deploy
+            path: ./backend
+        - name: Build backend using Docker
+          run: |
+            pwd
+            cd ./backend
+            pwd
+            docker build . -t backend:latest
+            docker-compose up -d
+        - name: Clean up docker host
+          run: |
+            docker system prune -f
+            rm -rf ../../../frontend
+
