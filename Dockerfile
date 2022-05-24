@@ -24,7 +24,7 @@ RUN sudo npm install
 RUN sudo npm run build
 RUN sudo chown -R $USER:$USER $HOME
 
-
+CMD echo "User $(whoami) running from $PWD with premissions: $(sudo -l)"
 
 EXPOSE 3000
 ENTRYPOINT npm run dev
@@ -34,4 +34,4 @@ ENTRYPOINT npm run dev
 # COPY src src
 # RUN sudo chown -R $USER:$USER $HOME
 
-CMD echo "User $(whoami) running from $PWD with premissions: $(sudo -l)"
+
