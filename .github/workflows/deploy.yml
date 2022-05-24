@@ -1,9 +1,9 @@
-name: Deploy Pixs frontend & backend containerized
+name: Deploy pixs frontend & backend via docker
 on: [push, workflow_call]
 
   
 jobs:
-    Deploy-pixs-frontend-&-backend:
+    Deploy-pixs-frontend-and-backend:
       runs-on: self-hosted
       steps:
         - name: Terminate & delete running containers on the docker host
