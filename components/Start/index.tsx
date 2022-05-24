@@ -198,7 +198,7 @@ export default function Start(props: IProps) {
     try {
       res = await axiosObjectInterceptor({
         method: 'get',
-        url: pixsConfig.backend.resources,
+        url: pixsConfig.backend.external_address,
         withCredentials: true,
       });
     } catch (error: any) {
