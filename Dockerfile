@@ -22,7 +22,7 @@ WORKDIR $HOME/frontend
 COPY . .
 RUN sudo npm install
 RUN sudo npm run build
-RUN sudo chown -R $USER:$USER $HOME
+#RUN sudo chown -R $USER:$USER $HOME
 RUN sudo npm run test
 
 CMD echo "User $(whoami) running from $PWD with premissions: $(sudo -l)"
