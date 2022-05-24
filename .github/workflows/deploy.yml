@@ -3,7 +3,7 @@ on: [push, workflow_call]
 
   
 jobs:
-    Deploy-pixs-on-docker-host:
+    Deploy-pixs-frontend-&-backend:
       runs-on: self-hosted
       steps:
         - name: Terminate & delete running containers on the docker host
