@@ -23,7 +23,7 @@ COPY . .
 RUN sudo npm install --legacy-peer-deps --force
 RUN sudo npm run build
 #RUN sudo chown -R $USER:$USER $HOME
-RUN sudo npm run test
+#RUN sudo npm run test
 
 CMD echo "User $(whoami) running from $PWD with premissions: $(sudo -l)"
 
