@@ -1,4 +1,7 @@
 [![Deploy to server](https://github.com/se-pixs/frontend/actions/workflows/deploy.yml/badge.svg)](https://github.com/se-pixs/frontend/actions/workflows/deploy.yml)
+[![Built with - Nextjs](https://img.shields.io/badge/Built_with-Next.js-000000.svg?style=flat&logo=vercel)](https://nextjs.org/)
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/68f1d0c1057f4d0c82beecdb1ca4d591)](https://www.codacy.com/gh/se-pixs/frontend/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=se-pixs/frontend&amp;utm_campaign=Badge_Grade)
 
 # PiXS Frontend 
 
