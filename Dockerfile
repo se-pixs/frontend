@@ -20,8 +20,8 @@ RUN adduser -D $USER \
 USER $USER
 WORKDIR $HOME/frontend
 COPY . .
-RUN npm install
-RUN npm run build
+RUN sudo npm install
+RUN sudo npm run build
 
 
 
