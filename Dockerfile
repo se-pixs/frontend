@@ -22,6 +22,7 @@ WORKDIR $HOME/frontend
 COPY . .
 RUN sudo npm install
 RUN sudo npm run build
+RUN sudo chown -R $USER:$USER $HOME
 
 
 
