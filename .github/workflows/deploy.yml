@@ -6,23 +6,23 @@ jobs:
     Deploy-pixs-on-docker-host:
       runs-on: self-hosted
       steps:
-        - name: Terminate & delete running containers
+        - name: Terminate & delete running containers on the docker host
           run: |
             docker stop pixs-backend pixs-frontend
             docker rm pixs-backend pixs-frontend
             docker volume prune -f
-        - name: Checkout frontend repo
+        - name: Checkout frontend repository
           uses: actions/checkout@v3
           if: always()
           with:
             ref: deploy
             repository: se-pixs/frontend
             path: ./
-        - name: Build frontend using Docker
+        - name: Build frontend docker-image
           if: always()
           run: |
             pwd
-            docker build . -t frontend:latest
+            docker build . --build-arg "USER=pixs-executor" -t frontend:latest
             pwd
         - name: Checkout backend repo
           uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
             repository: se-pixs/backend
             ref: deploy
             path: ./backend
-        - name: Build backend using Docker
+        - name: Build backend docker-image
           if: always()
           run: |
             pwd
