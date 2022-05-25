@@ -23,9 +23,9 @@ function Config(props: IProps) {
   let actionName = props.configList.name;
 
   if (props.configList.parameters) {
-    if(props.configList.parameters.selectionfields) {
+    if (props.configList.parameters.selectionfields) {
       selectionField = props.configList.parameters.selectionfields;
-      console.log(selectionField)
+      console.log(selectionField);
     }
     sliderList = props.configList.parameters.sliders;
     valueFieldInputList = props.configList.parameters.valuefields;
@@ -37,8 +37,8 @@ function Config(props: IProps) {
   let colorPickerMap = new Map();
   let selectionFieldMap = new Map();
 
-  
-  function onSelectionField(value: any, name: string) { // value: {positionX: number, positionY: number, width: number, height: number, areas: number}
+  function onSelectionField(value: any, name: string) {
+    // value: {positionX: number, positionY: number, width: number, height: number, areas: number}
     selectionFieldMap.set(name, value);
   }
   function onSliderChange(value: string, name: string) {
@@ -51,32 +51,6 @@ function Config(props: IProps) {
   }
   function onColorPickerChange(value: string, name: string) {
     colorPickerMap.set(name, hexToRGB(value));
-  }
-
-  function hexToRGB(value: string) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
-    if (result) {
-      let r = parseInt(result[1], 16);
-      let g = parseInt(result[2], 16);
-      let b = parseInt(result[3], 16);
-      return Array.from(new Map().set('red', r).set('green', g).set('blue', b), ([name, value]) => ({ name, value }));
-    }
-    return null;
-  }
-
-  function validateTypesForInputField(inputFieldMap: Map<any, any>): Map<any, any> {
-    inputFieldMap.forEach((value, key) => {
-      if (value.type === 'integer') {
-        const intValue: number = parseInt(value.value);
-        if (typeof intValue !== 'number' || Number.isNaN(intValue)) {
-          inputFieldMap.set(key, { value: 0, type: value.type });
-        } else {
-          inputFieldMap.set(key, { value: intValue, type: value.type });
-        }
-      }
-    });
-
-    return inputFieldMap;
   }
 
   function runAction() {
@@ -96,12 +70,37 @@ function Config(props: IProps) {
       <div className='border-2 w-full px-10 py-10 border-customblue-500 rounded-lg flex justify-around'>
         {modeToShow == 'active' && (
           <div>
-            <div className='w-full'>             
+            <div className='w-full'>
               {selectionField && (
                 <div>
                   {selectionField.map(
-                    (input: any) => selectionFieldMap.set(input.name, { positionX: input.value.positionX.default, positionY: input.value.positionY.default, width: input.value.width.default, height: input.value.height.default, areas: input.value.areas.default }) && <SelectionField onValueChange={onSelectionField} key={input.name} name={input.name} description={input.description} imageData={props.imageData} positionX={input.value.positionX.default} positionXmin={input.value.positionX.min} positionXmax={input.value.positionX.max} positionY={input.value.positionY.default} positionYmin={input.value.positionY.min} positionYmax={input.value.positionY.max} width={input.value.width.default} widthMin={input.value.width.min} widthMax={input.value.width.max} height={input.value.height.default} heightMin={input.value.height.Min} heightMax={input.value.height.max} areas={input.value.areas.default} areasMin={input.value.areas.min} areasMax={input.value.areas.max} className={className} />
-                  )}	
+                    (input: any) =>
+                      selectionFieldMap.set(input.name, { positionX: input.value.positionX.default, positionY: input.value.positionY.default, width: input.value.width.default, height: input.value.height.default, areas: input.value.areas.default }) && (
+                        <SelectionField
+                          onValueChange={onSelectionField}
+                          key={input.name}
+                          name={input.name}
+                          description={input.description}
+                          imageData={props.imageData}
+                          positionX={input.value.positionX.default}
+                          positionXmin={input.value.positionX.min}
+                          positionXmax={input.value.positionX.max}
+                          positionY={input.value.positionY.default}
+                          positionYmin={input.value.positionY.min}
+                          positionYmax={input.value.positionY.max}
+                          width={input.value.width.default}
+                          widthMin={input.value.width.min}
+                          widthMax={input.value.width.max}
+                          height={input.value.height.default}
+                          heightMin={input.value.height.Min}
+                          heightMax={input.value.height.max}
+                          areas={input.value.areas.default}
+                          areasMin={input.value.areas.min}
+                          areasMax={input.value.areas.max}
+                          className={className}
+                        />
+                      ),
+                  )}
                 </div>
               )}
             </div>
@@ -157,3 +156,29 @@ function Config(props: IProps) {
 }
 
 export default Config;
+
+function hexToRGB(value: string) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+  if (result) {
+    let r = parseInt(result[1], 16);
+    let g = parseInt(result[2], 16);
+    let b = parseInt(result[3], 16);
+    return Array.from(new Map().set('red', r).set('green', g).set('blue', b), ([name, value]) => ({ name, value }));
+  }
+  return null;
+}
+
+function validateTypesForInputField(inputFieldMap: Map<any, any>): Map<any, any> {
+  inputFieldMap.forEach((value, key) => {
+    if (value.type === 'integer') {
+      const intValue: number = parseInt(value.value);
+      if (typeof intValue !== 'number' || Number.isNaN(intValue)) {
+        inputFieldMap.set(key, { value: 0, type: value.type });
+      } else {
+        inputFieldMap.set(key, { value: intValue, type: value.type });
+      }
+    }
+  });
+
+  return inputFieldMap;
+}
