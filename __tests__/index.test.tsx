@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Home, { getServerSideProps } from '../pages/index';
+import Home from '../pages/index';
 import { customActionsList, customCookie, customuploadingAndDownloadingAction, customAppError } from '../__mocks__/home';
-import * as axiosInterceptor from '../utils/axiosInterceptor';
-import { notDeepEqual } from 'assert';
 
 describe('Home', () => {
   it('renders correctly without error', async () => {

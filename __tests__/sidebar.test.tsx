@@ -10,7 +10,7 @@ describe('Sidebar', () => {
       <SideBar
         actionsList={customActionsList}
         selectedAction={selectedAction}
-        onSelectAction={function (name: string): void {
+        onSelectAction={function (_name: string): void {
           console.log('Hello world');
         }}
       />,
