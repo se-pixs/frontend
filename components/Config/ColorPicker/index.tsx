@@ -19,8 +19,6 @@ function ColorPicker(props: IProps) {
     setColor(event);
     props.onValueChange(event, props.name);
     setTextColor(getContrastColor(color));
-    // ! DEBUG
-    // console.log(textColor);
   }
 
   const actionNameToUpper: string = props.name.charAt(0).toUpperCase() + props.name.slice(1);

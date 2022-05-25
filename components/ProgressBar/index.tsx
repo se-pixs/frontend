@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import React from 'react';
+import { useState, useEffect } from 'react';
 
 interface IProps {
   className?: string;
@@ -11,35 +10,35 @@ function ProgressBar(props: IProps) {
   const [completed, setCompleted] = useState(0);
   const nyanCat = '/nyanCat.gif';
   const rainbow = '/rainbow.gif';
-  
+
   let progress = 0;
 
-  React.useEffect(() => {
+  useEffect(() => {
     let id = setInterval(() => {
-      if(progress < 80){
-        progress = progress + 1; 
+      if (progress < 80) {
+        progress = progress + 1;
         setCompleted(progress);
-      }else{
+      } else {
         clearInterval(id);
       }
     }, 10);
-  },[]);
+  }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let id = setInterval(() => {
-      if(props.response){
-        progress = progress + 1; 
+      if (props.response) {
+        progress = progress + 1;
         setCompleted(progress);
       }
 
-      if(progress >= 100){
+      if (progress >= 100) {
         clearInterval(id);
         setTimeout(() => {
           props.onEnd();
-        }, 700)
+        }, 700);
       }
     }, 10);
-  },[props.response]);
+  }, [props.response]);
 
   return (
     <div className={'bg-customblue-500 p-3 rounded-lg mx-10' + ' ' + props.className}>

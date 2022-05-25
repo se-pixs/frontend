@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import useStore from '../../utils/store/globalStore';
 import { getFormatOfImage } from '../../utils/imageUtils';
 import { axiosPostIpInterceptor, axiosObjectInterceptor } from '../../utils/axiosInterceptor';
@@ -37,9 +37,6 @@ export default function Start(props: IProps) {
   const [readyToBeDownloaded, setReadyToBeDownloaded] = useState(uploadedImage !== null);
   const hasBeenUploaded = useRef(uploadedImage !== null);
 
-  // ! DEBUG
-  // console.log('BACKEND_EXTERNAL_ADDRESS:', process.env.NEXT_PUBLIC_BACKEND_EXTERNAL_ADDRESS);
-
   // set the image src to the uploaded image
   if (typeof window !== 'undefined') {
     let reader = new FileReader();
@@ -61,8 +58,6 @@ export default function Start(props: IProps) {
         if (uploadedImage.type === 'image/jpeg' || uploadedImage.type === 'image/png') {
           data.append('image', uploadedImage);
           data.append('format', getFormatOfImage(uploadedImage));
-          // ! DEBUG
-          // console.log(getFormatOfImage(uploadedImage));
         } else if (uploadedImage.type.includes('zip')) {
           data.append('zip', uploadedImage);
           data.append('format', 'ZIP');
@@ -77,8 +72,8 @@ export default function Start(props: IProps) {
           withCredentials: true,
         };
 
-        axiosPostIpInterceptor(pixsConfig.backend.external_address + props.uploadingAndDownloadingAction[0].path, data, config).then((data) => {
-          console.log(data);
+        axiosPostIpInterceptor(pixsConfig.backend.external_address + props.uploadingAndDownloadingAction[0].path, data, config).then((data2) => {
+          console.log(data2);
         });
       }
     }
@@ -98,6 +93,40 @@ export default function Start(props: IProps) {
     setProcessIsRunning(false);
   }
 
+  function formatParameters(parameters: any, selectionField: any, sliders: any, inputfields: any, colorpickers: any) {
+    if (parameters?.selectionfields) {
+      for (let i = 0; i < parameters?.selectionfields.length; i++) {
+        parameters.selectionfields[i].value.positionX = parseInt(selectionField[i].value.positionX);
+        parameters.selectionfields[i].value.positionY = parseInt(selectionField[i].value.positionY);
+        parameters.selectionfields[i].value.width = parseInt(selectionField[i].value.width);
+        parameters.selectionfields[i].value.height = parseInt(selectionField[i].value.height);
+        parameters.selectionfields[i].value.areas = selectionField[i].value.areas;
+      }
+    }
+    if (parameters?.sliders) {
+      for (let i = 0; i < parameters?.sliders.length; i++) {
+        parameters.sliders[i].value = sliders[i].value;
+      }
+    }
+    if (parameters?.valuefields) {
+      for (let i = 0; i < parameters?.valuefields.length; i++) {
+        //inputfields[i].value looks like: {value: "value", type: "type"}
+        if (inputfields[i].value.type === 'integer') {
+          parameters.valuefields[i].value = parseInt(inputfields[i].value.value);
+        } else {
+          parameters.valuefields[i].value = inputfields[i].value.value;
+        }
+      }
+    }
+    if (parameters?.colorpickers) {
+      for (let i = 0; i < parameters?.colorpickers.length; i++) {
+        parameters.colorpickers[i].value.red = colorpickers[0].value[0].value;
+        parameters.colorpickers[i].value.green = colorpickers[0].value[1].value;
+        parameters.colorpickers[i].value.blue = colorpickers[0].value[2].value;
+      }
+    }
+  }
+
   async function runAction(event: any) {
     let output = JSON.parse(JSON.stringify(props.actionsList.filter((action) => action.name === event[0])[0]));
 
@@ -109,41 +138,8 @@ export default function Start(props: IProps) {
     let colorpickers = event[4];
 
     if (output.parameters) {
-      if (output.parameters?.selectionfields) {
-        for (let i = 0; i < output.parameters?.selectionfields.length; i++) {
-          output.parameters.selectionfields[i].value.positionX = parseInt(selectionField[i].value.positionX);
-          output.parameters.selectionfields[i].value.positionY = parseInt(selectionField[i].value.positionY);          
-          output.parameters.selectionfields[i].value.width = parseInt(selectionField[i].value.width);       
-          output.parameters.selectionfields[i].value.height = parseInt(selectionField[i].value.height);
-          output.parameters.selectionfields[i].value.areas = selectionField[i].value.areas;
-        }
-      }
-      if (output.parameters?.sliders) {
-        for (let i = 0; i < output.parameters?.sliders.length; i++) {
-          output.parameters.sliders[i].value = sliders[i].value;
-        }
-      }
-      if (output.parameters?.valuefields) {
-        for (let i = 0; i < output.parameters?.valuefields.length; i++) {
-          //inputfields[i].value looks like: {value: "value", type: "type"}
-          if (inputfields[i].value.type === 'integer') {
-            output.parameters.valuefields[i].value = parseInt(inputfields[i].value.value);
-          } else {
-            output.parameters.valuefields[i].value = inputfields[i].value.value;
-          }
-        }
-      }
-      if (output.parameters?.colorpickers) {
-        for (let i = 0; i < output.parameters?.colorpickers.length; i++) {
-          output.parameters.colorpickers[i].value.red = colorpickers[0].value[0].value;
-          output.parameters.colorpickers[i].value.green = colorpickers[0].value[1].value;
-          output.parameters.colorpickers[i].value.blue = colorpickers[0].value[2].value;
-        }
-      }
+      output.parameters = formatParameters(output.parameters, selectionField, sliders, inputfields, colorpickers);
     }
-
-    // ! DEBUG
-    // console.log(output);
 
     let url = pixsConfig.backend.external_address + output.path;
 
@@ -207,8 +203,7 @@ export default function Start(props: IProps) {
       return;
     }
     let actions = res.data.actions.slice(3);
-    setConfigsObject(actions.filter((action: any) => action.name === actionName)[0])
-
+    setConfigsObject(actions.filter((action: any) => action.name === actionName)[0]);
   }
 
   function deleteAndRetry() {

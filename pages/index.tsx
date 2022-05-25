@@ -18,7 +18,6 @@ interface IProps {
 }
 
 const Home: NextPage<IProps> = (props: IProps) => {
-  const showModal: boolean = useStore((state) => state.showModal);
   const [errorOccurred, setErrorOccurred] = useState(false);
   let actionsOfNewCookie: actionObject[] = [];
   const { uploadedImage, setUploadedImage, deleteAndRetryActive } = useStore();
@@ -56,7 +55,6 @@ const Home: NextPage<IProps> = (props: IProps) => {
     if (uploadedImage === null) {
       setUploadedImage(res2.data);
     }
-    // console.log(res2);
   }
 
   // handle cookie
@@ -167,7 +165,7 @@ function getMockDataForOnError(): actionObject[] {
   ];
 }
 
-function initModalForError(text?: string) {
+function initModalForError() {
   const setShowModal = useStore((state) => state.setShowModal);
   const setModalHeading = useStore((state) => state.setModalHeading);
   const setModalBody = useStore((state) => state.setModalBody);
