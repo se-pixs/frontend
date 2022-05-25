@@ -93,7 +93,7 @@ export default function Start(props: IProps) {
     setProcessIsRunning(false);
   }
 
-  function formatParameters(parameters: any, selectionField: any, sliders: any, inputfields: any, colorpickers: any) {
+  function formatParameters(parameters: any, selectionField: any, sliders: any, inputfields: any, colorpickers: any): any {
     if (parameters?.selectionfields) {
       for (let i = 0; i < parameters?.selectionfields.length; i++) {
         parameters.selectionfields[i].value.positionX = parseInt(selectionField[i].value.positionX);
@@ -125,6 +125,8 @@ export default function Start(props: IProps) {
         parameters.colorpickers[i].value.blue = colorpickers[0].value[2].value;
       }
     }
+
+    return parameters;
   }
 
   async function runAction(event: any) {
