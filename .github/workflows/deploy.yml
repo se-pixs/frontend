@@ -1,4 +1,4 @@
-name: Deploy pixs frontend & backend via docker
+name: Deploy pixs frontend & backend via docker1
 on: [push, workflow_call]
 
   
