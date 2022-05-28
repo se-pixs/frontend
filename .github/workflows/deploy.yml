@@ -22,6 +22,7 @@ jobs:
           if: always()
           run: |
             pwd
+            mv pixs.config.template.js pixs.config.js
             docker build . --build-arg "USER=pixs-executor" -t frontend:latest
             pwd
         - name: Checkout backend repo
