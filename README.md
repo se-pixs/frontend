@@ -23,7 +23,7 @@ The Webapp PiXS is then ...
 -   ```shell
     cd /frontend
     ```
-- Then change the pixs.config.template.js file to pixs.config.js. You may apply necessary changes to the config also in this step.
+- Then change the pixs.config.template.js file to pixs.config.js. You may also apply necessary changes to the config in this step.
 
 -   ```shell
     docker build . -t frontend:latest
