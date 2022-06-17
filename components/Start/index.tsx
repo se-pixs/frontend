@@ -80,13 +80,15 @@ export default function Start(props: IProps) {
   }
 
   function onActionChange(name: string) {
+    console.log(name)
     setActionName(name);
-    setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
+    //setConfigsObject(JSON.parse(JSON.stringify(props.actionsList.filter((action: any) => action.name === name)[0])));
+    updateActions(name);
   }
 
   function newUpload() {
     hasBeenUploaded.current = false;
-    updateActions();
+    updateActions(actionName);
   }
 
   function onProcessFinished() {
@@ -191,7 +193,7 @@ export default function Start(props: IProps) {
     }
   }
 
-  async function updateActions() {
+  async function updateActions(name: string) {
     let res = null;
     try {
       res = await axiosObjectInterceptor({
@@ -205,7 +207,7 @@ export default function Start(props: IProps) {
       return;
     }
     let actions = res.data.actions.slice(3);
-    setConfigsObject(actions.filter((action: any) => action.name === actionName)[0]);
+    setConfigsObject(actions.filter((action: any) => action.name === name)[0]);
   }
 
   function deleteAndRetry() {
