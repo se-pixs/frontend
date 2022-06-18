@@ -30,7 +30,7 @@ jobs:
           if: always()
           with:
             repository: se-pixs/backend
-            ref: deploy
+            ref: main
             path: ./backend
         - name: Build backend docker-image
           if: always()
